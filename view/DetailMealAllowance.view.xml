@@ -1,0 +1,97 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
+	controllerName="cadastralMaintenance.view.DetailMealAllowance" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{i18n>refeicao_alimentacao}">
+		<ObjectHeader binding="{ET_HEADER/'}" title="{ET_HEADER>/CNAME}" number="{ET_HEADER>/ABKRS}"
+			numberUnit="{ET_HEADER>/NAME1} - {ET_HEADER>/BTEXT}" class="corFundo">
+			<statuses>
+				<ObjectStatus text="Cargo: {ET_HEADER>/STLTX}" class="" id="lblCargo" state="None"/>
+				<ObjectStatus text="Data de admissão: { path: 'ET_HEADER>/HIRE_DATE', formatter:'cadastralMaintenance.formatter.Formatter.dataAdmissao'}"
+					class="" id="lblAdmissao" state="None"/>
+			</statuses>
+			<ObjectAttribute id='Pernr' text="Matrícula: {ET_HEADER>/PERNR}"/>
+			<ObjectAttribute text="" id="lblNumReq"/>
+			<ObjectAttribute text="" class="" id="lblStatus"/>
+		</ObjectHeader>
+		<!--	<ObjectHeader binding="{ET_HEADER/'}" title="{ET_HEADER>/CNAME}" number="{ET_HEADER>/ABKRS}" numberUnit="{ET_HEADER>/ORGEH}"
+			condensed="true">
+			<attributes>
+				<ObjectAttribute text="{ET_HEADER>/PERNR}"/>
+			</attributes>
+		</ObjectHeader>-->
+		<l:VerticalLayout class="sapUiContentPadding" id="oVerticalContentBusy" width="100%">
+			<l:dependents>
+				<core:Fragment fragmentName="cadastralMaintenance.view.BusyDialog" type="XML"/>
+			</l:dependents>
+		</l:VerticalLayout>
+		<VBox id="vBoxMeal" class="sapUiResponsiveMargin">
+			<f:SimpleForm id="formMeal" maxContainerCols="1" editable="false" layout=" ResponsiveGridLayout" title="{i18n>refeicao_alimentacao}" labelSpanL="1"
+				labelSpanM="1" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2">
+				<f:content >
+					<Label text="Opção" class="sapUiSmallMarginTop" id="lblMealOption"/>
+					<ComboBox id="idCombo" selectionChange="onMealAllowanceSelect" items="{ path: 'benef>/table', sorter: { path: 'text' } }">
+						<core:Item key="{benef>key}" text="{benef>desc}"/>
+					</ComboBox>
+					<Text text="{path: 'ET_EFFECT>/DATE_BRVR'}" class="sapUiSmallMarginTop"/>
+					<Text text="{path: 'ET_EFFECT>/DATE_BRVA'}" class="sapUiSmallMarginTop"/>
+				</f:content>
+			</f:SimpleForm>
+			<f:SimpleForm id="formMealEkt" editable="false" layout="ResponsiveGridLayout" title="{ i18n>refeicao_alimentacao }" labelSpanXL="4" labelSpanL="3"
+				labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2"
+				columnsL="1" columnsM="1" singleContainerFullSize="false">
+				<f:content>
+					<Label text="Propriedade de Desconto" class="sapUiSmallMarginTop" id="lblPropriedade"/>
+					<RadioButtonGroup id="idRadio" columns="10" select="onChangeRb">
+						<RadioButton id="ALIM" text="Cartão Alimentação"/>
+						<RadioButton id="REFE" text="Cartão Refeição"/>
+					</RadioButtonGroup>
+					<Label text="% Cartão Alimentação" class="sapUiSmallMarginTop" id="lblAvali"/>
+					<Input id="idAli" width="80px" maxLength="3" value="" type="Number" placeholder="0,00%" change="onLiveChange"/>
+					<Label text="% Cartão Refeição" class="sapUiSmallMarginTop" id="lblRef"/>
+					<Input id="idRef" width="80px" maxLength="3" value="" type="Number" placeholder="0,00%" change="onLiveChange"/>
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<!--JUSTIFICATION-->
+		<VBox class="sapUiSmallMargin">
+			<f:SimpleForm id="formJustification" editable="false" layout="ResponsiveGridLayout" title="{i18n>just_coment}" labelSpanL="2" labelSpanM="2"
+				adjustLabelSpan="false" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2">
+				<f:content>
+					<TextArea id="taJust" growing="false" change="onJustChange"/>
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<!--JUSTIFICATION SSG-->
+		<VBox class="sapUiSmallMargin">
+			<f:SimpleForm id="formJustificationSSG" editable="false" layout="ResponsiveGridLayout" title="{i18n>just_coment_SSG}" labelSpanL="2"
+				labelSpanM="2" adjustLabelSpan="false" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2" visible="false">
+				<f:content>
+					<TextArea id="taJustSSG" growing="false" change="onJustChange" maxLength="255" editable="false"/>
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<UploadCollection id="UploadCollection" maximumFilenameLength="50" maximumFileSize="1" multiple="false" change="onChangeAttachment"
+			items="{ path: 'Attachments>/table' }" uploadComplete="onUploadComplete" beforeUploadStarts="onBeforeUpload"
+			fileType="{uploadOptions>/selected}" instantUpload="false" noDataDescription="Mova o Arquivo ou Insira um clicando no botão &quot;+&quot;"
+			filenameLengthExceed="onFilenameLengthExceed" uploadEnabled="{uploadOptions>/uploadEnabled}" fileSizeExceed="onFileSizeExceed">
+			<items>
+				<UploadCollectionItem documentId="{Attachments>documentId}" fileName="{Attachments>Filename}" mimeType="{Attachments>Mimetype}"
+					url="{Attachments>Url}" enableEdit="false" enableDelete="{Attachments>Delete}" visibleDelete="{Attachments>Delete}" visibleEdit="false"></UploadCollectionItem>
+			</items>
+		</UploadCollection>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>formulario}" press="onFormulario" icon="sap-icon://form" id="btnForms"/>
+				<Button text="{i18n>saneamento}" press="onSanitation" icon="sap-icon://accounting-document-verification" id="btnSanity"
+					tooltip="{i18n>saneamento_tooltip}" visible="false"/>
+				<Button text="{i18n>salvar}" press="onSave" icon="sap-icon://save" id="btnSave" tooltip="{i18n>salvar_tooltip}" visible="false"/>
+				<Button type="Accept" text="{i18n>enviar}" press="onSend" icon="sap-icon://forward" id="btnAccept" tooltip="{i18n>enviar_tooltip}"
+					enabled="false"/>
+				<Button type="Reject" text="{i18n>cancelar}" press="onCancel" icon="sap-icon://cancel" id="btnCancel" visible="false"
+					tooltip="{i18n>cancelar_tooltip}"/>
+				<Button type="Accept" text="{i18n>aprovar}" press="onApprove" icon="sap-icon://accept" id="btnApprove" visible="false"/>
+				<Button type="Reject" text="{i18n>reprovar}" press="onReject" icon="sap-icon://decline" id="btnReject" visible="false"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

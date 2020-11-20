@@ -1,0 +1,15 @@
+.spacerTop {
+    margin-top: 2rem;
+}
+.bold{
+    font-weight: bold;
+}
+.underline {
+    text-decoration: underline;
+}
+div[id*='formNeoEdu'] {
+    margin-top: -30px;
+}
+div[id*='formElekEdu'] {
+    margin-top: -30px;
+}
