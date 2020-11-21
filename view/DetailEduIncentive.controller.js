@@ -731,7 +731,7 @@ sap.ui.define([
 				}
 			}
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
-			oModel.read("ET_VALIDATE_EDUCATION_INCENTIVES", oValidate, null, fSuccess, fError);
+			oModel.create("ET_VALIDATE_EDUCATION_INCENTIVES", oValidate, null, fSuccess, fError);
 		},
 	});
 
