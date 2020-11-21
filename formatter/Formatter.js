@@ -45,7 +45,7 @@ sap.ui.define(function () {
 			case "DEL":
 				return "Exclusão";
 			case "MOD":
-				return "Modificação";
+				return "Modificação"; 
 			case "":
 				return "";
 			}
