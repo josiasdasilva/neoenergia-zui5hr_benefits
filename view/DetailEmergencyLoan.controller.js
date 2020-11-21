@@ -42,26 +42,39 @@ sap.ui.define([
 			var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
 
 			function fSuccess(oEvent) {
-				
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
-				
+
 				if (oGlobalData.IM_LOGGED_IN === 0) {
 					that.getView().byId("btnForms").setVisible(true);
 					that.getView().setModel(new sap.ui.model.json.JSONModel({
 						VALUE: oEvent.BLOCK.VALUE
 					}), "ET_BLOCK");
-					
-					var anoAtual = new Date().getFullYear()
-					
-					if(anoAtual == oEvent.BLOCK.LAST_SOLIC.substring(0,4)){
+
+					var anoAtual = new Date().getFullYear();
+					debugger;
+
+					if (anoAtual == oEvent.BLOCK.LAST_SOLIC.substring(0, 4)) {
 						MessageBox.error("Empréstimo já feito neste ano!");
+						var data = oEvent.BLOCK.LAST_SOLIC;
+						var dataF = data.substring(4, 6) + "/" + data.substring(0, 4);
+						that.getView().byId("dtPeriod").setValue(dataF);
+
 						that.fUnableAllButtons();
 						that.fUnableFields();
+						return;
 					}
-					
-					return;
+
+					var today = new Date();
+					var hire_date = new Date(that.getView().getModel("ET_HEADER").oData.HIRE_DATE);
+					var diffDays = Math.ceil((today - hire_date) / (1000 * 60 * 60 * 24));
+					if (diffDays < 365) {
+						MessageBox.error("Colaborador com menos de 1 ano não tem direito ao benefício");
+						that.fUnableAllButtons();
+						that.fUnableFields();
+						return;
+					}
+
 				}
-				
 
 				that.getView().setModel(oValue, "ET_BLOCK");
 
@@ -79,9 +92,9 @@ sap.ui.define([
 				// se tem id verificar os anexos
 				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
 					var data = oEvent.BLOCK.DATA;
-					var dataF = data.substring(6, 8) + "/" + data.substring(4, 6) + "/" + data.substring(0, 4);
+					// var dataF = data.substring(6, 8) + "/" + data.substring(4, 6) + "/" + data.substring(0, 4);
+					var dataF = data.substring(4, 6) + "/" + data.substring(0, 4);
 					that.getView().byId("dtPeriod").setValue(dataF);
-
 
 					var filters = [];
 
@@ -187,7 +200,7 @@ sap.ui.define([
 
 			// return false; 
 		},
-	
+
 		// --------------------------------------------
 		// fFillCreateEmergencyLoanData
 		// -------------------------------------------- 		
@@ -381,7 +394,7 @@ sap.ui.define([
 			this.fVerifyChange(this);
 		},
 		onFormulario: function () {
-			
+
 			var that = this;
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_EMPR_EMERG_SRV/");
 
@@ -404,31 +417,31 @@ sap.ui.define([
 					MessageBox.error(message);
 				}
 			}
-			
-			if(this.fObligatoryFields() === false){
+
+			if (this.fObligatoryFields() === false) {
 				return;
 			}
-			
+
 			var value = this.getView().byId("ipRequestedValue").getValue();
 			// value = value.replaceAll(".","");
-			value = value.replace(/\./g,'');
-			value = value.replace(",",".");
-			
+			value = value.replace(/\./g, '');
+			value = value.replace(",", ".");
+
 			var data = this.getView().byId("dtPeriod").getValue();
-			var period = data.substring(6,10) + data.substring(3,5);
-			
+			var period = data.substring(6, 10) + data.substring(3, 5);
+
 			var url = "?$filter=IvValEmp eq '" + value + "' and IvPeriodo eq '" + period + "'";
 			//MAIN READ
 			oModel.read("EmprEmergSet" + url, null, null, false, fSuccess, fError);
 
 		},
-		fObligatoryFields: function(){
-			
-			if(parseFloat(this.getView().byId("ipRequestedValue").getValue()) <= 0 || this.getView().byId("dtPeriod").getValue() == ""){
+		fObligatoryFields: function () {
+
+			if (parseFloat(this.getView().byId("ipRequestedValue").getValue()) <= 0 || this.getView().byId("dtPeriod").getValue() == "") {
 				this.handleErrorMessageBoxPress();
 				return false;
 			}
-			
+
 		}
 
 	});
