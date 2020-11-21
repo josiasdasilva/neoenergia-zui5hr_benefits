@@ -32,11 +32,11 @@
 									<Button text="{i18n>inclusao}" press="onAddPressed" id="btnAdd"/>
 									<Button text="{i18n>alteracao}" press="onModPressed" id="btnModify"/>
 									<Button text="{i18n>exclusao}" press="onRemPressed" id="btnRemove"/>
-									<Button text="{i18n>visualizar}" press="onVisPressed" id="btnVis" visible="true"/>
+									<Button text="{i18n>visualizacao}" press="onVisPressed" id="btnVis" visible="true"/>
 								</Toolbar>
 							</t:toolbar>
 							<t:columns>
-								<t:Column width="9rem" label="Plano">
+								<t:Column width="9rem" label="Tipo de Plano">
 									<t:template>
 										<Text text="{ET_PLAN_MASTER>LTEXT_BRHE}"/>
 									</t:template>
