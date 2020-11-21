@@ -396,6 +396,16 @@
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
 					</DatePicker>
+					<Label text="{i18n>valor_total_curso}" class="sapUiSmallMarginTop" id="lblValorTot" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipValorMen" value="{ET_BLOCK>/VALOR_TOT}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
 					<Label text="{i18n>valor_mensal_curso}" class="sapUiSmallMarginTop" id="lblValorMen" required="true">
 						<layoutData>
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
