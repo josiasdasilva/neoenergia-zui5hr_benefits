@@ -39,12 +39,12 @@
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
 					</DatePicker>
-					<Label text="{i18n>periodo_desconto}" class="sapUiSmallMarginTop" id="lblValidFrom" required="true">
+					<Label text="{i18n>periodo_desconto}" class="sapUiSmallMarginTop" id="lblValidFrom">
 						<layoutData>
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<DatePicker id="dtValidFrom" displayFormat="MM/yyyy" valueFormat="dd-MM-yyyy" change="onChangeDtFrom" placeholder="{i18n>validade}" class="sapUiSmallMarginBottom">
+					<DatePicker id="dtValidFrom" displayFormat="MM/yyyy" valueFormat="dd-MM-yyyy" placeholder="{i18n>validade}" class="sapUiSmallMarginBottom" editable="false">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>

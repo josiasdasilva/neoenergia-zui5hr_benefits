@@ -51,7 +51,7 @@
 					</Label>
 					<Select id="slEduIncType" items="{ path: 'benef>/table', sorter: { path: 'text' } }" selectedKey="{ET_BLOCK>/TYPE_INC}">
 						<core:Item key="{benef>key}" text="{benef>desc}"/>
-						<layoutData>
+						<layoutData> 
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>
 					</Select>
@@ -60,7 +60,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input value="{ET_BLOCK>/TYPE_INC_ELEK}" width="" id="ipEduIncTypeADP" change="onChange" fieldWidth="30%"
+					<Input value="{ET_BLOCK>/TYPE_INC_ELEK}" width="" id="ipEduIncTypeADP" change="onChangeMesRef" fieldWidth="30%"
 						required="true" visible="false">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
@@ -72,7 +72,7 @@
 						</layoutData>
 					</Label>
 					<DatePicker id="dtMesRef" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" value="{ET_BLOCK>/MES_REF}" change="onChange" placeholder="{i18n>periodo}" required="true">
-						<layoutData>
+					<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
 					</DatePicker>

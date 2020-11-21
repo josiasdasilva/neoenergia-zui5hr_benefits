@@ -45,16 +45,24 @@ sap.ui.define([
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
 
 				// Impedir gerar mais de uma solicitação para o mesmo colaborador | TIAGO
-				if (oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A") {
+				if ( oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A" & 
+				    (oGlobalData.IM_REQ_URL === "00000000" || oGlobalData.IM_REQ_URL === null ||
+				     oGlobalData.IM_REQ_URL === "" || oGlobalData.IM_REQ_URL === undefined) 
+				    ) {
 					that.getView().byId("dtValidFrom").setEnabled(false);
 					that.getView().byId("dtValidTo").setEnabled(false);
 					that.getView().byId("ipAppValue").setEnabled(false);
 					that.getView().byId("ipRequestedValue").setEnabled(false);
 					that.getView().byId("dtDateCred").setEnabled(false);
 					that.getView().byId("taJust").setEnabled(false);
+					
+					that.getView().byId("dtValidFrom").setValue(oEvent.BLOCK.VALID_FROM);
+					that.getView().byId("dtValidTo").setValue(oEvent.BLOCK.VALID_TO);
+					that.getView().byId("dtDateCred").setValue(oEvent.BLOCK.DATE_CRED);
+					that.getView().byId("ipRequestedValue").setValue(oEvent.BLOCK.VALUE_SOL);
+
 					MessageBox.warning(oEvent.EX_MESSAGE.MESSAGE);
 					return;
-					//this.getView().byId("btnSeg").setVisible(true);
 				}
 
 				if (oGlobalData.IM_LOGGED_IN === 0) {
@@ -414,12 +422,20 @@ sap.ui.define([
 
 			//Setar Janeiro do proximo ano caso seja Dezembro
 			if (mes == "12") {
-				mes = "01";
+				mes = 1;
 				ano++;
 			} else {
 				mes++;
 			}
 
+            var mesS = mes.toString();
+
+            if (mes < 10){
+                mes = "0" + mesS;
+            } else {
+                mes = mesS;
+            }
+            
 			//Setar valor na data "Valido De"
 			var dtValidFrom = "01" + "-" + mes + "-" + ano;
 			this.getView().byId("dtValidFrom").setValue(dtValidFrom);
@@ -485,13 +501,13 @@ sap.ui.define([
 			}
 
 		},
-		onChangeDtFrom: function (oEvent) {
+/*		onChangeDtFrom: function (oEvent) {
 			var dtFrom = this.getView().byId("dtValidFrom").getValue();
 			var ano = dtFrom.substring(6, 10);
 			var mes = dtFrom.substring(3, 5);
 			var dia = dtFrom.substring(0, 2);
 			this.getView().byId("dtValidTo").setMinDate(new Date(ano, mes - 1, dia));
-		},
+		},*/
 
 		onChangeDtTo: function () {
 			var dtFrom = this.getView().byId("dtValidFrom").getValue();

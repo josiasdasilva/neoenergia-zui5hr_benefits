@@ -20,6 +20,37 @@
 		</l:VerticalLayout>
 		<content>
 			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm id="formListHealth" maxContainerCols="1" editable="false" layout="ResponsiveGridLayout" title="{i18n>plano_saude}"
+					labelSpanL="1" labelSpanM="1" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2">
+					<f:content>
+						<t:Table id="tPlan" selectionMode="Single" class="sapUiTableTr" columnHeaderHeight="40" width="auto" rows="{ET_PLAN_MASTER>/}"
+							editable="false" enableColumnReordering="false" enableSelectAll="false" rowSelectionChange="onTranspRowSelectionChange"
+							selectionBehavior="Row" cellClick="onCellClick">
+							<t:toolbar>
+								<Toolbar id="toolbarList">
+									<ToolbarSpacer/>
+									<Button text="{i18n>inclusao}" press="onAddPressed" id="btnAdd"/>
+									<Button text="{i18n>alteracao}" press="onModPressed" id="btnModify"/>
+									<Button text="{i18n>exclusao}" press="onRemPressed" id="btnRemove"/>
+									<Button text="{i18n>visualizar}" press="onVisPressed" id="btnVis" visible="true"/>
+								</Toolbar>
+							</t:toolbar>
+							<t:columns>
+								<t:Column width="9rem" label="Plano">
+									<t:template>
+										<Text text="{ET_PLAN_MASTER>LTEXT_BRHE}"/>
+									</t:template>
+								</t:Column>
+								<!--STATUS-->
+								<t:Column width="9rem" label="Status" >
+									<t:template>
+										<Text text="{path:'ET_PLAN_MASTER>ACTIO_BRHE', formatter:'cadastralMaintenance.formatter.Formatter.statusPlano'}"/>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+					</f:content>
+				</f:SimpleForm>
 				<f:SimpleForm id="formHealthInsurance" maxContainerCols="2" editable="false" layout="ResponsiveGridLayout" title="{i18n>plano_saude}"
 					labelSpanL="4" visible="true" labelSpanM="4" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2">
 					<f:toolbar>
@@ -35,7 +66,7 @@
 							</layoutData>
 						</Label>
 						<ComboBox items="{ET_SH_TYPE_PLANS>/}" id="ipHealthInsurance" change="changeHealthInsurance">
-							<core:Item key="{path: 'ET_SH_TYPE_PLANS>BPLAN'}" text="{path: 'ET_SH_TYPE_PLANS>LTEXT'}"/>
+							<core:Item key="{path: 'ET_SH_TYPE_PLANS>BPLAN'}" text="{path: 'ET_SH_TYPE_PLANS>LTEXT'}" app:SUBTY="{ET_SH_TYPE_PLANS>PLTYP}"/>
 							<layoutData>
 								<l:GridData span="L4 M4 S12"/>
 							</layoutData>
@@ -144,6 +175,9 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
+				<Button type="Reject" text="{i18n>cancelar}" press="onCancelItem" icon="sap-icon://cancel" id="btnCancelItem" visible="false"
+					tooltip="{i18n>cancelar_tooltip}"/>
+				<Button type="Accept" text="{i18n>aceitar}" press="onAcceptItem" icon="sap-icon://accept" id="btnAcceptItem" visible="false"/>
 				<Button text="{i18n>saneamento}" press="onSanitation" icon="sap-icon://accounting-document-verification" id="btnSanity"
 					tooltip="{i18n>saneamento_tooltip}"/>
 				<Button text="{i18n>salvar}" press="onSave" icon="sap-icon://save" id="btnSave" tooltip="{i18n>salvar_tooltip}" enabled="false"

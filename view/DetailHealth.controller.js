@@ -18,7 +18,7 @@ sap.ui.define([
 				// var oEventBus = this.getEventBus();
 				// oEventBus.subscribe("Master2", "LoadFinished", this.onMasterLoaded, this);
 			}
-
+			this.statusMod = "";
 			this.obligatoryChanged = false;
 
 			this.initAttachment();
@@ -94,7 +94,6 @@ sap.ui.define([
 
 					if (oModelDependents[i].SUBTY === oModel[z].SUBTY && oModelDependents[i].OBJPS === oModel[z].OBJPS) {
 
-
 						if (oModelDependents[i].ACTIVE_BRHE === oModel[z].ACTIVE_BRHE) {
 							oModelDependents[i].ACTIO_BRHE = "";
 						} else {
@@ -137,9 +136,11 @@ sap.ui.define([
 					var oModel = new sap.ui.model.json.JSONModel(oEvent.results[0].PLANS_HOLDER);
 					var oResults = JSON.parse(JSON.stringify(oModel.oData.results));
 					that.getView().setModel(oResults, "ET_PLANS_ORIG");
+					that.getView().setModel(oResults, "ET_PLANS_ELEK");
 
 					//Sets the models to View
 					that.fSetsModels(oEvent, that, isApprover);
+					that.fSetModelElektro(oEvent, that, isApprover);
 				}
 
 				that.getView().byId("taJust").setValue(results.OBSERVATION);
@@ -200,6 +201,10 @@ sap.ui.define([
 				if (requisitionId !== "00000000") {
 					that.getAttachment(requisitionId, "BPS");
 				}
+				if (that.getView().getModel("ET_HEADER").getData() != "NEO") {
+					that.getView().byId("formHealthInsurance").setVisible(false);
+					that.getView().byId("tHealth").setVisible(false);
+				}
 
 			}
 
@@ -240,6 +245,7 @@ sap.ui.define([
 			var oResults = JSON.parse(JSON.stringify(oModel.oData.results));
 			var oModelHolder = new sap.ui.model.json.JSONModel([]);
 			var oModelDependents = new sap.ui.model.json.JSONModel([]);
+			var oModelPlans = new sap.ui.model.json.JSONModel([]);
 			var oTableOdonto = that.getView().byId("tOdonto");
 			var oTableHealth = that.getView().byId("tHealth");
 
@@ -249,6 +255,9 @@ sap.ui.define([
 				//HOLDER
 				if (oResults[i].SUBTY === "" && oResults[i].OBJPS === "") {
 					oModelHolder = oResults[i];
+					if (oResults[i].BRDE != "") {
+						oModelPlans.getData().push(oResults[i]);
+					}
 				}
 				//Dependents
 				else {
@@ -257,8 +266,8 @@ sap.ui.define([
 			}
 
 			that.getView().setModel(oModelHolder, "ET_HOLDER");
+			that.getView().setModel(oModelPlans, "ET_PLAN_MASTER");
 			that.getView().setModel(oModelDependents, "ET_DEPENDENTS");
-
 
 			// Caso o titular não tenha plano não exibir a tabela
 			if (oModelHolder.ACTIVE_BRHE || oModelHolder.ACTIO_BRHE == "INS") {
@@ -270,6 +279,8 @@ sap.ui.define([
 				oTableHealth.setVisible(true);
 
 			}
+
+			that.getView().byId("tPlan").setVisibleRowCount(oModelPlans.getData().length);
 
 		},
 
@@ -376,7 +387,6 @@ sap.ui.define([
 		//	fValidInputFields
 		//	--------------------------------------------		
 		fValidInputFields: function () {
-
 
 			if (this.getView().byId("ipHealthInsurance").getValue() !== "") {
 
@@ -532,6 +542,10 @@ sap.ui.define([
 
 			oView.byId("taJust").setEnabled(false);
 
+			oView.byId("btnAdd").setVisible(false);
+			oView.byId("btnModify").setVisible(false);
+			oView.byId("btnRemove").setVisible(false);
+
 			this.fHideOption();
 
 		},
@@ -569,13 +583,13 @@ sap.ui.define([
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.results);
 				var jsonModel = new sap.ui.model.json.JSONModel([]);
 
-
 				for (var i = 0; i < oEvent.results.length; i++) {
 					jsonModel.getData().push({
 						IM_PERNR: oValue.oData[i].IM_PERNR,
 						BPLAN: oValue.oData[i].BPLAN,
 						LTEXT: oValue.oData[i].LTEXT,
 						TYPE: oValue.oData[i].TYPE,
+						PLTYP: oValue.oData[i].PLTYP,
 					});
 				}
 
@@ -820,7 +834,6 @@ sap.ui.define([
 			if (oEvent.mParameters.mParameters.status !== 201) {
 				MessageBox.error("Falha ao Salvar Arquivo ..!!");
 			} else {
-				debugger;
 				var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
 				this.getAttachment(req, "BPS");
 				this.getView().byId("btnSave").setEnabled(true);
@@ -849,8 +862,11 @@ sap.ui.define([
 				"OBSERVATION": observation
 			};
 
-
-			that.fFillCreateHealthData(oCreate, that, req, newDt);
+			if (that.getView().getModel("ET_HEADER").getData() != "NEO") {
+				that.fFillCreateHealthDataElek(oCreate, that, req, newDt);
+			} else {
+				that.fFillCreateHealthData(oCreate, that, req, newDt);
+			}
 
 			//SUCESSO
 			function fSuccess(oEvent) {
@@ -875,7 +891,6 @@ sap.ui.define([
 				case "S":
 					that.fSucessMessageFromSendAction(oEvent);
 					that.fHideOption();
-
 					// *** ANEXO ***
 					that.saveAttachment();
 					break;
@@ -904,7 +919,6 @@ sap.ui.define([
 					break;
 
 				}
-				debugger;
 				that.getView().byId("btnSave").setEnabled(false);
 				// that.fSetViewData(that);
 				that.fVerifyAction(false, action);
@@ -946,7 +960,6 @@ sap.ui.define([
 			var oDependents = that.getView().getModel("ET_DEPENDENTS").getData();
 			var PLANS_HOLDER = new sap.ui.model.json.JSONModel([]);
 
-
 			if (oHolder.ACTIO_BRHE === "DEL") {
 				oHolder.BPLAN_BRHE = "BRNO";
 			} else {
@@ -957,15 +970,14 @@ sap.ui.define([
 				oHolder.BOPTI_BRHE = that.getView().byId("slHealthInsuranceAccommodation").getSelectedKey();
 			}
 
-			if(oHolder.ACTIO_BRHE == ""){
+			if (oHolder.ACTIO_BRHE == "") {
 				oHolder.ACTIO_BRHE = "MOD";
 			}
-			
+
 			if (newDt === "" || newDt === undefined) {
 				newDt = null;
 			}
-			
-			
+
 			// titular
 			PLANS_HOLDER.getData().push(({
 				"REQUISITION_ID": oGlobalData.IM_REQUISITION_ID,
@@ -978,7 +990,7 @@ sap.ui.define([
 				"ACTIO_BRDE": "",
 				"LTEXT_BRHE": that.getView().byId("ipHealthInsurance").getSelectedText(),
 				"BPLAN_BRHE": that.getView().byId("ipHealthInsurance").getSelectedKey(),
-				"BOPTI_BRHE": that.getView().byId("slHealthInsuranceAccommodation").getSelectedKey(),//oHolder.BOPTI_BRHE,
+				"BOPTI_BRHE": that.getView().byId("slHealthInsuranceAccommodation").getSelectedKey(), //oHolder.BOPTI_BRHE,
 				"ACTIVE_BRHE": oHolder.ACTIVE_BRHE,
 				"ACTIO_BRHE": oHolder.ACTIO_BRHE,
 				"FCNAM": null,
@@ -1005,7 +1017,6 @@ sap.ui.define([
 					"ACTIVE_BRHE": oDependents[i].ACTIVE_BRHE,
 					"ACTIO_BRHE": oDependents[i].ACTIO_BRHE,
 					"FCNAM": oDependents[i].FCNAM
-
 				}));
 
 			}
@@ -1059,11 +1070,11 @@ sap.ui.define([
 			var oDependents = this.getView().getModel("ET_DEPENDENTS");
 
 			var bCheckDependent = false;
-			
-			if(attachment == false){
+
+			if (attachment == false) {
 				return;
 			}
-			
+
 			if (this.attachmentRequiredIncludeDep === true) {
 				for (var i = 0; i < oDependents.oData.length; i++) {
 					if (oDependents.oData[i].ACTIO_BRDE === "INS") {
@@ -1077,9 +1088,7 @@ sap.ui.define([
 			} else if (attachment === false && ((this.attachmentRequiredHealth === true) || this.obligatoryChanged ===
 					true)) {
 				this.handleErrorMessageAttachment();
-			}
-
-			else {
+			} else {
 				MessageBox.confirm(
 					message, {
 						title: "Termo de responsabilidade",
@@ -1157,7 +1166,392 @@ sap.ui.define([
 			} else {
 				this.fActions(this, "Rejeição", "D");
 			}
-		}
+		},
+		// Elektro
+		onAddPressed: function () {
+			var oView = this.getView();
+			var oModelDependents = oView.getModel("ET_DEP_MASTER");
+			var oTableHealth = this.getView().byId("tHealth");
+
+			this.fEnableButtonsAction(true);
+			oView.byId("ipHealthInsurance").setSelectedKey();
+			oView.byId("slHealthInsuranceAccommodation").setSelectedKey();
+			oView.byId("ipHealthInsurance").setEnabled(true);
+			oView.byId("slHealthInsuranceAccommodation").setEnabled(true);
+			oView.byId("formHealthInsurance").setVisible(true);
+			oView.byId("tHealth").setVisible(true);
+			oView.byId("btnIncludeHealthInsurance").setVisible(false);
+			oView.byId("btnCancelHealthInsurance").setVisible(false);
+			oView.byId("columnOpcaoHealth").setVisible(true);
+			oView.byId("ipHealthInsurance").setEditable(true);
+			oView.byId("toolbarList").setVisible(false);
+
+			this.getView().setModel(oModelDependents, "ET_DEPENDENTS");
+			oTableHealth.setModel(oModelDependents);
+			oTableHealth.bindRows("/");
+			oTableHealth.setVisibleRowCount(oModelDependents.getData().length);
+			oTableHealth.setVisible(true);
+			this.fSearchHelpHealthPlanElek();
+			this.statusMod = "INS";
+		},
+		onModPressed: function () {
+			var that = this;
+			var oView = this.getView();
+			var index = oView.byId("tPlan").getSelectedIndex();
+			var plans = oView.getModel("ET_PLAN_MASTER").getData();
+
+			if (index < 0) {
+				MessageBox.error("Selecione um plano para edição");
+				return;
+			}
+
+			this.fEnableButtonsAction(true);
+			oView.byId("ipHealthInsurance").setEnabled(true);
+			oView.byId("slHealthInsuranceAccommodation").setEnabled(true);
+			oView.byId("formHealthInsurance").setVisible(true);
+			oView.byId("tHealth").setVisible(true);
+			oView.byId("btnIncludeHealthInsurance").setVisible(false);
+			oView.byId("btnCancelHealthInsurance").setVisible(false);
+			oView.byId("columnOpcaoHealth").setVisible(true);
+			oView.byId("ipHealthInsurance").setEditable(true);
+			oView.byId("toolbarList").setVisible(false);
+
+			oView.setModel(plans[index], "ET_HOLDER");
+			oView.byId("ipHealthInsurance").setSelectedKey(plans[index].BPLAN_BRHE);
+			oView.byId("slHealthInsuranceAccommodation").setSelectedKey(plans[index].BOPTI_BRHE);
+
+			this.fSearchHelpHealthPlan();
+			this.fSearchHelpOption(that);
+			this.fSetDepenElektro(plans[index]);
+			this.statusMod = "MOD";
+		},
+		onRemPressed: function () {
+
+		},
+		onVisPressed: function () {
+			var that = this;
+			var oView = this.getView();
+			var index = oView.byId("tPlan").getSelectedIndex();
+			var plans = oView.getModel("ET_PLAN_MASTER").getData();
+
+			if (index < 0) {
+				MessageBox.error("Selecione um plano para visualização");
+				return;
+			}
+
+			oView.byId("ipHealthInsurance").setEnabled(false);
+			oView.byId("slHealthInsuranceAccommodation").setEnabled(false);
+			oView.byId("btnIncludeHealthInsurance").setVisible(false);
+			oView.byId("btnCancelHealthInsurance").setVisible(false);
+			oView.byId("columnOpcaoHealth").setVisible(false);
+			oView.byId("formHealthInsurance").setVisible(true);
+			oView.byId("tHealth").setVisible(true);
+
+			oView.setModel(plans[index], "ET_HOLDER");
+
+			oView.byId("ipHealthInsurance").setSelectedKey(plans[index].BPLAN_BRHE);
+			oView.byId("slHealthInsuranceAccommodation").setSelectedKey(plans[index].BOPTI_BRHE);
+
+			this.fSearchHelpHealthPlan();
+			this.fSearchHelpOption(that);
+			this.fSetDepenElektro(plans[index]);
+
+		},
+		fSetDepenElektro: function (plan) {
+			var oModelDependents = new sap.ui.model.json.JSONModel([]);
+			var oTableHealth = this.getView().byId("tHealth");
+			var oInitial = this.getView().getModel("ET_PLANS_ELEK");
+
+			//ET_HOLDER Model
+			for (var i = 0; i < oInitial.length; i++) {
+
+				if (oInitial[i].BRDE != plan.BRDE) {
+					continue;
+				}
+
+				//HOLDER
+				if (oInitial[i].SUBTY === "" && oInitial[i].OBJPS === "") {}
+				//Dependents
+				else {
+					oModelDependents.getData().push(oInitial[i]);
+				}
+			}
+
+			this.getView().setModel(oModelDependents, "ET_DEPENDENTS");
+			oTableHealth.setModel(oModelDependents);
+			oTableHealth.bindRows("/");
+			oTableHealth.setVisibleRowCount(oModelDependents.getData().length);
+			oTableHealth.setVisible(true);
+		},
+		fSetModelElektro: function (oEvent, that, isApprover) {
+
+			var oModel = new sap.ui.model.json.JSONModel(oEvent.results[0].PLANS_HOLDER);
+			var oResults = JSON.parse(JSON.stringify(oModel.oData.results));
+			var oModelDep = new sap.ui.model.json.JSONModel([]);
+			var oTableHealth = that.getView().byId("tHealth");
+			var brde = oResults[0].BRDE;
+
+			//ET_HOLDER Model
+			for (var i = 0; i < oResults.length; i++) {
+
+				//HOLDER
+				if (oResults[i].SUBTY != "" && oResults[i].BRDE == brde) {
+					oModelDep.getData().push(oResults[i]);
+				}
+			}
+
+			that.getView().setModel(oModelDep, "ET_DEP_MASTER");
+
+			//TABLE MODEL - Health
+			oTableHealth.setModel(oModelDep);
+			oTableHealth.bindRows("/");
+			oTableHealth.setVisibleRowCount(oModelDep.getData().length);
+			oTableHealth.setVisible(true);
+
+		},
+		fInsertItem: function () {
+			var oView = this.getView();
+			var plan = oView.getModel("ET_PLAN_MASTER");
+			var tPlan = oView.byId("tPlan");
+			var master = oView.getModel("ET_PLANS_ELEK");
+			var depTable = oView.byId("tHealth").getModel().getData();
+
+			oView.byId("formHealthInsurance").setVisible(false);
+			oView.byId("tHealth").setVisible(false);
+
+			var obj = {
+				ACTIO_BRDE: "",
+				ACTIO_BRHE: this.statusMod,
+				ACTIVE_BRDE: "",
+				ACTIVE_BRHE: "X",
+				BOPTI_BRHE: oView.byId("slHealthInsuranceAccommodation").getSelectedKey(),
+				BPLAN_BRDE: "",
+				BPLAN_BRHE: oView.byId("ipHealthInsurance").getSelectedKey(),
+				BRDE: oView.byId("ipHealthInsurance").getSelectedItem().getCustomData()[0].getValue(),
+				FCNAM: "",
+				LTEXT_BRDE: "",
+				LTEXT_BRHE: oView.byId("ipHealthInsurance").getSelectedItem().getText(),
+				OBJPS: "",
+				REQUISITION_ID: "",
+				SSG_DATE: null,
+				SUBTY: "",
+				TYPE_SAVE: ""
+			};
+
+			plan.getData().push(obj);
+			tPlan.setVisibleRowCount(plan.getData().length);
+			oView.setModel(new sap.ui.model.json.JSONModel(plan.getData()), "ET_PLAN_MASTER");
+			master.push(obj);
+			oView.byId("toolbarList").setVisible(true);
+
+			for (var i = 0; i < depTable.length; i++) {
+
+				depTable[i].ACTIO_BRDE = "INS"; //apagar
+				depTable[i].ACTIVE_BRHE = "X";
+				depTable[i].BOPTI_BRHE = obj.BOPTI_BRHE;
+				depTable[i].BPLAN_BRHE = obj.BPLAN_BRHE;
+				depTable[i].BRDE = obj.BRDE;
+				depTable[i].LTEXT_BRHE = obj.LTEXT_BRHE;
+				master.push(depTable[i]);
+			}
+
+			oView.setModel(master, "ET_PLANS_ELEK");
+			this.fEnableButtonsAction(false);
+			this.statusMod = "";
+		},
+		fModifyItem: function () {
+			var oView = this.getView();
+			var plan = oView.getModel("ET_PLAN_MASTER");
+			var tPlan = oView.byId("tPlan");
+			var master = oView.getModel("ET_PLANS_ELEK");
+			var changed = [];
+			var depTable = oView.byId("tHealth").getModel().getData();
+
+			oView.byId("formHealthInsurance").setVisible(false);
+			oView.byId("tHealth").setVisible(false);
+
+			var obj = {
+				ACTIO_BRDE: "",
+				ACTIO_BRHE: this.statusMod,
+				ACTIVE_BRDE: "",
+				ACTIVE_BRHE: "X",
+				BOPTI_BRHE: oView.byId("slHealthInsuranceAccommodation").getSelectedKey(),
+				BPLAN_BRDE: "",
+				BPLAN_BRHE: oView.byId("ipHealthInsurance").getSelectedKey(),
+				BRDE: oView.byId("ipHealthInsurance").getSelectedItem().getCustomData()[0].getValue(),
+				FCNAM: "",
+				LTEXT_BRDE: "",
+				LTEXT_BRHE: oView.byId("ipHealthInsurance").getSelectedItem().getText(),
+				OBJPS: "",
+				REQUISITION_ID: "",
+				SSG_DATE: null,
+				SUBTY: "",
+				TYPE_SAVE: ""
+			};
+			
+			for(var i = 0; i < plan.getData().length; i++){
+				if(plan.getData()[i].BRDE == obj.BRDE && plan.getData()[i].OBJPS == "" && plan.getData()[i].SUBTY == "" ){
+					// plan.getData()[i].LTEXT_BRHE = obj.LTEXT_BRHE;
+					// plan.getData()[i].BOPTI_BRHE = obj.BOPTI_BRHE;
+					// plan.getData()[i].BPLAN_BRHE = obj.BPLAN_BRHE;
+					// plan.getData()[i].ACTIO_BRHE = obj.ACTIO_BRHE;
+					// plan.getData()[i].ACTIVE_BRHE = obj.ACTIVE_BRHE;
+					plan.getData()[i] = obj;
+				}
+			}
+			
+			oView.setModel(new sap.ui.model.json.JSONModel(plan.getData()), "ET_PLAN_MASTER");
+			
+			changed.push(obj);
+
+			for (i = 0; i < depTable.length; i++) {
+
+				depTable[i].ACTIVE_BRHE = "X";
+				depTable[i].BOPTI_BRHE = obj.BOPTI_BRHE;
+				depTable[i].BPLAN_BRHE = obj.BPLAN_BRHE;
+				depTable[i].BRDE = obj.BRDE;
+				depTable[i].LTEXT_BRHE = obj.LTEXT_BRHE;
+				changed.push(depTable[i]);
+			}
+			
+			for(i = 0; i < changed.length; i++){
+				for(var j = 0; i < master.length; j++){
+					if(changed[i].BRDE == master[j].BRDE && changed[i].SUBTY == master[j].SUBTY && changed[i].OBJPS == master[j].OBJPS){
+						master[j].BOPTI_BRHE = changed[i].BOPTI_BRHE;
+						master[j].BPLAN_BRHE = changed[i].BPLAN_BRHE;
+						master[j].LTEXT_BRHE = changed[i].LTEXT_BRHE;
+						master[j].ACTIO_BRHE = changed[i].ACTIO_BRHE;
+						master[j].ACTIVE_BRHE = "X";
+						break;
+					}
+				}
+			}
+			
+			
+			oView.setModel(master, "ET_PLANS_ELEK");
+			this.fEnableButtonsAction(false);
+			oView.byId("toolbarList").setVisible(true);
+			this.statusMod = "";
+		},
+		onCancelItem: function () {
+			var oView = this.getView();
+			oView.byId("formHealthInsurance").setVisible(false);
+			oView.byId("tHealth").setVisible(false);
+
+			this.fEnableButtonsAction(false);
+			oView.byId("toolbarList").setVisible(true);
+			this.statusMod = "";
+
+			MessageBox.success("Ação Cancelada!");
+		},
+		onAcceptItem: function () {
+
+			if (this.statusMod == "INS") {
+				this.fInsertItem();
+			} else if (this.statusMod == "MOD") {
+				this.fModifyItem();
+			}
+
+		},
+		fEnableButtonsAction: function (action) {
+			var oView = this.getView();
+			oView.byId("btnCancelItem").setVisible(action);
+			oView.byId("btnAcceptItem").setVisible(action);
+			oView.byId("btnAccept").setVisible(!action);
+		},
+		fSearchHelpHealthPlanElek: function () {
+			var oView = this.getView();
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			var oData = this.getView().getModel("ET_HEADER").getData();
+			var aData = this.getView().getModel("ET_HOLDER");
+			var that = this;
+			var encontrou = false;
+
+			var plans = oView.getModel("ET_PLAN_MASTER");
+
+			function fSuccess(oEvent) {
+				var oValue = new sap.ui.model.json.JSONModel(oEvent.results);
+				var jsonModel = new sap.ui.model.json.JSONModel([]);
+
+				for (var i = 0; i < oEvent.results.length; i++) {
+					if (plans.getData().length > 0) {
+						for (var j = 0; j < plans.getData().length; j++) {
+							if (plans.getData()[j].BRDE == oEvent.results[i].PLTYP) {
+								encontrou = true;
+							}
+						}
+					}
+
+					if (encontrou == false) {
+						jsonModel.getData().push({
+							IM_PERNR: oValue.oData[i].IM_PERNR,
+							BPLAN: oValue.oData[i].BPLAN,
+							LTEXT: oValue.oData[i].LTEXT,
+							TYPE: oValue.oData[i].TYPE,
+							PLTYP: oValue.oData[i].PLTYP,
+						});
+					}
+					encontrou = false;
+				}
+
+				that.getView().setModel(jsonModel, "ET_SH_TYPE_PLANS");
+
+				if (jsonModel.getData().length == 0) {
+					MessageBox.error("Você já possui todos os tipos de planos.");
+					oView.byId("formHealthInsurance").setVisible(false);
+					oView.byId("tHealth").setVisible(false);
+					oView.byId("toolbarList").setVisible(true);
+				}
+
+			}
+
+			function fError() {
+				console.log("Erro ao ler Ajudas de Pesquisa");
+			}
+
+			//MAIN READ
+			var urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
+			urlParam = this.fFillURLParamFilter("TYPE", "S", urlParam);
+			// urlParam = urlParam + "&$expand=PLANS";
+
+			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
+		},
+		fFillCreateHealthDataElek: function (oCreate, that, req, newDt) {
+			var oView = this.getView();
+			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
+			var oHolder = that.getView().getModel("ET_HOLDER");
+			var oDependents = that.getView().getModel("ET_DEPENDENTS").getData();
+			var PLANS_HOLDER = new sap.ui.model.json.JSONModel([]);
+			var planData = oView.getModel("ET_PLANS_ELEK");
+
+			for (var i = 0; i < planData.length; i++) {
+				if (planData[i].BRDE == "") {
+					continue;
+				}
+				PLANS_HOLDER.getData().push(({
+					"REQUISITION_ID": oGlobalData.IM_REQUISITION_ID,
+					"SUBTY": planData[i].SUBTY,
+					"OBJPS": planData[i].OBJPS,
+					"BRDE": planData[i].BRDE,
+					"LTEXT_BRDE": "",
+					"BPLAN_BRDE": "",
+					"ACTIVE_BRDE": "",
+					"ACTIO_BRDE": "",
+					"LTEXT_BRHE": planData[i].LTEXT_BRHE,
+					"BPLAN_BRHE": planData[i].BPLAN_BRHE,
+					"BOPTI_BRHE": planData[i].BOPTI_BRHE,
+					"ACTIVE_BRHE": planData[i].ACTIVE_BRHE,
+					"ACTIO_BRHE": planData[i].ACTIO_BRHE,
+					"FCNAM": null,
+					"TYPE_SAVE": req,
+					"SSG_DATE": null
+
+				}));
+			}
+			oCreate.PLANS_HOLDER = PLANS_HOLDER.getData();
+		},
+
+		// Fim Elektro
 
 	});
 });

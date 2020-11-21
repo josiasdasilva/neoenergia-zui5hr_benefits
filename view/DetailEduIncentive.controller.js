@@ -693,8 +693,46 @@ sap.ui.define([
 				this.getView().byId("ipDescricao").setEnabled(true);
 			}
 
-		}
+		},
 
+		//on change for field "Mês referência"
+		onChangeMesRef: function(oEvent) {
+			this.fValidateRequisition();
+		},
+		//call gateway service to validate the requisition
+		fValidateRequisition: function () {
+			var oValidate = {};
+			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
+
+			oValidate.BLOCK = {};
+			oValidate.IM_PERNR = oGlobalData.IM_PERNR;
+
+			that.fFillCreateEduIncData(oValidate, this);
+
+			//SUCESSO
+			function fSuccess(oEvent) {
+				//do nothing
+			}
+
+			//ERRO
+			function fError(oEvent) {
+				if ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body).length == 0) {
+					var message = $(oEvent.response.body).find("message").first().text();
+
+					if (message === undefined || message === "" || message === " ") {
+						message = "Erro inesperado. Favor contactar o administrador do sistema";
+					}
+					MessageBox.error(message);
+				} else {
+					var detail = $(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body);
+					var formattedDetail = (detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", ""));
+					formattedDetail = formattedDetail.replace("error", "");
+					MessageBox.error(formattedDetail);
+				}
+			}
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
+			oModel.read("ET_VALIDATE_EDUCATION_INCENTIVES", oValidate, null, fSuccess, fError);
+		},
 	});
 
 });
