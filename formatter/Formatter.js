@@ -44,10 +44,12 @@ sap.ui.define(function () {
 				return "Inclusão";
 			case "DEL":
 				return "Exclusão";
+			case "MOD":
+				return "Modificação"; 
 			case "":
 				return "";
 			}
-			return type;
+			return type; 
 		},
 
 		dataAdmissao: function (value) {
