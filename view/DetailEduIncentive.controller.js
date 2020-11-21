@@ -709,41 +709,15 @@ sap.ui.define([
 
 			this.fFillCreateEduIncData(oValidate, this);
 
-			//SUCESSO
-			function fSuccess(oEvent) {
-				if ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body).length == 0) {
-					var message = $(oEvent.response.body).find("message").first().text();
-
-					if (message === undefined || message === "" || message === " ") {
-						message = "Erro inesperado. Favor contactar o administrador do sistema";
-					}
-					MessageBox.error(message);
-				} else {
-					var detail = $(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body);
-					var formattedDetail = (detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", ""));
-					formattedDetail = formattedDetail.replace("error", "");
-					MessageBox.error(formattedDetail);
+			//callback
+			function fCallback(oEvent) {
+				if(oEvent.BLOCK.OBSERVACAO !== ""){
+					MessageBox.error(oEvent.BLOCK.OBSERVACAO);
 				}
 			}
 
-			//ERRO
-			function fError(oEvent) {
-				if ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body).length == 0) {
-					var message = $(oEvent.response.body).find("message").first().text();
-
-					if (message === undefined || message === "" || message === " ") {
-						message = "Erro inesperado. Favor contactar o administrador do sistema";
-					}
-					MessageBox.error(message);
-				} else {
-					var detail = $(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body);
-					var formattedDetail = (detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", ""));
-					formattedDetail = formattedDetail.replace("error", "");
-					MessageBox.error(formattedDetail);
-				}
-			}
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
-			oModel.create("ET_VALIDATE_EDUCATION_INCENTIVES", oValidate, null, fSuccess, fError);
+			oModel.create("ET_VALIDATE_EDUCATION_INCENTIVES", oValidate, null, fCallback, fCallback);
 		},
 	});
 
