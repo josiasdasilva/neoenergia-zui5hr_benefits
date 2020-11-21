@@ -133,7 +133,7 @@ sap.ui.define([
 			function fSuccess(oEvent) {
 				var results = oEvent.results[0];
 				var requisitionId;
-				var isApprover = results.EX_IS_APPROVER;
+				var isApprover = results.EX_IS_APPROVER; 
 
 				if (oEvent.results[0].PLANS_HOLDER.results.length > 0) {
 					requisitionId = oEvent.results[0].PLANS_HOLDER.results[0].REQUISITION_ID;
