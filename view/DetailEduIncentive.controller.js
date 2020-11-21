@@ -204,6 +204,7 @@ sap.ui.define([
 			// oView.byId("rbAcordo").setEnabled(false);
 
 			oView.byId("taJust").setEnabled(false);
+			oView.byId("sJaPartic").setEnabled(false);
 		},
 		//	--------------------------------------------
 		//	fUnableAllButtons
@@ -702,12 +703,12 @@ sap.ui.define([
 		//call gateway service to validate the requisition
 		fValidateRequisition: function () {
 			var oValidate = {};
-			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
+			var oGlobalData = this.getView().getModel("ET_GLOBAL_DATA");
 
 			oValidate.BLOCK = {};
 			oValidate.IM_PERNR = oGlobalData.IM_PERNR;
 
-			that.fFillCreateEduIncData(oValidate, this);
+			this.fFillCreateEduIncData(oValidate, this);
 
 			//SUCESSO
 			function fSuccess(oEvent) {
