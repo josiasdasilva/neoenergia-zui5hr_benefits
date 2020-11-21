@@ -1228,7 +1228,7 @@ sap.ui.define([
 			oView.byId("ipHealthInsurance").setSelectedKey(plans[index].BPLAN_BRHE);
 			oView.byId("slHealthInsuranceAccommodation").setSelectedKey(plans[index].BOPTI_BRHE);
 
-			this.fSearchHelpHealthPlan();
+			this.fSearchHelpHealthPlanElekMod();
 			this.fSearchHelpOption(that);
 			this.fSetDepenElektro(plans[index]);
 			this.statusMod = "MOD";
@@ -1285,14 +1285,14 @@ sap.ui.define([
 
 			oView.byId("ipHealthInsurance").setSelectedKey(plans[index].BPLAN_BRHE);
 			oView.byId("slHealthInsuranceAccommodation").setSelectedKey(plans[index].BOPTI_BRHE);
-		
+
 			this.fSearchHelpHealthPlan();
 			this.fSearchHelpOption(that);
 			this.fSetDepenElektro(plans[index]);
 			this.fEnableButtonDep(false);
 
 		},
-		fEnableButtonDep:function(enable){
+		fEnableButtonDep: function (enable) {
 			var oDependents = this.getView().getModel("ET_DEPENDENTS");
 			for (var i = 0; i < oDependents.getData().length; i++) {
 				this.getView().byId("__xmlview3--selHE-col2-row" + i).setEnabled(enable);
@@ -1560,6 +1560,58 @@ sap.ui.define([
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
 		},
+		fSearchHelpHealthPlanElekMod: function () {
+			var oView = this.getView();
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			var oData = this.getView().getModel("ET_HEADER").getData();
+			var aData = this.getView().getModel("ET_HOLDER");
+			var that = this;
+
+			var plans = oView.getModel("ET_PLAN_MASTER");
+
+			function fSuccess(oEvent) {
+				var oValue = new sap.ui.model.json.JSONModel(oEvent.results);
+				var jsonModel = new sap.ui.model.json.JSONModel([]);
+
+				for (var i = 0; i < oEvent.results.length; i++) {
+					if (plans.getData().length > 0) {
+						for (var j = 0; j < plans.getData().length; j++) {
+							if (plans.getData()[j].BRDE == oEvent.results[i].PLTYP) {
+								jsonModel.getData().push({
+									IM_PERNR: oValue.oData[i].IM_PERNR,
+									BPLAN: oValue.oData[i].BPLAN,
+									LTEXT: oValue.oData[i].LTEXT,
+									TYPE: oValue.oData[i].TYPE,
+									PLTYP: oValue.oData[i].PLTYP,
+								});
+							}
+						}
+					}
+
+				}
+
+				that.getView().setModel(jsonModel, "ET_SH_TYPE_PLANS");
+
+				if (jsonModel.getData().length == 0) {
+					MessageBox.error("Você já possui todos os tipos de planos.");
+					oView.byId("formHealthInsurance").setVisible(false);
+					oView.byId("tHealth").setVisible(false);
+					oView.byId("toolbarList").setVisible(true);
+				}
+
+			}
+
+			function fError() {
+				console.log("Erro ao ler Ajudas de Pesquisa");
+			}
+
+			//MAIN READ
+			var urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
+			urlParam = this.fFillURLParamFilter("TYPE", "S", urlParam);
+			// urlParam = urlParam + "&$expand=PLANS";
+
+			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
+		},
 		fFillCreateHealthDataElek: function (oCreate, that, req, newDt) {
 			var oView = this.getView();
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
@@ -1603,7 +1655,8 @@ sap.ui.define([
 
 				for (var z = 0; z < oModel.length; z++) {
 
-					if (oModelDependents[i].BRDE == oModel[z].BRDE && oModelDependents[i].SUBTY === oModel[z].SUBTY && oModelDependents[i].OBJPS === oModel[z].OBJPS) {
+					if (oModelDependents[i].BRDE == oModel[z].BRDE && oModelDependents[i].SUBTY === oModel[z].SUBTY && oModelDependents[i].OBJPS ===
+						oModel[z].OBJPS) {
 
 						if (oModelDependents[i].ACTIVE_BRHE === oModel[z].ACTIVE_BRHE) {
 							oModelDependents[i].ACTIO_BRHE = "";
