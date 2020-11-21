@@ -46,7 +46,7 @@
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<DatePicker id="dtPeriod" valueFormat="MM/yyyy" displayFormat="MM/yyyy" change="onChange" placeholder="{i18n>periodo}"
+					<DatePicker id="dtPeriod" valueFormat="dd/MM/yyyy" displayFormat="MM/yyyy" change="onChange" placeholder="{i18n>periodo}"
 						class="sapUiSmallMarginBottom">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>

@@ -56,7 +56,7 @@ sap.ui.define([
 					if (anoAtual == oEvent.BLOCK.LAST_SOLIC.substring(0, 4)) {
 						MessageBox.error("Empréstimo já feito neste ano!");
 						var data = oEvent.BLOCK.LAST_SOLIC;
-						var dataF = data.substring(4, 6) + "/" + data.substring(0, 4);
+						var dataF = data.substring(6, 8) + "/" + data.substring(4, 6) + "/" + data.substring(0, 4);
 						that.getView().byId("dtPeriod").setValue(dataF);
 
 						that.fUnableAllButtons();
@@ -93,7 +93,7 @@ sap.ui.define([
 				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
 					var data = oEvent.BLOCK.DATA;
 					// var dataF = data.substring(6, 8) + "/" + data.substring(4, 6) + "/" + data.substring(0, 4);
-					var dataF = data.substring(4, 6) + "/" + data.substring(0, 4);
+					var dataF = data.substring(6, 8) + "/" + data.substring(4, 6) + "/" + data.substring(0, 4);
 					that.getView().byId("dtPeriod").setValue(dataF);
 
 					var filters = [];
