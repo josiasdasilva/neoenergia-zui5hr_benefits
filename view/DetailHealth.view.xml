@@ -21,7 +21,7 @@
 		<content>
 			<VBox class="sapUiSmallMargin">
 				<f:SimpleForm id="formListHealth" maxContainerCols="1" editable="false" layout="ResponsiveGridLayout" title="{i18n>plano_saude}"
-					labelSpanL="1" labelSpanM="1" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2">
+					labelSpanL="1" labelSpanM="1" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2" visible="false">
 					<f:content>
 						<t:Table id="tPlan" selectionMode="Single" class="sapUiTableTr" columnHeaderHeight="40" width="auto" rows="{ET_PLAN_MASTER>/}"
 							editable="false" enableColumnReordering="false" enableSelectAll="false" rowSelectionChange="onTranspRowSelectionChange"

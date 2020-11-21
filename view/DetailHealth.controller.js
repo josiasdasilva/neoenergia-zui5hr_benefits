@@ -201,7 +201,8 @@ sap.ui.define([
 				if (requisitionId !== "00000000") {
 					that.getAttachment(requisitionId, "BPS");
 				}
-				if (that.getView().getModel("ET_HEADER").getData() != "NEO") {
+				if (that.getView().getModel("ET_HEADER").getData().BUKRS != "NEO") {
+					that.getView().byId("formListHealth").setVisible(true);
 					that.getView().byId("formHealthInsurance").setVisible(false);
 					that.getView().byId("tHealth").setVisible(false);
 				}
@@ -862,7 +863,7 @@ sap.ui.define([
 				"OBSERVATION": observation
 			};
 
-			if (that.getView().getModel("ET_HEADER").getData() != "NEO") {
+			if (that.getView().getModel("ET_HEADER").getData().BUKRS != "NEO") {
 				that.fFillCreateHealthDataElek(oCreate, that, req, newDt);
 			} else {
 				that.fFillCreateHealthData(oCreate, that, req, newDt);
@@ -1226,7 +1227,31 @@ sap.ui.define([
 			this.statusMod = "MOD";
 		},
 		onRemPressed: function () {
+			var that = this;
+			var oView = this.getView();
+			var index = oView.byId("tPlan").getSelectedIndex();
+			var plans = oView.getModel("ET_PLAN_MASTER");
+			var master = oView.getModel("ET_PLANS_ELEK");
 
+			if (index < 0) {
+				MessageBox.error("Selecione um plano para exclusão");
+				return;
+			}
+			
+			for(var i = 0; i < plans.getData().length; i++){
+				if(plans.getData()[i].BRDE == plans.getData()[index].BRDE){
+					plans.getData()[i].ACTIO_BRHE = "DEL";
+				}
+			}
+			
+			for(i = 0; i < master.length; i++){
+				if(master[i].BRDE == plans.getData()[index].BRDE){
+					master[i].ACTIO_BRHE = "DEL";
+				}
+			}
+			
+			oView.setModel(new sap.ui.model.json.JSONModel(plans.getData()), "ET_PLAN_MASTER");
+			oView.setModel(master, "ET_PLANS_ELEK");
 		},
 		onVisPressed: function () {
 			var that = this;
