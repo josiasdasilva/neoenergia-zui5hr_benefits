@@ -143,7 +143,7 @@ sap.ui.define([
 					var oResults = JSON.parse(JSON.stringify(oModel.oData.results));
 					that.getView().setModel(oResults, "ET_PLANS_ORIG");
 					that.getView().setModel(oResults, "ET_PLANS_ELEK");
-
+					
 					//Sets the models to View
 					that.fSetsModels(oEvent, that, isApprover);
 					that.fSetModelElektro(oEvent, that, isApprover);
@@ -1228,7 +1228,7 @@ sap.ui.define([
 			oView.byId("ipHealthInsurance").setSelectedKey(plans[index].BPLAN_BRHE);
 			oView.byId("slHealthInsuranceAccommodation").setSelectedKey(plans[index].BOPTI_BRHE);
 
-			this.fSearchHelpHealthPlanElekMod();
+			this.fSearchHelpHealthPlanElekMod(plans[index].BRDE);
 			this.fSearchHelpOption(that);
 			this.fSetDepenElektro(plans[index]);
 			this.statusMod = "MOD";
@@ -1560,12 +1560,13 @@ sap.ui.define([
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
 		},
-		fSearchHelpHealthPlanElekMod: function () {
+		fSearchHelpHealthPlanElekMod: function (brde) {
 			var oView = this.getView();
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var aData = this.getView().getModel("ET_HOLDER");
 			var that = this;
+			var pltyp = brde;
 
 			var plans = oView.getModel("ET_PLAN_MASTER");
 
@@ -1574,18 +1575,14 @@ sap.ui.define([
 				var jsonModel = new sap.ui.model.json.JSONModel([]);
 
 				for (var i = 0; i < oEvent.results.length; i++) {
-					if (plans.getData().length > 0) {
-						for (var j = 0; j < plans.getData().length; j++) {
-							if (plans.getData()[j].BRDE == oEvent.results[i].PLTYP) {
-								jsonModel.getData().push({
-									IM_PERNR: oValue.oData[i].IM_PERNR,
-									BPLAN: oValue.oData[i].BPLAN,
-									LTEXT: oValue.oData[i].LTEXT,
-									TYPE: oValue.oData[i].TYPE,
-									PLTYP: oValue.oData[i].PLTYP,
-								});
-							}
-						}
+					if (pltyp == oEvent.results[i].PLTYP) {
+						jsonModel.getData().push({
+							IM_PERNR: oValue.oData[i].IM_PERNR,
+							BPLAN: oValue.oData[i].BPLAN,
+							LTEXT: oValue.oData[i].LTEXT,
+							TYPE: oValue.oData[i].TYPE,
+							PLTYP: oValue.oData[i].PLTYP,
+						});
 					}
 
 				}
