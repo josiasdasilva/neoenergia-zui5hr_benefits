@@ -33,7 +33,13 @@ sap.ui.define([
 			this.getView().byId("btnSave").setEnabled(true);
 		},
 		onChangeHealth: function (oEvent) {
-			this.fCheckChange("tHealth");
+
+			if (this.getView().getModel("ET_HEADER").getData().BUKRS != "NEO") {
+				this.fCheckChangeElek("tHealth");
+			} else {
+				this.fCheckChange("tHealth");
+			}
+
 			this.getView().byId("btnAccept").setEnabled(true);
 			this.getView().byId("btnSave").setEnabled(true);
 			this.getView().byId("btnSanity").setVisible(false);
@@ -1237,19 +1243,19 @@ sap.ui.define([
 				MessageBox.error("Selecione um plano para exclusão");
 				return;
 			}
-			
-			for(var i = 0; i < plans.getData().length; i++){
-				if(plans.getData()[i].BRDE == plans.getData()[index].BRDE){
+
+			for (var i = 0; i < plans.getData().length; i++) {
+				if (plans.getData()[i].BRDE == plans.getData()[index].BRDE) {
 					plans.getData()[i].ACTIO_BRHE = "DEL";
 				}
 			}
-			
-			for(i = 0; i < master.length; i++){
-				if(master[i].BRDE == plans.getData()[index].BRDE){
+
+			for (i = 0; i < master.length; i++) {
+				if (master[i].BRDE == plans.getData()[index].BRDE) {
 					master[i].ACTIO_BRHE = "DEL";
 				}
 			}
-			
+
 			oView.setModel(new sap.ui.model.json.JSONModel(plans.getData()), "ET_PLAN_MASTER");
 			oView.setModel(master, "ET_PLANS_ELEK");
 		},
@@ -1264,6 +1270,8 @@ sap.ui.define([
 				return;
 			}
 
+			// oView.byId("columnOpcaoHealth").setVisible(true);
+			// oView.byId("columnOpcaoHealth").setEditable(false);
 			oView.byId("ipHealthInsurance").setEnabled(false);
 			oView.byId("slHealthInsuranceAccommodation").setEnabled(false);
 			oView.byId("btnIncludeHealthInsurance").setVisible(false);
@@ -1371,8 +1379,12 @@ sap.ui.define([
 
 			for (var i = 0; i < depTable.length; i++) {
 
-				depTable[i].ACTIO_BRDE = "INS"; //apagar
-				depTable[i].ACTIVE_BRHE = "X";
+				if (depTable[i].ACTIVE_BRHE == "X") {
+					depTable[i].ACTIO_BRHE = "INS";
+				} else {
+					depTable[i].ACTIO_BRHE = "";
+				}
+
 				depTable[i].BOPTI_BRHE = obj.BOPTI_BRHE;
 				depTable[i].BPLAN_BRHE = obj.BPLAN_BRHE;
 				depTable[i].BRDE = obj.BRDE;
@@ -1413,46 +1425,45 @@ sap.ui.define([
 				SUBTY: "",
 				TYPE_SAVE: ""
 			};
-			
-			for(var i = 0; i < plan.getData().length; i++){
-				if(plan.getData()[i].BRDE == obj.BRDE && plan.getData()[i].OBJPS == "" && plan.getData()[i].SUBTY == "" ){
-					// plan.getData()[i].LTEXT_BRHE = obj.LTEXT_BRHE;
-					// plan.getData()[i].BOPTI_BRHE = obj.BOPTI_BRHE;
-					// plan.getData()[i].BPLAN_BRHE = obj.BPLAN_BRHE;
-					// plan.getData()[i].ACTIO_BRHE = obj.ACTIO_BRHE;
-					// plan.getData()[i].ACTIVE_BRHE = obj.ACTIVE_BRHE;
+
+			for (var i = 0; i < plan.getData().length; i++) {
+				if (plan.getData()[i].BRDE == obj.BRDE && plan.getData()[i].OBJPS == "" && plan.getData()[i].SUBTY == "") {
 					plan.getData()[i] = obj;
 				}
 			}
-			
-			oView.setModel(new sap.ui.model.json.JSONModel(plan.getData()), "ET_PLAN_MASTER");
-			
-			changed.push(obj);
 
+			oView.setModel(new sap.ui.model.json.JSONModel(plan.getData()), "ET_PLAN_MASTER");
+
+			changed.push(obj);
+			debugger;
 			for (i = 0; i < depTable.length; i++) {
 
-				depTable[i].ACTIVE_BRHE = "X";
+				if (depTable[i].ACTIVE_BRHE == "X") {
+					depTable[i].ACTIO_BRHE = "INS";
+				} else {
+					depTable[i].ACTIO_BRHE = "";
+				}
+
 				depTable[i].BOPTI_BRHE = obj.BOPTI_BRHE;
 				depTable[i].BPLAN_BRHE = obj.BPLAN_BRHE;
 				depTable[i].BRDE = obj.BRDE;
 				depTable[i].LTEXT_BRHE = obj.LTEXT_BRHE;
 				changed.push(depTable[i]);
 			}
-			
-			for(i = 0; i < changed.length; i++){
-				for(var j = 0; i < master.length; j++){
-					if(changed[i].BRDE == master[j].BRDE && changed[i].SUBTY == master[j].SUBTY && changed[i].OBJPS == master[j].OBJPS){
+
+			for (i = 0; i < changed.length; i++) {
+				for (var j = 0; i < master.length; j++) {
+					if (changed[i].BRDE == master[j].BRDE && changed[i].SUBTY == master[j].SUBTY && changed[i].OBJPS == master[j].OBJPS) {
 						master[j].BOPTI_BRHE = changed[i].BOPTI_BRHE;
 						master[j].BPLAN_BRHE = changed[i].BPLAN_BRHE;
 						master[j].LTEXT_BRHE = changed[i].LTEXT_BRHE;
 						master[j].ACTIO_BRHE = changed[i].ACTIO_BRHE;
-						master[j].ACTIVE_BRHE = "X";
+						master[j].ACTIVE_BRHE = changed[i].ACTIVE_BRHE;
 						break;
 					}
 				}
 			}
-			
-			
+
 			oView.setModel(master, "ET_PLANS_ELEK");
 			this.fEnableButtonsAction(false);
 			oView.byId("toolbarList").setVisible(true);
@@ -1575,6 +1586,36 @@ sap.ui.define([
 			}
 			oCreate.PLANS_HOLDER = PLANS_HOLDER.getData();
 		},
+		fCheckChangeElek: function (model) {
+
+			var oModel = this.getView().getModel("ET_PLANS_ORIG");
+			var oModelDependents = this.getView().byId(model).getModel().getData();
+
+			for (var i = 0; i < oModelDependents.length; i++) {
+
+				for (var z = 0; z < oModel.length; z++) {
+
+					if (oModelDependents[i].BRDE == oModel[z].BRDE && oModelDependents[i].SUBTY === oModel[z].SUBTY && oModelDependents[i].OBJPS === oModel[z].OBJPS) {
+
+						if (oModelDependents[i].ACTIVE_BRHE === oModel[z].ACTIVE_BRHE) {
+							oModelDependents[i].ACTIO_BRHE = "";
+						} else {
+							if (oModelDependents[i].ACTIVE_BRHE) {
+								oModelDependents[i].ACTIO_BRHE = "INS";
+							} else {
+								oModelDependents[i].ACTIO_BRHE = "DEL";
+								this.attachmentRequiredHealth = true;
+							}
+						}
+
+						// }
+
+					}
+
+				}
+
+			}
+		}
 
 		// Fim Elektro
 
