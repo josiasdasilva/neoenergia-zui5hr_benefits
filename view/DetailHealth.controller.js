@@ -1200,6 +1200,7 @@ sap.ui.define([
 			oTableHealth.setVisible(true);
 			this.fSearchHelpHealthPlanElek();
 			this.statusMod = "INS";
+			this.fEnableButtonDep(true);
 		},
 		onModPressed: function () {
 			var that = this;
@@ -1231,6 +1232,7 @@ sap.ui.define([
 			this.fSearchHelpOption(that);
 			this.fSetDepenElektro(plans[index]);
 			this.statusMod = "MOD";
+			this.fEnableButtonDep(true);
 		},
 		onRemPressed: function () {
 			var that = this;
@@ -1270,13 +1272,12 @@ sap.ui.define([
 				return;
 			}
 
-			// oView.byId("columnOpcaoHealth").setVisible(true);
-			// oView.byId("columnOpcaoHealth").setEditable(false);
+			oView.byId("columnOpcaoHealth").setVisible(true);
 			oView.byId("ipHealthInsurance").setEnabled(false);
 			oView.byId("slHealthInsuranceAccommodation").setEnabled(false);
 			oView.byId("btnIncludeHealthInsurance").setVisible(false);
 			oView.byId("btnCancelHealthInsurance").setVisible(false);
-			oView.byId("columnOpcaoHealth").setVisible(false);
+			// oView.byId("columnOpcaoHealth").setVisible(false);
 			oView.byId("formHealthInsurance").setVisible(true);
 			oView.byId("tHealth").setVisible(true);
 
@@ -1284,11 +1285,18 @@ sap.ui.define([
 
 			oView.byId("ipHealthInsurance").setSelectedKey(plans[index].BPLAN_BRHE);
 			oView.byId("slHealthInsuranceAccommodation").setSelectedKey(plans[index].BOPTI_BRHE);
-
+		
 			this.fSearchHelpHealthPlan();
 			this.fSearchHelpOption(that);
 			this.fSetDepenElektro(plans[index]);
+			this.fEnableButtonDep(false);
 
+		},
+		fEnableButtonDep:function(enable){
+			var oDependents = this.getView().getModel("ET_DEPENDENTS");
+			for (var i = 0; i < oDependents.getData().length; i++) {
+				this.getView().byId("__xmlview3--selHE-col2-row" + i).setEnabled(enable);
+			}
 		},
 		fSetDepenElektro: function (plan) {
 			var oModelDependents = new sap.ui.model.json.JSONModel([]);
