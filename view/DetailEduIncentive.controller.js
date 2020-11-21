@@ -711,7 +711,19 @@ sap.ui.define([
 
 			//SUCESSO
 			function fSuccess(oEvent) {
-				//do nothing
+				if ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body).length == 0) {
+					var message = $(oEvent.response.body).find("message").first().text();
+
+					if (message === undefined || message === "" || message === " ") {
+						message = "Erro inesperado. Favor contactar o administrador do sistema";
+					}
+					MessageBox.error(message);
+				} else {
+					var detail = $(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body);
+					var formattedDetail = (detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", ""));
+					formattedDetail = formattedDetail.replace("error", "");
+					MessageBox.error(formattedDetail);
+				}
 			}
 
 			//ERRO
