@@ -703,10 +703,9 @@ sap.ui.define([
 		//call gateway service to validate the requisition
 		fValidateRequisition: function () {
 			var oValidate = {};
-			var oGlobalData = this.getView().getModel("ET_GLOBAL_DATA");
 
 			oValidate.BLOCK = {};
-			oValidate.IM_PERNR = oGlobalData.IM_PERNR;
+			oValidate.IM_PERNR = this.getView().getModel("ET_HEADER").getData().PERNR;
 
 			this.fFillCreateEduIncData(oValidate, this);
 
