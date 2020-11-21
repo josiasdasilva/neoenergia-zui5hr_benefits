@@ -4,7 +4,7 @@
 	<Page id="detailPage" showNavButton="{device>/isPhone}" navButtonPress="onNavBack" title="{i18n>plano_saude}">
 		<ObjectHeader binding="{ET_HEADER/'}" title="{ET_HEADER>/CNAME}" number="{ET_HEADER>/ABKRS}"
 			numberUnit="{ET_HEADER>/NAME1} - {ET_HEADER>/BTEXT}" class="corFundo">
-			<statuses>
+			<statuses> 
 				<ObjectStatus text="Cargo: {ET_HEADER>/STLTX}" class="" id="lblCargo" state="None"/>
 				<ObjectStatus text="Data de admissão: { path: 'ET_HEADER>/HIRE_DATE', formatter:'cadastralMaintenance.formatter.Formatter.dataAdmissao'}"
 					class="" id="lblAdmissao" state="None"/>

@@ -49,7 +49,7 @@ sap.ui.define(function () {
 			case "":
 				return "";
 			}
-			return type;
+			return type; 
 		},
 
 		dataAdmissao: function (value) {
