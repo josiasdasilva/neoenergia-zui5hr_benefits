@@ -668,6 +668,7 @@ sap.ui.define([
 						return false;
 					}
 				}
+				return true;
 			}
 
 			return initialCheck() && this.fRequiredFieldsAreOk();
