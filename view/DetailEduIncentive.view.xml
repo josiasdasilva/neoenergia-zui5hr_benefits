@@ -445,7 +445,7 @@
 					<!--		<l:GridData span="L4 M4 S8"/>-->
 					<!--	</layoutData>-->
 					<!--</Input>-->
-					<div id="programa_estudo" visible="false">
+					<html:div id="programa_estudo" visible="false">
 						<Label text="{i18n>descricao_programa_estudo}" class="sapUiSmallMarginTop" id="lblDescProg" required="false">
 							<layoutData>
 								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
@@ -466,13 +466,13 @@
 								<l:GridData span="L4 M4 S8"/>
 							</layoutData>
 						</Input>
-					</div>
+					</html:div>
 					<!--<Label text="{i18n>acordo_inc_edu}" class="sapUiSmallMarginTop" id="lblAcordo" required="true">-->
 					<!--	<layoutData>-->
 					<!--		<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>-->
 					<!--	</layoutData>-->
 					<!--</Label>-->
-					<FormattedText htmlText="{i18n>acordo_inc_edu}" id="fmtxt_acordo_inc_edu">
+					<TextArea id="taJustSSG" growing="false" change="onJustChange" maxLength="255" editable="false" value="{i18n>acordo_inc_edu}"/>
 					<Label text="{i18n>estou_de_acordo}" class="sapUiSmallMarginTop" id="lblDeAcordo">
 						<layoutData>
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
