@@ -746,7 +746,7 @@ sap.ui.define([
 			return false;
 		},
 		fRequiredFieldsAreOk: function () {
-			var empresa = that.getView().getModel("ET_HEADER").getData().BUKRS;
+			var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
 			var allOk = true;
 			if(this.fFieldIsEmpty('ipEduIncTypeADP')) allOk = false;
 			if(this.fFieldIsEmpty('dtMesRef')) allOk = false;
