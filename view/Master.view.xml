@@ -11,14 +11,14 @@
 					<ObjectListItem title="{i18n>emprestimo_emergencial}" press="onPressEmergencyLoan" id="121" type="Active" visible="false"/>
 					<ObjectListItem title="{i18n>financiamento_veiculos}" press="onPressVehicleFinan" id="122" type="Active" visible="false"/>
 					<ObjectListItem title="{i18n>incentivo_educacional}" press="onPressEduIncentive" id="126" type="Active" visible="false"/>
-					<ObjectListItem title="{i18n>plano_de_saude}" press="onPressHealth" id="114" type="Active" visible="false"/>
 					<ObjectListItem title="{i18n>plano_odontologico}" press="onPressDental" id="128" type="Active" visible="false"/>
+					<ObjectListItem title="{i18n>plano_de_saude}" press="onPressHealth" id="114" type="Active" visible="false"/>
 					<ObjectListItem title="{i18n>previdencia_privada}" press="onPressPrivatePension" id="124" type="Active" visible="false"/>
-					<ObjectListItem title="{i18n>refeicao_alimentacao}" press="onPressMealAllowance" id="116" type="Active" visible="false"/>
 					<ObjectListItem title="{i18n>seguro_vida}" press="onPressLifeInsurance" id="115" type="Active" visible="false"/>
+					<ObjectListItem title="{i18n>refeicao_alimentacao}" press="onPressMealAllowance" id="116" type="Active" visible="false"/>
 					<ObjectListItem title="{i18n>vale_transporte}" press="onPressVT" id="113" type="Active" visible="false"/>
 				</items>
-			</List>
+			</List> 
 		</content>
 		<footer>
 			<Toolbar></Toolbar>
