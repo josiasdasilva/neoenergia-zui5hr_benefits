@@ -33,13 +33,7 @@ sap.ui.define([
 			this.getView().byId("btnSave").setEnabled(true);
 		},
 		onChangeHealth: function (oEvent) {
-
-			if (this.getView().getModel("ET_HEADER").getData().BUKRS != "NEO") {
-				this.fCheckChangeElek("tHealth");
-			} else {
-				this.fCheckChange("tHealth");
-			}
-
+			this.fCheckChange("tHealth");
 			this.getView().byId("btnAccept").setEnabled(true);
 			this.getView().byId("btnSave").setEnabled(true);
 			this.getView().byId("btnSanity").setVisible(false);
@@ -133,7 +127,7 @@ sap.ui.define([
 			function fSuccess(oEvent) {
 				var results = oEvent.results[0];
 				var requisitionId;
-				var isApprover = results.EX_IS_APPROVER; 
+				var isApprover = results.EX_IS_APPROVER;
 
 				if (oEvent.results[0].PLANS_HOLDER.results.length > 0) {
 					requisitionId = oEvent.results[0].PLANS_HOLDER.results[0].REQUISITION_ID;
@@ -143,7 +137,7 @@ sap.ui.define([
 					var oResults = JSON.parse(JSON.stringify(oModel.oData.results));
 					that.getView().setModel(oResults, "ET_PLANS_ORIG");
 					that.getView().setModel(oResults, "ET_PLANS_ELEK");
-					
+
 					//Sets the models to View
 					that.fSetsModels(oEvent, that, isApprover);
 					that.fSetModelElektro(oEvent, that, isApprover);
@@ -207,8 +201,7 @@ sap.ui.define([
 				if (requisitionId !== "00000000") {
 					that.getAttachment(requisitionId, "BPS");
 				}
-				if (that.getView().getModel("ET_HEADER").getData().BUKRS != "NEO") {
-					that.getView().byId("formListHealth").setVisible(true);
+				if (that.getView().getModel("ET_HEADER").getData() != "NEO") {
 					that.getView().byId("formHealthInsurance").setVisible(false);
 					that.getView().byId("tHealth").setVisible(false);
 				}
@@ -869,7 +862,7 @@ sap.ui.define([
 				"OBSERVATION": observation
 			};
 
-			if (that.getView().getModel("ET_HEADER").getData().BUKRS != "NEO") {
+			if (that.getView().getModel("ET_HEADER").getData() != "NEO") {
 				that.fFillCreateHealthDataElek(oCreate, that, req, newDt);
 			} else {
 				that.fFillCreateHealthData(oCreate, that, req, newDt);
@@ -1200,7 +1193,6 @@ sap.ui.define([
 			oTableHealth.setVisible(true);
 			this.fSearchHelpHealthPlanElek();
 			this.statusMod = "INS";
-			this.fEnableButtonDep(true);
 		},
 		onModPressed: function () {
 			var that = this;
@@ -1228,38 +1220,13 @@ sap.ui.define([
 			oView.byId("ipHealthInsurance").setSelectedKey(plans[index].BPLAN_BRHE);
 			oView.byId("slHealthInsuranceAccommodation").setSelectedKey(plans[index].BOPTI_BRHE);
 
-			this.fSearchHelpHealthPlanElekMod(plans[index].BRDE);
+			this.fSearchHelpHealthPlan();
 			this.fSearchHelpOption(that);
 			this.fSetDepenElektro(plans[index]);
 			this.statusMod = "MOD";
-			this.fEnableButtonDep(true);
 		},
 		onRemPressed: function () {
-			var that = this;
-			var oView = this.getView();
-			var index = oView.byId("tPlan").getSelectedIndex();
-			var plans = oView.getModel("ET_PLAN_MASTER");
-			var master = oView.getModel("ET_PLANS_ELEK");
 
-			if (index < 0) {
-				MessageBox.error("Selecione um plano para exclusão");
-				return;
-			}
-
-			for (var i = 0; i < plans.getData().length; i++) {
-				if (plans.getData()[i].BRDE == plans.getData()[index].BRDE) {
-					plans.getData()[i].ACTIO_BRHE = "DEL";
-				}
-			}
-
-			for (i = 0; i < master.length; i++) {
-				if (master[i].BRDE == plans.getData()[index].BRDE) {
-					master[i].ACTIO_BRHE = "DEL";
-				}
-			}
-
-			oView.setModel(new sap.ui.model.json.JSONModel(plans.getData()), "ET_PLAN_MASTER");
-			oView.setModel(master, "ET_PLANS_ELEK");
 		},
 		onVisPressed: function () {
 			var that = this;
@@ -1272,12 +1239,11 @@ sap.ui.define([
 				return;
 			}
 
-			oView.byId("columnOpcaoHealth").setVisible(true);
 			oView.byId("ipHealthInsurance").setEnabled(false);
 			oView.byId("slHealthInsuranceAccommodation").setEnabled(false);
 			oView.byId("btnIncludeHealthInsurance").setVisible(false);
 			oView.byId("btnCancelHealthInsurance").setVisible(false);
-			// oView.byId("columnOpcaoHealth").setVisible(false);
+			oView.byId("columnOpcaoHealth").setVisible(false);
 			oView.byId("formHealthInsurance").setVisible(true);
 			oView.byId("tHealth").setVisible(true);
 
@@ -1289,14 +1255,7 @@ sap.ui.define([
 			this.fSearchHelpHealthPlan();
 			this.fSearchHelpOption(that);
 			this.fSetDepenElektro(plans[index]);
-			this.fEnableButtonDep(false);
 
-		},
-		fEnableButtonDep: function (enable) {
-			var oDependents = this.getView().getModel("ET_DEPENDENTS");
-			for (var i = 0; i < oDependents.getData().length; i++) {
-				this.getView().byId("__xmlview3--selHE-col2-row" + i).setEnabled(enable);
-			}
 		},
 		fSetDepenElektro: function (plan) {
 			var oModelDependents = new sap.ui.model.json.JSONModel([]);
@@ -1387,12 +1346,8 @@ sap.ui.define([
 
 			for (var i = 0; i < depTable.length; i++) {
 
-				if (depTable[i].ACTIVE_BRHE == "X") {
-					depTable[i].ACTIO_BRHE = "INS";
-				} else {
-					depTable[i].ACTIO_BRHE = "";
-				}
-
+				depTable[i].ACTIO_BRDE = "INS"; //apagar
+				depTable[i].ACTIVE_BRHE = "X";
 				depTable[i].BOPTI_BRHE = obj.BOPTI_BRHE;
 				depTable[i].BPLAN_BRHE = obj.BPLAN_BRHE;
 				depTable[i].BRDE = obj.BRDE;
@@ -1433,45 +1388,46 @@ sap.ui.define([
 				SUBTY: "",
 				TYPE_SAVE: ""
 			};
-
-			for (var i = 0; i < plan.getData().length; i++) {
-				if (plan.getData()[i].BRDE == obj.BRDE && plan.getData()[i].OBJPS == "" && plan.getData()[i].SUBTY == "") {
+			
+			for(var i = 0; i < plan.getData().length; i++){
+				if(plan.getData()[i].BRDE == obj.BRDE && plan.getData()[i].OBJPS == "" && plan.getData()[i].SUBTY == "" ){
+					// plan.getData()[i].LTEXT_BRHE = obj.LTEXT_BRHE;
+					// plan.getData()[i].BOPTI_BRHE = obj.BOPTI_BRHE;
+					// plan.getData()[i].BPLAN_BRHE = obj.BPLAN_BRHE;
+					// plan.getData()[i].ACTIO_BRHE = obj.ACTIO_BRHE;
+					// plan.getData()[i].ACTIVE_BRHE = obj.ACTIVE_BRHE;
 					plan.getData()[i] = obj;
 				}
 			}
-
+			
 			oView.setModel(new sap.ui.model.json.JSONModel(plan.getData()), "ET_PLAN_MASTER");
-
+			
 			changed.push(obj);
-			debugger;
+
 			for (i = 0; i < depTable.length; i++) {
 
-				if (depTable[i].ACTIVE_BRHE == "X") {
-					depTable[i].ACTIO_BRHE = "INS";
-				} else {
-					depTable[i].ACTIO_BRHE = "";
-				}
-
+				depTable[i].ACTIVE_BRHE = "X";
 				depTable[i].BOPTI_BRHE = obj.BOPTI_BRHE;
 				depTable[i].BPLAN_BRHE = obj.BPLAN_BRHE;
 				depTable[i].BRDE = obj.BRDE;
 				depTable[i].LTEXT_BRHE = obj.LTEXT_BRHE;
 				changed.push(depTable[i]);
 			}
-
-			for (i = 0; i < changed.length; i++) {
-				for (var j = 0; i < master.length; j++) {
-					if (changed[i].BRDE == master[j].BRDE && changed[i].SUBTY == master[j].SUBTY && changed[i].OBJPS == master[j].OBJPS) {
+			
+			for(i = 0; i < changed.length; i++){
+				for(var j = 0; i < master.length; j++){
+					if(changed[i].BRDE == master[j].BRDE && changed[i].SUBTY == master[j].SUBTY && changed[i].OBJPS == master[j].OBJPS){
 						master[j].BOPTI_BRHE = changed[i].BOPTI_BRHE;
 						master[j].BPLAN_BRHE = changed[i].BPLAN_BRHE;
 						master[j].LTEXT_BRHE = changed[i].LTEXT_BRHE;
 						master[j].ACTIO_BRHE = changed[i].ACTIO_BRHE;
-						master[j].ACTIVE_BRHE = changed[i].ACTIVE_BRHE;
+						master[j].ACTIVE_BRHE = "X";
 						break;
 					}
 				}
 			}
-
+			
+			
 			oView.setModel(master, "ET_PLANS_ELEK");
 			this.fEnableButtonsAction(false);
 			oView.byId("toolbarList").setVisible(true);
@@ -1560,55 +1516,6 @@ sap.ui.define([
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
 		},
-		fSearchHelpHealthPlanElekMod: function (brde) {
-			var oView = this.getView();
-			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
-			var oData = this.getView().getModel("ET_HEADER").getData();
-			var aData = this.getView().getModel("ET_HOLDER");
-			var that = this;
-			var pltyp = brde;
-
-			var plans = oView.getModel("ET_PLAN_MASTER");
-
-			function fSuccess(oEvent) {
-				var oValue = new sap.ui.model.json.JSONModel(oEvent.results);
-				var jsonModel = new sap.ui.model.json.JSONModel([]);
-
-				for (var i = 0; i < oEvent.results.length; i++) {
-					if (pltyp == oEvent.results[i].PLTYP) {
-						jsonModel.getData().push({
-							IM_PERNR: oValue.oData[i].IM_PERNR,
-							BPLAN: oValue.oData[i].BPLAN,
-							LTEXT: oValue.oData[i].LTEXT,
-							TYPE: oValue.oData[i].TYPE,
-							PLTYP: oValue.oData[i].PLTYP,
-						});
-					}
-
-				}
-
-				that.getView().setModel(jsonModel, "ET_SH_TYPE_PLANS");
-
-				if (jsonModel.getData().length == 0) {
-					MessageBox.error("Você já possui todos os tipos de planos.");
-					oView.byId("formHealthInsurance").setVisible(false);
-					oView.byId("tHealth").setVisible(false);
-					oView.byId("toolbarList").setVisible(true);
-				}
-
-			}
-
-			function fError() {
-				console.log("Erro ao ler Ajudas de Pesquisa");
-			}
-
-			//MAIN READ
-			var urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
-			urlParam = this.fFillURLParamFilter("TYPE", "S", urlParam);
-			// urlParam = urlParam + "&$expand=PLANS";
-
-			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
-		},
 		fFillCreateHealthDataElek: function (oCreate, that, req, newDt) {
 			var oView = this.getView();
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
@@ -1643,37 +1550,6 @@ sap.ui.define([
 			}
 			oCreate.PLANS_HOLDER = PLANS_HOLDER.getData();
 		},
-		fCheckChangeElek: function (model) {
-
-			var oModel = this.getView().getModel("ET_PLANS_ORIG");
-			var oModelDependents = this.getView().byId(model).getModel().getData();
-
-			for (var i = 0; i < oModelDependents.length; i++) {
-
-				for (var z = 0; z < oModel.length; z++) {
-
-					if (oModelDependents[i].BRDE == oModel[z].BRDE && oModelDependents[i].SUBTY === oModel[z].SUBTY && oModelDependents[i].OBJPS ===
-						oModel[z].OBJPS) {
-
-						if (oModelDependents[i].ACTIVE_BRHE === oModel[z].ACTIVE_BRHE) {
-							oModelDependents[i].ACTIO_BRHE = "";
-						} else {
-							if (oModelDependents[i].ACTIVE_BRHE) {
-								oModelDependents[i].ACTIO_BRHE = "INS";
-							} else {
-								oModelDependents[i].ACTIO_BRHE = "DEL";
-								this.attachmentRequiredHealth = true;
-							}
-						}
-
-						// }
-
-					}
-
-				}
-
-			}
-		}
 
 		// Fim Elektro
 

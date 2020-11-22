@@ -60,7 +60,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input value="{ET_BLOCK>/TYPE_INC_ELEK}" width="" id="ipEduIncTypeADP" change="onChange" fieldWidth="30%"
+					<Input value="{ET_BLOCK>/TYPE_INC_ELEK}" width="" id="ipEduIncTypeADP" change="onChangeMesRef" fieldWidth="30%"
 						required="true" visible="false">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
@@ -71,7 +71,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<DatePicker id="dtMesRef" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" value="{ET_BLOCK>/MES_REF}" change="onChangeMesRef" placeholder="{i18n>periodo}" required="true">
+					<DatePicker id="dtMesRef" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" value="{ET_BLOCK>/MES_REF}" change="onChange" placeholder="{i18n>periodo}" required="true">
 					<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
@@ -396,16 +396,6 @@
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
 					</DatePicker>
-					<Label text="{i18n>valor_total_curso}" class="sapUiSmallMarginTop" id="lblValorTot" required="true">
-						<layoutData>
-							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
-						</layoutData>
-					</Label>
-					<Input id="ipValorTot" value="{ET_BLOCK>/VALOR_TOT}" maxLength="80" required="true">
-						<layoutData>
-							<l:GridData span="L4 M4 S8"/>
-						</layoutData>
-					</Input>
 					<Label text="{i18n>valor_mensal_curso}" class="sapUiSmallMarginTop" id="lblValorMen" required="true">
 						<layoutData>
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
@@ -431,15 +421,6 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Select id="sJaPartic" selectedKey="{ET_BLOCK>/JA_PARTIC_PRG_EST}">
-						<items>
-							<core:Item text="Sim" key="S"/>
-							<core:Item text="Não" key=""/>
-						</items>
-						<layoutData>
-							<l:GridData span="L2 M2 S4"/>
-						</layoutData>
-					</Select>
 					<!--<Input id="ipEmail" value="{ET_BLOCK>/OBSERVACAO}" maxLength="80">-->
 					<!--	<layoutData>-->
 					<!--		<l:GridData span="L4 M4 S8"/>-->

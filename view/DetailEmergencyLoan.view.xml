@@ -2,8 +2,7 @@
 	controllerName="cadastralMaintenance.view.DetailEmergencyLoan" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="{i18n>emprestimo_emergencial}">
 		<headerContent>
-			<Button id="btnQuickViewHelp" class="sapUiSmallMarginBottom" text="{i18n>ajuda}" press="onPressQuickView" icon="sap-icon://sys-help-2"
-				visible="false"/>
+			<Button id="btnQuickViewHelp" class="sapUiSmallMarginBottom" text="{i18n>ajuda}" press="onPressQuickView" icon="sap-icon://sys-help-2" visible="false"/>
 		</headerContent>
 		<ObjectHeader binding="{ET_HEADER/'}" title="{ET_HEADER>/CNAME}" number="{ET_HEADER>/ABKRS}"
 			numberUnit="{ET_HEADER>/NAME1} - {ET_HEADER>/BTEXT}" class="corFundo">
@@ -22,8 +21,8 @@
 			</l:dependents>
 		</l:VerticalLayout>
 		<VBox class="sapUiResponsiveMargin">
-			<f:SimpleForm id="formEmergencyLoan" editable="false" layout="ResponsiveGridLayout" title="{i18n>emprestimo_emergencial}" labelSpanL="1"
-				labelSpanM="1" emptySpanL="0" emptySpanM="0" columnsL="4" columnsM="4" labelMinWidth="100" columnsXL="4">
+			<f:SimpleForm id="formEmergencyLoan" editable="false" layout="ResponsiveGridLayout" title="{i18n>emprestimo_emergencial}" labelSpanL="1" labelSpanM="1"
+				emptySpanL="0" emptySpanM="0" columnsL="4" columnsM="4" labelMinWidth="100" columnsXL="4">
 				<f:toolbar>
 					<Toolbar id="tbEmergencyLoan">
 						<Title text="{i18n>emprestimo_emergencial}" level="H4" titleStyle="H4"/>
@@ -35,8 +34,7 @@
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input value="{path:'ET_BLOCK>/VALUE', type:'sap.ui.model.type.Float'}" width="" class="sapUiSmallMarginBottom" id="ipRequestedValue"
-						change="onChange" fieldWidth="30%" enabled="false" required="true">
+					<Input value="{path:'ET_BLOCK>/VALUE', type:'sap.ui.model.type.Float'}" width="" class="sapUiSmallMarginBottom" id="ipRequestedValue" change="onChange" fieldWidth="30%" enabled="false" required="true">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
@@ -46,8 +44,7 @@
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<DatePicker id="dtPeriod" valueFormat="dd/MM/yyyy" displayFormat="MM/yyyy" change="onChange" placeholder="{i18n>periodo}"
-						class="sapUiSmallMarginBottom">
+					<DatePicker id="dtPeriod" displayFormat="MM/yyyy" valueFormat="dd-MM-yyyy" change="onChange" placeholder="{i18n>periodo}" class="sapUiSmallMarginBottom">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
@@ -86,7 +83,7 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button text="{i18n>formulario}" press="onFormulario" icon="sap-icon://form" id="btnForms" visible="false"/>
+        		<Button text="{i18n>formulario}" press="onFormulario" icon="sap-icon://form" id="btnForms" visible="false"/>
 				<Button text="{i18n>saneamento}" press="onSanitation" icon="sap-icon://accounting-document-verification" id="btnSanity"
 					tooltip="{i18n>saneamento_tooltip}" visible="false"/>
 				<Button text="{i18n>salvar}" press="onSave" icon="sap-icon://save" id="btnSave" tooltip="{i18n>salvar_tooltip}" visible="false"/>
