@@ -723,12 +723,13 @@ sap.ui.define([
 			this.fFillCreateEduIncData(oValidate, this);
 
 			//callback
+			const that = this;
 			function fCallback(oEvent) {
 				if(oEvent.BLOCK.OBSERVACAO !== ""){
-					this.getView().byId("dtMesRef").setValueState(sap.ui.core.ValueState.Error);
+					that.getView().byId("dtMesRef").setValueState(sap.ui.core.ValueState.Error);
 					MessageBox.error(oEvent.BLOCK.OBSERVACAO);
 				}else{
-					this.getView().byId("dtMesRef").setValueState(sap.ui.core.ValueState.None);
+					that.getView().byId("dtMesRef").setValueState(sap.ui.core.ValueState.None);
 				}
 			}
 
