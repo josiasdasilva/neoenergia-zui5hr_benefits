@@ -746,38 +746,44 @@ sap.ui.define([
 			return false;
 		},
 		fRequiredFieldsAreOk: function () {
+			var empresa = that.getView().getModel("ET_HEADER").getData().BUKRS;
 			var allOk = true;
 			if(this.fFieldIsEmpty('ipEduIncTypeADP')) allOk = false;
 			if(this.fFieldIsEmpty('dtMesRef')) allOk = false;
 			if(this.fFieldIsEmpty('ipBetrg')) allOk = false;
 			if(this.fFieldIsEmpty('ipBetrgAdm')) allOk = false;
-			if(this.fFieldIsEmpty('ipNomeCurso')) allOk = false;
-			if(this.fFieldIsEmpty('ipCargaHoraria')) allOk = false;
-			if(this.fFieldIsEmpty('dtDataInicio')) allOk = false;
-			if(this.fFieldIsEmpty('dtDataFim')) allOk = false;
-			if(this.fFieldIsEmpty('ipInstituicao')) allOk = false;
-			if(this.fFieldIsEmpty('ipTelInstituicao')) allOk = false;
-			if(this.fFieldIsEmpty('ipLocalInstituicao')) allOk = false;
-			if(this.fFieldIsEmpty('ipEmail')) allOk = false;
-			if(this.fFieldIsEmpty('ipGerencia')) allOk = false;
-			if(this.fFieldIsEmpty('ipLocTrab')) allOk = false;
-			if(this.fFieldIsEmpty('ipCelular')) allOk = false;
-			if(this.fFieldIsEmpty('ipRamal')) allOk = false;
-			if(this.fFieldIsEmpty('ipUltForm')) allOk = false;
-			if(this.fFieldIsEmpty('ipCursoSol')) allOk = false;
-			if(this.fFieldIsEmpty('ipTipoCurso')) allOk = false;
-			if(this.fFieldIsEmpty('ipNomeInstEns')) allOk = false;
-			if(this.fFieldIsEmpty('ipEmailInst')) allOk = false;
-			if(this.fFieldIsEmpty('ipTelInst')) allOk = false;
-			if(this.fFieldIsEmpty('ipPesContato')) allOk = false;
-			if(this.fFieldIsEmpty('ipLocCurso')) allOk = false;
-			if(this.fFieldIsEmpty('ipCargaHorariaElek')) allOk = false;
-			if(this.fFieldIsEmpty('ipRegCurso')) allOk = false;
-			if(this.fFieldIsEmpty('dtInicio')) allOk = false;
-			if(this.fFieldIsEmpty('dtFim')) allOk = false;
-			if(this.fFieldIsEmpty('ipValorTot')) allOk = false;
-			if(this.fFieldIsEmpty('ipValorMen')) allOk = false;
-			if(this.fFieldIsEmpty('ipObjetivo')) allOk = false;
+			if(empresa === "NEO"){
+                //Neo
+                if(this.fFieldIsEmpty('ipNomeCurso')) allOk = false;
+                if(this.fFieldIsEmpty('ipCargaHoraria')) allOk = false;
+                if(this.fFieldIsEmpty('dtDataInicio')) allOk = false;
+                if(this.fFieldIsEmpty('dtDataFim')) allOk = false;
+                if(this.fFieldIsEmpty('ipInstituicao')) allOk = false;
+                if(this.fFieldIsEmpty('ipTelInstituicao')) allOk = false;
+                if(this.fFieldIsEmpty('ipLocalInstituicao')) allOk = false;
+            }else{
+                //Elektro
+                if(this.fFieldIsEmpty('ipEmail')) allOk = false;
+                if(this.fFieldIsEmpty('ipGerencia')) allOk = false;
+                if(this.fFieldIsEmpty('ipLocTrab')) allOk = false;
+                if(this.fFieldIsEmpty('ipCelular')) allOk = false;
+                if(this.fFieldIsEmpty('ipRamal')) allOk = false;
+                if(this.fFieldIsEmpty('ipUltForm')) allOk = false;
+                if(this.fFieldIsEmpty('ipCursoSol')) allOk = false;
+                if(this.fFieldIsEmpty('ipTipoCurso')) allOk = false;
+                if(this.fFieldIsEmpty('ipNomeInstEns')) allOk = false;
+                if(this.fFieldIsEmpty('ipEmailInst')) allOk = false;
+                if(this.fFieldIsEmpty('ipTelInst')) allOk = false;
+                if(this.fFieldIsEmpty('ipPesContato')) allOk = false;
+                if(this.fFieldIsEmpty('ipLocCurso')) allOk = false;
+                if(this.fFieldIsEmpty('ipCargaHorariaElek')) allOk = false;
+                if(this.fFieldIsEmpty('ipRegCurso')) allOk = false;
+                if(this.fFieldIsEmpty('dtInicio')) allOk = false;
+                if(this.fFieldIsEmpty('dtFim')) allOk = false;
+                if(this.fFieldIsEmpty('ipValorTot')) allOk = false;
+                if(this.fFieldIsEmpty('ipValorMen')) allOk = false;
+                if(this.fFieldIsEmpty('ipObjetivo')) allOk = false;
+            }
 			return allOk;
 		}
 
