@@ -470,21 +470,17 @@
 					<!--		<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>-->
 					<!--	</layoutData>-->
 					<!--</Label>-->
-					<VBox class="sapUiSmallMargin">
-						<f:content>
-							<TextArea id="taDeAcordo" growing="false" change="onJustChange" maxLength="255" editable="false" value="{i18n>acordo_inc_edu}"/>
-							<Label text="{i18n>estou_de_acordo}" class="sapUiSmallMarginTop" id="lblDeAcordo">
-								<layoutData>
-									<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
-								</layoutData>
-							</Label>
-							<CheckBox id="cbDeAcordo" selected="{ET_BLOCK>/ACORDO}">
-								<layoutData>
-									<l:GridData span="L1 M1 S12" />
-								</layoutData>
-							</CheckBox>
-						</f:content>
-					</VBox>
+					<TextArea id="taDeAcordo" growing="false" change="onJustChange" maxLength="255" editable="false" value="{i18n>acordo_inc_edu}"/>
+					<Label text="{i18n>estou_de_acordo}" class="sapUiSmallMarginTop" id="lblDeAcordo">
+						<layoutData>
+							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<CheckBox id="cbDeAcordo" selected="{ET_BLOCK>/ACORDO}">
+						<layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+					</CheckBox>
 					<!--<Input id="ipEmail" value="{ET_BLOCK>/OBSERVACAO}" maxLength="80">-->
 					<!--	<layoutData>-->
 					<!--		<l:GridData span="L4 M4 S8"/>-->
