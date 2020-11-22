@@ -445,44 +445,46 @@
 					<!--		<l:GridData span="L4 M4 S8"/>-->
 					<!--	</layoutData>-->
 					<!--</Input>-->
-					<html:div id="programa_estudo" visible="false">
-						<Label text="{i18n>descricao_programa_estudo}" class="sapUiSmallMarginTop" id="lblDescProg" required="false">
-							<layoutData>
-								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
-							</layoutData>
-						</Label>
-						<Input id="ipDescProg" value="{ET_BLOCK>/DESCR_PROG}" maxLength="80" required="true">
-							<layoutData>
-								<l:GridData span="L4 M4 S8"/>
-							</layoutData>
-						</Input>
-						<Label text="{i18n>encerramento_bolsa_estudos}" class="sapUiSmallMarginTop" id="lblEncBolsa" required="true">
-							<layoutData>
-								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
-							</layoutData>
-						</Label>
-						<Input id="ipEncBolsa" value="{ET_BLOCK>/ENC_BOLSA}" maxLength="80" required="true">
-							<layoutData>
-								<l:GridData span="L4 M4 S8"/>
-							</layoutData>
-						</Input>
-					</html:div>
+					<Label text="{i18n>descricao_programa_estudo}" class="sapUiSmallMarginTop" id="lblDescProg" required="false">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipDescProg" value="{ET_BLOCK>/DESCR_PROG}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>encerramento_bolsa_estudos}" class="sapUiSmallMarginTop" id="lblEncBolsa" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipEncBolsa" value="{ET_BLOCK>/ENC_BOLSA}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
 					<!--<Label text="{i18n>acordo_inc_edu}" class="sapUiSmallMarginTop" id="lblAcordo" required="true">-->
 					<!--	<layoutData>-->
 					<!--		<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>-->
 					<!--	</layoutData>-->
 					<!--</Label>-->
-					<TextArea id="taDeAcordo" growing="false" change="onJustChange" maxLength="255" editable="false" value="{i18n>acordo_inc_edu}"/>
-					<Label text="{i18n>estou_de_acordo}" class="sapUiSmallMarginTop" id="lblDeAcordo">
-						<layoutData>
-							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
-						</layoutData>
-					</Label>
-					<CheckBox id="cbDeAcordo" selected="{ET_BLOCK>/ACORDO}">
-						<layoutData>
-							<l:GridData span="L1 M1 S12" />
-						</layoutData>
-					</CheckBox>
+					<VBox class="sapUiSmallMargin">
+						<f:content>
+							<TextArea id="taDeAcordo" growing="false" change="onJustChange" maxLength="255" editable="false" value="{i18n>acordo_inc_edu}"/>
+							<Label text="{i18n>estou_de_acordo}" class="sapUiSmallMarginTop" id="lblDeAcordo">
+								<layoutData>
+									<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+								</layoutData>
+							</Label>
+							<CheckBox id="cbDeAcordo" selected="{ET_BLOCK>/ACORDO}">
+								<layoutData>
+									<l:GridData span="L1 M1 S12" />
+								</layoutData>
+							</CheckBox>
+						</f:content>
+					</VBox>
 					<!--<Input id="ipEmail" value="{ET_BLOCK>/OBSERVACAO}" maxLength="80">-->
 					<!--	<layoutData>-->
 					<!--		<l:GridData span="L4 M4 S8"/>-->

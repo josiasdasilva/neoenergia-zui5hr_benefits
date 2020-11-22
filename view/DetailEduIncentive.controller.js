@@ -643,10 +643,12 @@ sap.ui.define([
 
 			// }
 
-			//MAIN READ
-			if(isValid()) {
+            //MAIN READ
+            
+            if(!this.isAcordoSelectionOk()) MessageBox.error("Favor marcar campo De Acordo");
+			if(isValid() && this.isAcordoSelectionOk()) {
 				oModel.read(url, null, null, false, fSuccess, fError);
-			}
+            }
 		},
 		fObligatoryFields: function () {
 			var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
@@ -754,7 +756,7 @@ sap.ui.define([
 			if(this.fFieldIsEmpty('dtMesRef')) allOk = false;
 			if(this.fFieldIsEmpty('ipBetrg')) allOk = false;
             if(this.fFieldIsEmpty('ipBetrgAdm')) allOk = false;
-            if(selType === "R"){
+            if(selType === "P"){
                 if(empresa === "NEO"){
                     //Neo
                     if(this.fFieldIsEmpty('ipNomeCurso')) allOk = false;
@@ -789,8 +791,8 @@ sap.ui.define([
 
                     const jaPartic = this.getView().byId('sJaPartic').getSelectedKey();
                     if(jaPartic==="S"){
-                        if(this.fFieldIsEmpty('ipObjetivo')) allOk = false;
-
+                        if(this.fFieldIsEmpty('ipDescProg')) allOk = false;
+                        if(this.fFieldIsEmpty('ipEncBolsa')) allOk = false;
                     }
                 }
             }
@@ -798,12 +800,31 @@ sap.ui.define([
         },
         onChangeParticBolsa: function(oEvent) {
             const value = oEvent.getValue();
-            const div = this.getView().byId('programa_estudo');
+            const lblDescProg = this.getView().byId('lblDescProg');
+            const ipDescProg = this.getView().byId('ipDescProg');
+            const lblEncBolsa = this.getView().byId('lblEncBolsa');
+            const ipEncBolsa = this.getView().byId('ipEncBolsa');
+            
             if(value==="S"){
-                div.setVisible(true);
+                lblDescProg.setVisible(true);
+                ipDescProg.setVisible(true);
+                lblEncBolsa.setVisible(true);
+                ipEncBolsa.setVisible(true);
             }else{
-                div.setVisible(false);
+                lblDescProg.setVisible(false);
+                ipDescProg.setVisible(false);
+                lblEncBolsa.setVisible(false);
+                ipEncBolsa.setVisible(false);
             }
+        },
+        isAcordoSelectionOk: function(){
+            var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
+            const selType = this.getView().byId('slSolType').getSelectedKey();
+
+            if(selType === "P" && empresa !== "NEO"){
+                return this.getView().byId('cbDeAcordo').getSelected;
+            }
+            return true;
         }
 
 	});
