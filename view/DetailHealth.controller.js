@@ -162,8 +162,8 @@ sap.ui.define([
 
 					filters = [new sap.ui.model.Filter("IDREQ", sap.ui.model.FilterOperator.EQ, requisitionId)];
 
-					var oModelAnexo = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
-					that.getView().setModel(oModelAnexo, "anexo");
+					// var oModelAnexo = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
+					// that.getView().setModel(oModelAnexo, "anexo");
 
 					// Update list binding
 					// that.getView().byId("upldAttachments").getBinding("items").filter(filters);
@@ -596,7 +596,7 @@ sap.ui.define([
 						BPLAN: oValue.oData[i].BPLAN,
 						LTEXT: oValue.oData[i].LTEXT,
 						TYPE: oValue.oData[i].TYPE,
-						PLTYP: oValue.oData[i].PLTYP,
+						PLTYP: oValue.oData[i].PLTYP
 					});
 				}
 
@@ -842,6 +842,7 @@ sap.ui.define([
 				MessageBox.error("Falha ao Salvar Arquivo ..!!");
 			} else {
 				var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
+				debugger;
 				this.getAttachment(req, "BPS");
 				this.getView().byId("btnSave").setEnabled(true);
 			}
@@ -1228,7 +1229,7 @@ sap.ui.define([
 			oView.byId("ipHealthInsurance").setSelectedKey(plans[index].BPLAN_BRHE);
 			oView.byId("slHealthInsuranceAccommodation").setSelectedKey(plans[index].BOPTI_BRHE);
 
-			this.fSearchHelpHealthPlanElekMod(plans[index].BRDE);
+			this.fSearchHelpHealthPlanElekMod(plans[index].BRDE, plans[index].BPLAN_BRHE);
 			this.fSearchHelpOption(that);
 			this.fSetDepenElektro(plans[index]);
 			this.statusMod = "MOD";
@@ -1560,13 +1561,14 @@ sap.ui.define([
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
 		},
-		fSearchHelpHealthPlanElekMod: function (brde) {
+		fSearchHelpHealthPlanElekMod: function (brde,bplan) {
 			var oView = this.getView();
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var aData = this.getView().getModel("ET_HOLDER");
 			var that = this;
 			var pltyp = brde;
+			var key = bplan;
 
 			var plans = oView.getModel("ET_PLAN_MASTER");
 
@@ -1586,8 +1588,9 @@ sap.ui.define([
 					}
 
 				}
-
+			
 				that.getView().setModel(jsonModel, "ET_SH_TYPE_PLANS");
+				that.byId("ipHealthInsurance").setSelectedKey(key)
 
 				if (jsonModel.getData().length == 0) {
 					MessageBox.error("Você já possui todos os tipos de planos.");
