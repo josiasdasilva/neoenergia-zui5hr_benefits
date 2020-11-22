@@ -551,6 +551,15 @@ sap.ui.define([
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_EDU_INC_SRV/");
 			var block = this.getView().getModel("ET_BLOCK").getData();
 			var url;
+			//validate first
+			this.fValidateRequisition();
+			const isValid = () => {
+				const valueState = this.getView().byId("dtMesRef").getValueState();
+				if (valueState !== sap.ui.core.ValueState.none) {
+					return false;
+				}
+				return true;
+			}
 
 			function fSuccess(oEvent) {
 				window.open(oEvent.results[0].LinkPdf);
@@ -635,29 +644,33 @@ sap.ui.define([
 			// }
 
 			//MAIN READ
-			oModel.read(url, null, null, false, fSuccess, fError);
-
+			if(isValid()) {
+				oModel.read(url, null, null, false, fSuccess, fError);
+			}
 		},
 		fObligatoryFields: function () {
 			var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
 			var block = this.getView().getModel("ET_BLOCK").getData();
 
-			if (block.TYPE_INC == "" || block.TYPE_INC == undefined || block.TYPE_REQ == "" || block.TYPE_REQ == undefined || block.MES_REF ==
-				"" || block.MES_REF == undefined || parseFloat(block.BETRG) <= 0 || block.BETRG == undefined) {
-				return false;
-			}
-
-			if (empresa == "NEO" && block.TYPE_INC == "P") {
-				if (block.CURSO == "" || block.CURSO == undefined || block.INSTITUICAO == "" || block.INSTITUICAO == undefined || block.TELEFONE ==
-					"" || block.TELEFONE ==
-					undefined || block.CIDADE == "" || block.CIDADE == undefined ||
-					block.BEGDA == "" || block.BEGDA == undefined || block.ENDDA == "" ||
-					block.ENDDA == undefined
-				) {
+			const initialCheck = () => {
+				if (block.TYPE_INC == "" || block.TYPE_INC == undefined || block.TYPE_REQ == "" || block.TYPE_REQ == undefined || block.MES_REF ==
+					"" || block.MES_REF == undefined || parseFloat(block.BETRG) <= 0 || block.BETRG == undefined) {
 					return false;
+				}
+
+				if (empresa == "NEO" && block.TYPE_INC == "P") {
+					if (block.CURSO == "" || block.CURSO == undefined || block.INSTITUICAO == "" || block.INSTITUICAO == undefined || block.TELEFONE ==
+						"" || block.TELEFONE ==
+						undefined || block.CIDADE == "" || block.CIDADE == undefined ||
+						block.BEGDA == "" || block.BEGDA == undefined || block.ENDDA == "" ||
+						block.ENDDA == undefined
+					) {
+						return false;
+					}
 				}
 			}
 
+			return initialCheck() && this.fRequiredFieldsAreOk();
 			// if (model.TYPE_DEPEN == "" || model.TYPE_DEPEN == undefined || model.FCNAM == "" || model.FCNAM == undefined || model.TYPE_SOL ==
 			// 	"" || model.TIP_AUX == "" || model.TIP_AUX == undefined || model.TYPE_SOL == undefined || parseFloat(model.BETRG) <= 0 || model.BETRG ==
 			// 	"" || model.BETRG == undefined || model.INSTITUICAO ==
@@ -712,13 +725,60 @@ sap.ui.define([
 			//callback
 			function fCallback(oEvent) {
 				if(oEvent.BLOCK.OBSERVACAO !== ""){
+					this.getView().byId("dtMesRef").setValueState(sap.ui.core.ValueState.Error);
 					MessageBox.error(oEvent.BLOCK.OBSERVACAO);
+				}else{
+					this.getView().byId("dtMesRef").setValueState(sap.ui.core.ValueState.None);
 				}
 			}
 
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
 			oModel.create("ET_VALIDATE_EDUCATION_INCENTIVES", oValidate, null, fCallback, fCallback);
 		},
+		fFieldIsEmpty: function (id) {
+			const field = this.getView().byId(id);
+			const isVisible = field.getProperty("visible");
+			if(!isVisible) return false;
+			const value = field.getValue();
+			if(value == "") return true;
+			return false;
+		},
+		fRequiredFieldsAreOk: function () {
+			var allOk = true;
+			if(this.fFieldIsEmpty('ipEduIncTypeADP')) allOk = false;
+			if(this.fFieldIsEmpty('dtMesRef')) allOk = false;
+			if(this.fFieldIsEmpty('ipBetrg')) allOk = false;
+			if(this.fFieldIsEmpty('ipBetrgAdm')) allOk = false;
+			if(this.fFieldIsEmpty('ipNomeCurso')) allOk = false;
+			if(this.fFieldIsEmpty('ipCargaHoraria')) allOk = false;
+			if(this.fFieldIsEmpty('dtDataInicio')) allOk = false;
+			if(this.fFieldIsEmpty('dtDataFim')) allOk = false;
+			if(this.fFieldIsEmpty('ipInstituicao')) allOk = false;
+			if(this.fFieldIsEmpty('ipTelInstituicao')) allOk = false;
+			if(this.fFieldIsEmpty('ipLocalInstituicao')) allOk = false;
+			if(this.fFieldIsEmpty('ipEmail')) allOk = false;
+			if(this.fFieldIsEmpty('ipGerencia')) allOk = false;
+			if(this.fFieldIsEmpty('ipLocTrab')) allOk = false;
+			if(this.fFieldIsEmpty('ipCelular')) allOk = false;
+			if(this.fFieldIsEmpty('ipRamal')) allOk = false;
+			if(this.fFieldIsEmpty('ipUltForm')) allOk = false;
+			if(this.fFieldIsEmpty('ipCursoSol')) allOk = false;
+			if(this.fFieldIsEmpty('ipTipoCurso')) allOk = false;
+			if(this.fFieldIsEmpty('ipNomeInstEns')) allOk = false;
+			if(this.fFieldIsEmpty('ipEmailInst')) allOk = false;
+			if(this.fFieldIsEmpty('ipTelInst')) allOk = false;
+			if(this.fFieldIsEmpty('ipPesContato')) allOk = false;
+			if(this.fFieldIsEmpty('ipLocCurso')) allOk = false;
+			if(this.fFieldIsEmpty('ipCargaHorariaElek')) allOk = false;
+			if(this.fFieldIsEmpty('ipRegCurso')) allOk = false;
+			if(this.fFieldIsEmpty('dtInicio')) allOk = false;
+			if(this.fFieldIsEmpty('dtFim')) allOk = false;
+			if(this.fFieldIsEmpty('ipValorTot')) allOk = false;
+			if(this.fFieldIsEmpty('ipValorMen')) allOk = false;
+			if(this.fFieldIsEmpty('ipObjetivo')) allOk = false;
+			return allOk;
+		}
+
 	});
 
 });

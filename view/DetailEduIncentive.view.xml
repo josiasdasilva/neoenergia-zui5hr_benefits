@@ -445,22 +445,22 @@
 					<!--		<l:GridData span="L4 M4 S8"/>-->
 					<!--	</layoutData>-->
 					<!--</Input>-->
-					<Label text="{i18n>descricao_programa_estudo}" class="sapUiSmallMarginTop" id="lblDescProg" required="true">
+					<Label text="{i18n>descricao_programa_estudo}" class="sapUiSmallMarginTop" id="lblDescProg" required="false">
 						<layoutData>
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input id="ipDescProg" value="{ET_BLOCK>/DESCR_PROG}" maxLength="80" required="true">
+					<Input id="ipDescProg" value="{ET_BLOCK>/DESCR_PROG}" maxLength="80" required="false">
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>
 					</Input>
-					<Label text="{i18n>encerramento_bolsa_estudos}" class="sapUiSmallMarginTop" id="lblEncBolsa" required="true">
+					<Label text="{i18n>encerramento_bolsa_estudos}" class="sapUiSmallMarginTop" id="lblEncBolsa" required="false">
 						<layoutData>
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input id="ipEncBolsa" value="{ET_BLOCK>/ENC_BOLSA}" maxLength="80" required="true">
+					<Input id="ipEncBolsa" value="{ET_BLOCK>/ENC_BOLSA}" maxLength="80" required="false">
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>
