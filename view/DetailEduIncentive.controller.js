@@ -555,7 +555,7 @@ sap.ui.define([
 			this.fValidateRequisition();
 			const isValid = () => {
 				const valueState = this.getView().byId("dtMesRef").getValueState();
-				if (valueState !== sap.ui.core.ValueState.none) {
+				if (valueState !== sap.ui.core.ValueState.None) {
 					return false;
 				}
 				return true;
