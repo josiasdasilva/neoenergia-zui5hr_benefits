@@ -726,7 +726,7 @@ sap.ui.define([
 			//callback
 			const that = this;
 			function fCallback(oEvent) {
-				if(oEvent.BLOCK.OBSERVACAO !== ""){
+				if(oEvent && oEvent.BLOCK && oEvent.BLOCK.OBSERVACAO && oEvent.BLOCK.OBSERVACAO !== ""){
 					that.getView().byId("dtMesRef").setValueState(sap.ui.core.ValueState.Error);
 					MessageBox.error(oEvent.BLOCK.OBSERVACAO);
 				}else{
