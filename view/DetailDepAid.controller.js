@@ -2,7 +2,6 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/resource/ResourceModel",
 	"sap/m/MessageBox",
-	"cadastralMaintenance/model/formatter",
 	"cadastralMaintenance/view/BaseController",
 	"cadastralMaintenance/formatter/Formatter",
 	"sap/ui/model/json/JSONModel",
