@@ -475,7 +475,6 @@
 						<layoutData>
 							<l:GridData span="L12 M12 S12"/>
 						</layoutData>
-					</Input>
           </TextArea>
 					<Label text="{i18n>estou_de_acordo}" class="sapUiSmallMarginTop" id="lblDeAcordo">
 						<layoutData>
