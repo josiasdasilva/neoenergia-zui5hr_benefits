@@ -837,10 +837,8 @@ sap.ui.define([
         sap.ui.getCore().setModel(oQuickViewModelText, "ET_QUICK_VIEW_TEXT");
         this._Dialog.open();
       },
-      onClose: function(event) {
+      onClose: function (oEvent) {
         this._Dialog.close();
       }
-    });
-  }
-  
-});
+    })
+  });
