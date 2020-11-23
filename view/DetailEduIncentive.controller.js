@@ -836,7 +836,11 @@ sap.ui.define([
         this._Dialog = sap.ui.xmlfragment("cadastralMaintenance.view.QuickView", this);
         sap.ui.getCore().setModel(oQuickViewModelText, "ET_QUICK_VIEW_TEXT");
         this._Dialog.open();
+      },
+      onClose: function(event) {
+        this._Dialog.close();
       }
     });
-    
-  });
+  }
+  
+});
