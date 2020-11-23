@@ -471,7 +471,12 @@
 					<!--		<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>-->
 					<!--	</layoutData>-->
 					<!--</Label>-->
-					<TextArea id="taDeAcordo" growing="false" change="onJustChange" maxLength="255" editable="false" value="{i18n>acordo_inc_edu}"/>
+					<TextArea id="taDeAcordo" growing="false" change="onJustChange" maxLength="255" editable="false" value="{i18n>acordo_inc_edu}">
+						<layoutData>
+							<l:GridData span="L12 M12 S12"/>
+						</layoutData>
+					</Input>
+          </TextArea>
 					<Label text="{i18n>estou_de_acordo}" class="sapUiSmallMarginTop" id="lblDeAcordo">
 						<layoutData>
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
