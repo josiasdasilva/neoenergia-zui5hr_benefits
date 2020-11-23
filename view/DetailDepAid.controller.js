@@ -2,6 +2,7 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/resource/ResourceModel",
 	"sap/m/MessageBox",
+	"cadastralMaintenance/model/formatter",
 	"cadastralMaintenance/view/BaseController",
 	"cadastralMaintenance/formatter/Formatter",
 	"sap/ui/model/json/JSONModel",
@@ -10,6 +11,7 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("cadastralMaintenance.view.DetailDepAid", {
+		formatter: formatter,
 		onInit: function () {
 			this.oInitialLoadFinishedDeferred = jQuery.Deferred();
 
@@ -569,11 +571,18 @@ sap.ui.define([
 
 		},
 		onDependentRowSelectionChange: function (oEvent) {
-			this.fEnableAll();
-			// var selectedRow = this.fGetSelectedRowDetail();
-			// this.fFillDependentDetail(selectedRow);
+			var selectedRow = this.fGetSelectedRowDetail();
+			this.fFillDependentDetail(selectedRow);
 
-			// varsd model = this.getView().getModel("ET_BLOCK");
+			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
+			for (var i = 0; i < results.length; i++) {
+				if (results[i].OBJPS === selectedRow.OBJPS) {
+					var str = results[i].TIP_AUX_ATUAL;
+					this.getView().byId("btnAddSol").setEnabled(str.includes("INS"));
+					this.getView().byId("btnReembolso").setEnabled(str.includes("UPD"));
+					this.getView().byId("btnExcluir").setEnabled(str.includes("DEL"));
+				}
+			}
 			// model.getData().OBJPS = selectedRow.OBJPS;
 			// model.getData().FCNAM = selectedRow.FCNAM;
 			// model.getData().TYPE = ""; 
