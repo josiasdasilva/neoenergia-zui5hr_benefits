@@ -1,0 +1,535 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form"
+	xmlns:t="sap.ui.table" controllerName="cadastralMaintenance.view.DetailEduIncentive" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="{i18n>incentivo_educacional}">
+		<headerContent>
+			<Button id="btnQuickViewHelp" class="sapUiSmallMarginBottom" text="{i18n>ajuda}" press="onPressQuickView" icon="sap-icon://sys-help-2"
+				visible="false"/>
+		</headerContent>
+		<ObjectHeader binding="{ET_HEADER/'}" title="{ET_HEADER>/CNAME}" number="{ET_HEADER>/ABKRS}"
+			numberUnit="{ET_HEADER>/NAME1} - {ET_HEADER>/BTEXT}" class="corFundo">
+			<statuses>
+				<ObjectStatus text="Cargo: {ET_HEADER>/STLTX}" class="" id="lblCargo" state="None"/>
+				<ObjectStatus text="Data de admissão: { path: 'ET_HEADER>/HIRE_DATE', formatter:'cadastralMaintenance.formatter.Formatter.dataAdmissao'}"
+					class="" id="lblAdmissao" state="None"/>
+			</statuses>
+			<ObjectAttribute id='Pernr' text="Matrícula: {ET_HEADER>/PERNR}"/>
+			<ObjectAttribute text="" id="lblNumReq"/>
+			<ObjectAttribute text="" class="" id="lblStatus"/>
+		</ObjectHeader>
+		<l:VerticalLayout class="sapUiContentPadding" id="oVerticalContentBusy" width="100%">
+			<l:dependents>
+				<core:Fragment fragmentName="cadastralMaintenance.view.BusyDialog" type="XML"/>
+			</l:dependents>
+		</l:VerticalLayout>
+		<VBox class="sapUiResponsiveMargin">
+			<f:SimpleForm id="formGeneral" layout="ResponsiveGridLayout" title="{i18n>incentivo_educacional}" labelSpanL="1" labelSpanM="1"
+				emptySpanL="0" emptySpanM="0" columnsL="4" columnsM="4" labelMinWidth="100" columnsXL="4">
+				<f:toolbar>
+					<Toolbar id="tbHealthAid">
+						<Title text="{i18n>incentivo_educacional}" level="H4" titleStyle="H4"/>
+					</Toolbar>
+				</f:toolbar>
+				<f:content>
+					<Label text="{i18n>tipo_solicitacao}" class="sapUiSmallMarginTop" id="lblSolType" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Select id="slSolType" selectedKey="{ET_BLOCK>/TYPE_REQ}" change="onChangeSol">
+						<items>
+							<core:Item text="Primeira Solicitação" key="P"/>
+							<core:Item text="Reembolso" key="R"/>
+						</items>
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Select>
+					<Label text="{i18n>tipo_incentivo_educacional}" class="sapUiSmallMarginTop" id="lblEduIncType" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Select id="slEduIncType" items="{ path: 'benef>/table', sorter: { path: 'text' } }" selectedKey="{ET_BLOCK>/TYPE_INC}">
+						<core:Item key="{benef>key}" text="{benef>desc}"/>
+						<layoutData> 
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Select>
+					<Label text="{i18n>tipo_incentivo_educacional}" class="sapUiSmallMarginTop" id="lblEduIncTypeADP" required="true" visible="false">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input value="{ET_BLOCK>/TYPE_INC_ELEK}" width="" id="ipEduIncTypeADP" change="onChange" fieldWidth="30%"
+						required="true" visible="false">
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>mes_ref}" class="sapUiSmallMarginTop" id="lblMesRef" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<DatePicker id="dtMesRef" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" value="{ET_BLOCK>/MES_REF}" change="onChangeMesRef" placeholder="{i18n>periodo}" required="true">
+					<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</DatePicker>
+					<Label text="{i18n>valor_pago}" class="sapUiSmallMarginTop" id="lblBetrg" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input value="{path:'ET_BLOCK>/BETRG', type:'sap.ui.model.type.Float'}" width="" id="ipBetrg" change="onChange" fieldWidth="30%"
+						required="true">
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</Input>
+					
+					<Label text="{i18n>perc_reembolso}" class="sapUiSmallMarginTop" id="lblPerc" visible="false">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input value="{path:'ET_BLOCK>/PERCENTUAL', type:'sap.ui.model.type.Float'}" width="" id="ipPerc" change="onChange" fieldWidth="30%" visible="false">
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>valor_reembolsado}" class="sapUiSmallMarginTop" id="lblBetrgAdm" required="true" visible="false">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input value="{path:'ET_BLOCK>/BETRG_ADM', type:'sap.ui.model.type.Float'}" width="" id="ipBetrgAdm" change="onChange" fieldWidth="30%"
+						required="true" visible="false">
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</Input>
+				</f:content>
+			</f:SimpleForm>
+			<f:SimpleForm id="formNeoEdu" layout="ResponsiveGridLayout" visible="false">
+				<f:content>
+					<Label text="{i18n>nome_curso}" class="sapUiSmallMarginTop" id="lblNomeCurso" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipNomeCurso" value="{ET_BLOCK>/CURSO}" maxLength="80" >
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>carga_horaria_total}" class="sapUiSmallMarginTop" id="lblCargaHoraria" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipCargaHoraria" value="{ET_BLOCK>/CARGA_HORARIA}" maxLength="80">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>data_inicio_edu}" class="sapUiSmallMarginTop" required="true" id="lblDataInicio">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<DatePicker id="dtDataInicio" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" value="{ET_BLOCK>/BEGDA}" placeholder="{i18n>periodo}"
+						required="true">
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</DatePicker>
+					<Label text="{i18n>data_fim_edu}" class="sapUiSmallMarginTop" required="true" id="lblDataFim">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<DatePicker id="dtDataFim" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" value="{ET_BLOCK>/ENDDA}" placeholder="{i18n>periodo}" required="true">
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</DatePicker>
+					<Label text="{i18n>instituicao_ensino}" class="sapUiSmallMarginTop" id="lblInstituicao" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipInstituicao" value="{ET_BLOCK>/INSTITUICAO}" maxLength="80">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>telefone_instituicao_ensino}" class="sapUiSmallMarginTop" id="lblTelInstituicao" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipTelInstituicao" value="{ET_BLOCK>/TEL_INST}" maxLength="80">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>local_instituicao}" class="sapUiSmallMarginTop" id="lblLocalInstituicao" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipLocalInstituicao" value="{ET_BLOCK>/CIDADE}" maxLength="80">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>pri_formacao_edu}" class="sapUiSmallMarginTop" id="lblPriForm" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Select id="slPriForm" selectedKey="{ET_BLOCK>/PRI_FORM}">
+						<items>
+							<core:Item text="Sim" key="S"/>
+							<core:Item text="Não" key=""/>
+						</items>
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</Select>
+					<Label text="{i18n>recebeu_inc_educacional}" class="sapUiSmallMarginTop" id="lblRecebeuInc" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Select id="slRecebeuInc" selectedKey="{ET_BLOCK>/INC_RECEBIDO}" change="fRecebInc">
+						<items>
+							<core:Item text="Sim" key="X"/>
+							<core:Item text="Não" key=""/>
+						</items>
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</Select>
+					<Label text="{i18n>descricao_incentivo_educacional}" class="sapUiSmallMarginTop" id="lblDescricao">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipDescricao" value="{ET_BLOCK>/OBSERVACAO}" maxLength="80" enabled="false">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+				</f:content>
+			</f:SimpleForm>
+			<f:SimpleForm id="formElekEdu" layout="ResponsiveGridLayout" visible="false" >
+				<f:content>
+					<Label text="{i18n>email}" class="sapUiSmallMarginTop" id="lblEmail" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipEmail" value="{ET_BLOCK>/EMAIL}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>gerencia}" class="sapUiSmallMarginTop" id="lblGerencia" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipGerencia" value="{ET_BLOCK>/GERENCIA}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>local_trabalho}" class="sapUiSmallMarginTop" id="lblLocTrab" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipLocTrab" value="{ET_BLOCK>/XXX}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>celular}" class="sapUiSmallMarginTop" id="lblCelular" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipCelular" value="{ET_BLOCK>/PHONE}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>ramal}" class="sapUiSmallMarginTop" id="lblRamal" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipRamal" value="{ET_BLOCK>/RAMAL}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>ultima_formacao}" class="sapUiSmallMarginTop" id="lblUltForm" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipUltForm" value="{ET_BLOCK>/ULT_FORM}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>curso_solicitado}" class="sapUiSmallMarginTop" id="lblCursoSol" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipCursoSol" value="{ET_BLOCK>/CURSO_SOLICIT}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>tipo_curso}" class="sapUiSmallMarginTop" id="lblTipoCurso" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipTipoCurso" value="{ET_BLOCK>/TIPO_CURSO}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>nome_instituicao}" class="sapUiSmallMarginTop" id="lblNomeInstEns" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipNomeInstEns" value="{ET_BLOCK>/NOME_INST}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>email_instituicao}" class="sapUiSmallMarginTop" id="lblEmailInst" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipEmailInst" value="{ET_BLOCK>/EMAIL_INST}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>telefone_instituicao}" class="sapUiSmallMarginTop" id="lblTelInst" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipTelInst" value="{ET_BLOCK>/TEL_INST}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>pessoa_contato}" class="sapUiSmallMarginTop" id="lblPesContato" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipPesContato" value="{ET_BLOCK>/PESSOA_CONTATO}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>local_realizacao_curso}" class="sapUiSmallMarginTop" id="lblLocCurso" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipLocCurso" value="{ET_BLOCK>/LOCAL_CURSO}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>carga_horaria_mensal}" class="sapUiSmallMarginTop" id="lblCargaHorariaElek" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipCargaHorariaElek" value="{ET_BLOCK>/CARGA_HORARIA}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>regime_curso}" class="sapUiSmallMarginTop" id="lblRegCurso" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipRegCurso" value="{ET_BLOCK>/REGIME_CURSO}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>data_inicio_curso}" class="sapUiSmallMarginTop" id="lblDtInicio" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<DatePicker id="dtInicio" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" value="{ET_BLOCK>/BEGDA}" placeholder="{i18n>periodo}" required="true">
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</DatePicker>
+					<Label text="{i18n>data_fim_curso}" class="sapUiSmallMarginTop" id="lblDtFim" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<DatePicker id="dtFim" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" value="{ET_BLOCK>/ENDDA}" placeholder="{i18n>periodo}" required="true">
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</DatePicker>
+					<Label text="{i18n>valor_total_curso}" class="sapUiSmallMarginTop" id="lblValorTot" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipValorTot" value="{ET_BLOCK>/VALOR_TOT}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>valor_mensal_curso}" class="sapUiSmallMarginTop" id="lblValorMen" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipValorMen" value="{ET_BLOCK>/VALOR_MEN}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>objetivo_just_curso}" class="sapUiSmallMarginTop" id="lblObjetivo" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipObjetivo" value="{ET_BLOCK>/OBJETIVO}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>ja_partic_programa_est}" class="sapUiSmallMarginTop" id="lblProgBolsa" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Select id="sJaPartic" selectedKey="{ET_BLOCK>/JA_PARTIC_PRG_EST}" change="onChangeParticBolsa">
+						<items>
+							<core:Item text="Sim" key="S"/>
+							<core:Item text="Não" key=""/>
+						</items>
+						<layoutData>
+							<l:GridData span="L2 M2 S4"/>
+						</layoutData>
+					</Select>
+					<!--<Input id="ipEmail" value="{ET_BLOCK>/OBSERVACAO}" maxLength="80">-->
+					<!--	<layoutData>-->
+					<!--		<l:GridData span="L4 M4 S8"/>-->
+					<!--	</layoutData>-->
+					<!--</Input>-->
+					<Label text="{i18n>descricao_programa_estudo}" class="sapUiSmallMarginTop" id="lblDescProg" required="false">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipDescProg" value="{ET_BLOCK>/DESCR_PROG}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<Label text="{i18n>encerramento_bolsa_estudos}" class="sapUiSmallMarginTop" id="lblEncBolsa" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<Input id="ipEncBolsa" value="{ET_BLOCK>/ENC_BOLSA}" maxLength="80" required="true">
+						<layoutData>
+							<l:GridData span="L4 M4 S8"/>
+						</layoutData>
+					</Input>
+					<!--<Label text="{i18n>acordo_inc_edu}" class="sapUiSmallMarginTop" id="lblAcordo" required="true">-->
+					<!--	<layoutData>-->
+					<!--		<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>-->
+					<!--	</layoutData>-->
+					<!--</Label>-->
+					<TextArea id="taDeAcordo" growing="false" change="onJustChange" maxLength="255" editable="false" value="{i18n>acordo_inc_edu}"/>
+					<Label text="{i18n>estou_de_acordo}" class="sapUiSmallMarginTop" id="lblDeAcordo">
+						<layoutData>
+							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+						</layoutData>
+					</Label>
+					<CheckBox id="cbDeAcordo" selected="{ET_BLOCK>/ACORDO}">
+						<layoutData>
+							<l:GridData span="L1 M1 S12" />
+						</layoutData>
+					</CheckBox>
+					<!--<Input id="ipEmail" value="{ET_BLOCK>/OBSERVACAO}" maxLength="80">-->
+					<!--	<layoutData>-->
+					<!--		<l:GridData span="L4 M4 S8"/>-->
+					<!--	</layoutData>-->
+					<!--</Input>-->
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<!--JUSTIFICATION-->
+		<VBox class="sapUiSmallMargin">
+			<f:SimpleForm id="formJustification" editable="false" layout="ResponsiveGridLayout" title="{i18n>just_coment}" labelSpanL="2" labelSpanM="2"
+				adjustLabelSpan="false" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2">
+				<f:content>
+					<TextArea id="taJust" growing="false" change="onJustChange"/>
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<!--JUSTIFICATION SSG-->
+		<VBox class="sapUiSmallMargin">
+			<f:SimpleForm id="formJustificationSSG" editable="false" layout="ResponsiveGridLayout" title="{i18n>just_coment_SSG}" labelSpanL="2"
+				labelSpanM="2" adjustLabelSpan="false" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2" visible="false">
+				<f:content>
+					<TextArea id="taJustSSG" growing="false" change="onJustChange" maxLength="255" editable="false"/>
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<!--ATTACHMENT-->
+		<UploadCollection id="UploadCollection" maximumFilenameLength="50" maximumFileSize="1" multiple="false" change="onChangeAttachment"
+			items="{ path: 'Attachments>/table' }" uploadComplete="onUploadAttComplete" beforeUploadStarts="onBeforeUpload"
+			fileType="{uploadOptions>/selected}" instantUpload="false" noDataDescription="Mova o Arquivo ou Insira um clicando no botão &quot;+&quot;"
+			filenameLengthExceed="onFilenameLength" uploadEnabled="{uploadOptions>/uploadEnabled}" fileSizeExceed="onFileSize">
+			<items>
+				<UploadCollectionItem documentId="{Attachments>documentId}" fileName="{Attachments>Filename}" mimeType="{Attachments>Mimetype}"
+					url="{Attachments>Url}" enableEdit="false" enableDelete="{Attachments>Delete}" visibleDelete="{Attachments>Delete}" visibleEdit="false"></UploadCollectionItem>
+			</items>
+		</UploadCollection>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>formulario}" press="onFormulario" icon="sap-icon://form" id="btnForms" />
+				<Button text="{i18n>saneamento}" press="onSanitation" icon="sap-icon://accounting-document-verification" id="btnSanity"
+					tooltip="{i18n>saneamento_tooltip}" visible="false"/>
+				<Button text="{i18n>salvar}" press="onSave" icon="sap-icon://save" id="btnSave" tooltip="{i18n>salvar_tooltip}" visible="false"/>
+				<Button type="Accept" text="{i18n>enviar}" press="onSend" icon="sap-icon://forward" id="btnAccept" tooltip="{i18n>enviar_tooltip}"/>
+				<Button type="Reject" text="{i18n>cancelar}" press="onCancel" icon="sap-icon://cancel" id="btnCancel" visible="false"
+					tooltip="{i18n>cancelar_tooltip}"/>
+				<Button type="Accept" text="{i18n>aprovar}" press="onApprove" icon="sap-icon://accept" id="btnApprove" visible="false"/>
+				<Button type="Reject" text="{i18n>reprovar}" press="onReject" icon="sap-icon://decline" id="btnReject" visible="false"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>
