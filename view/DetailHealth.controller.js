@@ -28,8 +28,8 @@ sap.ui.define([
 			this.fGetBlock();
 			this.fCheckSaneaBtn("114");
 		},
-
-		onJustChange: function (oEvent) {
+		// teste
+		onJustChange: function (oEvent) { 
 			this.getView().byId("btnSave").setEnabled(true);
 		},
 		onChangeHealth: function (oEvent) {
