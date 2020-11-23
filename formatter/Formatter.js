@@ -26,7 +26,7 @@ sap.ui.define(function () {
 				return "";
 			}
 			return number.format(sValue).toString();
-		}
+		},
 		membro: function (type) {
 			switch (type) {
 			case "1":
@@ -54,11 +54,11 @@ sap.ui.define(function () {
 			case "DEL":
 				return "Exclusão";
 			case "MOD":
-				return "Modificação"; 
+				return "Modificação";
 			case "":
 				return "";
 			}
-			return type; 
+			return type;
 		},
 
 		dataAdmissao: function (value) {

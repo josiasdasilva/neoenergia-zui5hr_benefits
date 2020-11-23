@@ -10,7 +10,7 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("cadastralMaintenance.view.DetailDepAid", {
-		formatter: formatter,
+		formatter: Formatter,
 		onInit: function () {
 			this.oInitialLoadFinishedDeferred = jQuery.Deferred();
 
