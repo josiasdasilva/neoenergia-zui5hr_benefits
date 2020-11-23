@@ -30,8 +30,18 @@ sap.ui.define([
 
 			this.fGetBlock();
 			this.fSearchHelps(this, this.getView().getModel("ET_HEADER").getData().PERNR);
+			this.fDisableAll();
 		},
-
+		fDisableAll: function () {
+			this.getView().byId("btnAddSol").setEnabled(false);
+			this.getView().byId("btnReembolso").setEnabled(false);
+			this.getView().byId("btnExcluir").setEnabled(false);
+		},
+		fEnableAll: function () {
+			this.getView().byId("btnAddSol").setEnabled(true);
+			this.getView().byId("btnReembolso").setEnabled(true);
+			this.getView().byId("btnExcluir").setEnabled(true);
+		},
 		//	--------------------------------------------
 		//	fGetBlock
 		//	--------------------------------------------		
@@ -123,7 +133,7 @@ sap.ui.define([
 				that.fChangeForms(that);
 				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
 					that.getAttachment(oEvent.BLOCK.REQUISITION_ID, "BDV");
-					if(oEvent.BLOCK.ACTIO === "DEL"){
+					if (oEvent.BLOCK.ACTIO === "DEL") {
 						that.fOcultaCamposDel();
 					}
 				}
@@ -169,7 +179,7 @@ sap.ui.define([
 			oView.byId("ipCNPJ").setEnabled(false);
 			oView.byId("taJust").setEnabled(false);
 		},
-		fOcultaCamposDel:function(){
+		fOcultaCamposDel: function () {
 			var oView = this.getView();
 			oView.byId("lblMemberType").setVisible(false);
 			oView.byId("slMemberType").setVisible(false);
@@ -189,7 +199,7 @@ sap.ui.define([
 			oView.byId("lblCNPJ").setVisible(false);
 			oView.byId("ipCNPJ").setVisible(false);
 			oView.byId("lblInst").setVisible(false);
-			
+
 		},
 		fChangeForms: function (that) {
 			that.getView().byId("formDepAid").setVisible(true);
@@ -274,9 +284,9 @@ sap.ui.define([
 				oCreate.BLOCK.INSTITUICAO = "";
 				oCreate.BLOCK.CNPJ_INST = "";
 				oCreate.BLOCK.REEMBOLSO = "";
-				if(oCreate.BLOCK.REQUISITION_ID == "00000000" || oCreate.BLOCK.REQUISITION_ID == undefined){
+				if (oCreate.BLOCK.REQUISITION_ID == "00000000" || oCreate.BLOCK.REQUISITION_ID == undefined) {
 					oCreate.BLOCK.DT_SOLICIT = that.dataAtualFormatada();
-				}else{
+				} else {
 					oCreate.BLOCK.DT_SOLICIT = oActualModel.DT_SOLICIT;
 				}
 				return;
@@ -292,9 +302,9 @@ sap.ui.define([
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
-			if(oCreate.BLOCK.REQUISITION_ID == "00000000" || oCreate.BLOCK.REQUISITION_ID == undefined){
+			if (oCreate.BLOCK.REQUISITION_ID == "00000000" || oCreate.BLOCK.REQUISITION_ID == undefined) {
 				oCreate.BLOCK.DT_SOLICIT = that.dataAtualFormatada();
-			}else{
+			} else {
 				oCreate.BLOCK.DT_SOLICIT = oActualModel.DT_SOLICIT;
 			}
 
@@ -409,7 +419,7 @@ sap.ui.define([
 				if (regras === false) {
 					return;
 				}
-				
+
 				var oblig = this.fObligatoryFields();
 
 				if (oblig === false) {
@@ -423,8 +433,8 @@ sap.ui.define([
 			if (valid === false) {
 				return;
 			}
-			
-			if(this.getView().getModel("ET_HEADER").getData().BUKRS == "NEO"){
+
+			if (this.getView().getModel("ET_HEADER").getData().BUKRS == "NEO") {
 				MessageBox.confirm(oBundle.getText('termo_dependente'), {
 					title: 'Termo',
 					initialFocus: sap.m.MessageBox.Action.OK,
@@ -436,7 +446,7 @@ sap.ui.define([
 						}
 					}
 				});
-			}else{
+			} else {
 				that.exclude = false;
 				that.fActions(that, "envio", "S");
 			}
@@ -559,13 +569,14 @@ sap.ui.define([
 
 		},
 		onDependentRowSelectionChange: function (oEvent) {
+			this.fEnableAll();
 			// var selectedRow = this.fGetSelectedRowDetail();
 			// this.fFillDependentDetail(selectedRow);
 
-			// var model = this.getView().getModel("ET_BLOCK");
+			// varsd model = this.getView().getModel("ET_BLOCK");
 			// model.getData().OBJPS = selectedRow.OBJPS;
 			// model.getData().FCNAM = selectedRow.FCNAM;
-			// model.getData().TYPE = "";
+			// model.getData().TYPE = ""; 
 			// model.getData().VALUE = "";
 			// model.getData().DATA = "";
 			// this.getView().byId("dtPeriodFrom").setValue();
@@ -655,17 +666,17 @@ sap.ui.define([
 				IvCnpjCpf = "";
 				IvTpSoli = "E";
 				IvInstBaba = "";
-				
-				if(this.getView().byId("cbTypeAuxExclude")){
-					if(this.getView().byId("cbTypeAuxExclude").getValue() != ""){
+
+				if (this.getView().byId("cbTypeAuxExclude")) {
+					if (this.getView().byId("cbTypeAuxExclude").getValue() != "") {
 						IvInstBaba = this.getView().byId("cbTypeAuxExclude").getValue();
 					}
 				}
 			}
-			
-			if(IvCnpjCpf == undefined){
+
+			if (IvCnpjCpf == undefined) {
 				IvCnpjCpf = "";
-				
+
 			}
 
 			if (block.TYPE_SOL == "Reembolso") {
