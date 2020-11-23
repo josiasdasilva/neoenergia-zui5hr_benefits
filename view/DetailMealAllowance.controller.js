@@ -836,11 +836,11 @@ sap.ui.define([
 
 				var combo = this.getView().byId("idCombo").getSelectedItem().getKey();
 
-				if (combo == "VALI") {
+				if (combo == "VALI" || combo == "VAES" || combo == "VA02" || combo == "VAE2") {
 					type = "A";
-				} else if (combo == "VREF") {
+				} else if (combo == "VREF" || combo == "VRES" || combo == "VR02" || combo == "VRE2") {
 					type = "R";
-				} else if (combo == "VAVR") {
+				} else if (combo == "VAVR" || combo == "VARE" || combo == "VAR2" || combo == "ARE2") {
 					type = "AR";
 				}
 			} else {
