@@ -424,14 +424,14 @@ sap.ui.define([
 
 			// Consistir data credito, não pode ser no passado
 			var data = new Date(),
-				dia = data.getDate().toString(),
-				diaF = (dia.length == 1) ? "0" + dia : dia,
-				mes = (data.getMonth() + 2).toString(), //+1 pois no getMonth Janeiro começa com zero.
-				mesF = (mes.length == 1) ? "0" + mes : mes,
+				diaa = data.getDate().toString(),
+				diaF = (dia.length == 1) ? "0" + diaa : diaa,
+				mesa = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+				mesF = (mes.length == 1) ? "0" + mesa : mesa,
 				anoF = data.getFullYear();
 
 			var begda = ano + mes + dia;
-			var atual = anoF + mesF + dia;
+			var atual = anoF + mesF + diaF;
 
 			if (begda < atual) {
 				MessageBox.error("A validade final não pode ser maior que 36 meses a partir da validade inicial");
