@@ -418,6 +418,7 @@ sap.ui.define([
 
 		onChangeDtCred: function() {
 
+//teste
 			var dia = this.getView().byId("dtDateCred").getValue().substring(0, 2);
 			var mes = this.getView().byId("dtDateCred").getValue().substring(3, 5);
 			var ano = this.getView().byId("dtDateCred").getValue().substring(6, 10);
