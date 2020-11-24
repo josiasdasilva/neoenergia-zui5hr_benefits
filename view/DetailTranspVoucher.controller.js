@@ -1341,9 +1341,9 @@ sap.ui.define([
               newLines = [];
               for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
-                const max = line.N_IDA > line.N_VOLTA ? line.N_IDA : line.N_VOLTA;
                 let countIda = parseInt(line.N_IDA);
                 let countVolta = parseInt(line.N_VOLTA);
+                const max = countIda > countVolta ? countIda : countVolta;
                 for (let i = 0; i < max; i++) {
                   let newLine = [...line];
                   newLine.N_IDA = i >= countIda ? "0": "1";
