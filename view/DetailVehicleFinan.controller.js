@@ -435,7 +435,7 @@ sap.ui.define([
 			var atual = anoF + mesF + diaF;
 
 			if (begda < atual) {
-				MessageBox.error("A validade final não pode ser maior que 36 meses a partir da validade inicial");
+				MessageBox.error("Data não pode ser inferior a data atual");
 				return;
 			} else {
 				//Setar Janeiro do proximo ano caso seja Dezembro
