@@ -5,11 +5,11 @@ sap.ui.define([
 	"cadastralMaintenance/view/BaseController",
 	"cadastralMaintenance/formatter/Formatter",
 	"sap/ui/model/json/JSONModel",
-], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel) {
+], function(Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel) {
 	"use strict";
 
 	return BaseController.extend("cadastralMaintenance.view.DetailVehicleFinan", {
-		onInit: function () {
+		onInit: function() {
 			this.oInitialLoadFinishedDeferred = jQuery.Deferred();
 
 			if (sap.ui.Device.system.phone) {
@@ -32,7 +32,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fGetBlock
 		//	--------------------------------------------		
-		fGetBlock: function () {
+		fGetBlock: function() {
 			var that = this;
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
 
@@ -45,17 +45,17 @@ sap.ui.define([
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
 
 				// Impedir gerar mais de uma solicitação para o mesmo colaborador | TIAGO
-				if ( oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A" & 
-				    (oGlobalData.IM_REQ_URL === "00000000" || oGlobalData.IM_REQ_URL === null ||
-				     oGlobalData.IM_REQ_URL === "" || oGlobalData.IM_REQ_URL === undefined) 
-				    ) {
+				if (oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A" &
+					(oGlobalData.IM_REQ_URL === "00000000" || oGlobalData.IM_REQ_URL === null ||
+						oGlobalData.IM_REQ_URL === "" || oGlobalData.IM_REQ_URL === undefined)
+				) {
 					that.getView().byId("dtValidFrom").setEnabled(false);
 					that.getView().byId("dtValidTo").setEnabled(false);
 					that.getView().byId("ipAppValue").setEnabled(false);
 					that.getView().byId("ipRequestedValue").setEnabled(false);
 					that.getView().byId("dtDateCred").setEnabled(false);
 					that.getView().byId("taJust").setEnabled(false);
-					
+
 					that.getView().byId("dtValidFrom").setValue(oEvent.BLOCK.VALID_FROM);
 					that.getView().byId("dtValidTo").setValue(oEvent.BLOCK.VALID_TO);
 					that.getView().byId("dtDateCred").setValue(oEvent.BLOCK.DATE_CRED);
@@ -159,7 +159,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fUnableFields
 		//	--------------------------------------------		
-		fUnableFields: function () {
+		fUnableFields: function() {
 			var oView = this.getView();
 			//oView.byId("UploadCollection").setUploadButtonInvisible(true);
 			oView.byId("dtValidFrom").setEnabled(false);
@@ -173,7 +173,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fUnableAllButtons
 		//	--------------------------------------------			
-		fUnableAllButtons: function () {
+		fUnableAllButtons: function() {
 			var oView = this.getView();
 
 			// oView.byId("btnSave").setEnabled(false);
@@ -186,7 +186,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fVerifyChange
 		//	--------------------------------------------		
-		fVerifyChange: function (that) {
+		fVerifyChange: function(that) {
 
 			if (parseFloat(this.getView().byId("ipRequestedValue").getValue()) <= 0 || this.getView().byId("dtValidFrom").getValue() == "" ||
 				this.getView().byId("dtValidTo").getValue() == "" || this.getView().byId("dtDateCred").getValue() == "") {
@@ -199,7 +199,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fValidInputFields
 		//	--------------------------------------------		
-		fValidInputFields: function () {
+		fValidInputFields: function() {
 
 			// if (parseFloat(this.getView().byId("ipRequestedValue").getValue()) <= 0 || this.getView().byId("dtValidFrom").getValue() == "" || 
 			// 	this.getView().byId("dtValidTo").getValue() == "" || this.getView().byId("dtDateCred").getValue() == "") {
@@ -212,7 +212,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fFillCreateEmergencyLoanData
 		// -------------------------------------------- 		
-		fFillCreateEmergencyLoanData: function (oCreate, that) {
+		fFillCreateEmergencyLoanData: function(oCreate, that) {
 			var oActualModel = that.getView().getModel("ET_BLOCK").getData();
 			var dataFrom = that.getView().byId("dtValidFrom").getValue();
 			var dataTo = that.getView().byId("dtValidTo").getValue();
@@ -231,7 +231,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fCreateRequisition
 		// -------------------------------------------- 
-		fCreateRequisition: function (that, action) {
+		fCreateRequisition: function(that, action) {
 			var oCreate = {};
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 
@@ -255,36 +255,36 @@ sap.ui.define([
 				oGlobalData.IM_REQUISITION_ID = oEvent.EX_REQUISITION_ID;
 
 				switch (action) {
-				case "A":
-					MessageBox.success("Aprovação realizada com sucesso!");
-					that.fVerifyAction(false, "A");
-					break;
+					case "A":
+						MessageBox.success("Aprovação realizada com sucesso!");
+						that.fVerifyAction(false, "A");
+						break;
 
-				case "S":
-					that.fSucessMessageFromSendAction(oEvent);
-					that.fVerifyAction(false, "S");
-					that.saveAttachment();
-					break;
+					case "S":
+						that.fSucessMessageFromSendAction(oEvent);
+						that.fVerifyAction(false, "S");
+						that.saveAttachment();
+						break;
 
-				case "C":
-					MessageBox.success("Operação realizada com sucesso! As alterações realizadas foram canceladas");
+					case "C":
+						MessageBox.success("Operação realizada com sucesso! As alterações realizadas foram canceladas");
 
-					that.fGetBlock();
+						that.fGetBlock();
 
-					var oUploadCollection = that.getView().byId("UploadCollection");
-					oUploadCollection.destroyItems();
-					that.fVerifyAction(false, "C");
-					break;
+						var oUploadCollection = that.getView().byId("UploadCollection");
+						oUploadCollection.destroyItems();
+						that.fVerifyAction(false, "C");
+						break;
 
-				case "R":
-					MessageBox.success(
-						"Operação realizada com sucesso! Após preencher todos os dados da solicitação, clique em enviar para dar continuidade ao atendimento"
-					);
+					case "R":
+						MessageBox.success(
+							"Operação realizada com sucesso! Após preencher todos os dados da solicitação, clique em enviar para dar continuidade ao atendimento"
+						);
 
-					that.fSetGlobalInformation(oEvent, that);
-					that.fVerifyAction(false, "R");
+						that.fSetGlobalInformation(oEvent, that);
+						that.fVerifyAction(false, "R");
 
-					break;
+						break;
 				}
 				that.fGetLog();
 			}
@@ -318,7 +318,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// onSend
 		// --------------------------------------------  
-		onSend: function () {
+		onSend: function() {
 
 			this.validValue();
 
@@ -334,21 +334,21 @@ sap.ui.define([
 		// --------------------------------------------
 		// onSend
 		// --------------------------------------------  
-		onApprove: function () {
+		onApprove: function() {
 			this.fActions(this, "aprovar", "A");
 		},
 
 		// --------------------------------------------
 		// onSave
 		// --------------------------------------------  
-		onSave: function () {
+		onSave: function() {
 			this.fActions(this, "gravação", "R");
 		},
 
 		// --------------------------------------------
 		// onCancel
 		// -------------------------------------------- 		
-		onCancel: function () {
+		onCancel: function() {
 
 			if (this.getView().byId("taJustSSG").getValue() === "") {
 				this.handleErrorMessageBoxDisapprove();
@@ -361,18 +361,18 @@ sap.ui.define([
 		// --------------------------------------------
 		// onPressQuickView
 		// -------------------------------------------- 
-		onPressQuickView: function () {
+		onPressQuickView: function() {
 			this._Dialog = sap.ui.xmlfragment("cadastralMaintenance.helpTextFiles.QuickViewHelpInsurance", this);
 			this._Dialog.open();
 		},
 		// --------------------------------------------
 		// onClose
 		// -------------------------------------------- 
-		onClose: function () {
+		onClose: function() {
 			this._Dialog.close();
 		},
 
-		onBeforeUpload: function (oEvent) {
+		onBeforeUpload: function(oEvent) {
 
 			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
 			var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
@@ -393,7 +393,7 @@ sap.ui.define([
 			}));
 
 		},
-		onUploadAttComplete: function (oEvent) {
+		onUploadAttComplete: function(oEvent) {
 			if (oEvent.mParameters.mParameters.status !== 201) {
 				MessageBox.error("Falha ao Salvar Arquivo ..!!");
 			} else {
@@ -402,10 +402,10 @@ sap.ui.define([
 			}
 		},
 
-		onChange: function (oEvent) {
+		onChange: function(oEvent) {
 			this.fVerifyChange(this);
 		},
-		onChangeValueSol: function () {
+		onChangeValueSol: function() {
 			var value = this.validValue();
 
 			if (value === false) {
@@ -416,32 +416,50 @@ sap.ui.define([
 
 		},
 
-		onChangeDtCred: function () {
+		onChangeDtCred: function() {
+
+			var dia = this.getView().byId("dtDateCred").getValue().substring(0, 2);
 			var mes = this.getView().byId("dtDateCred").getValue().substring(3, 5);
 			var ano = this.getView().byId("dtDateCred").getValue().substring(6, 10);
 
-			//Setar Janeiro do proximo ano caso seja Dezembro
-			if (mes == "12") {
-				mes = 1;
-				ano++;
+			// Consistir data credito, não pode ser no passado
+			var data = new Date(),
+				dia = data.getDate().toString(),
+				diaF = (dia.length == 1) ? "0" + dia : dia,
+				mes = (data.getMonth() + 2).toString(), //+1 pois no getMonth Janeiro começa com zero.
+				mesF = (mes.length == 1) ? "0" + mes : mes,
+				anoF = data.getFullYear();
+
+			var begda = ano + mes + dia;
+			var atual = anoF + mesF + dia;
+
+			if (begda < atual) {
+				MessageBox.error("A validade final não pode ser maior que 36 meses a partir da validade inicial");
+				return;
 			} else {
-				mes++;
+				//Setar Janeiro do proximo ano caso seja Dezembro
+				if (mes == "12") {
+					mes = 1;
+					ano++;
+				} else {
+					mes++;
+				}
+
+				var mesS = mes.toString();
+
+				if (mes < 10) {
+					mes = "0" + mesS;
+				} else {
+					mes = mesS;
+				}
+
+				//Setar valor na data "Valido De"
+				var dtValidFrom = "01" + "-" + mes + "-" + ano;
+				this.getView().byId("dtValidFrom").setValue(dtValidFrom);
 			}
-
-            var mesS = mes.toString();
-
-            if (mes < 10){
-                mes = "0" + mesS;
-            } else {
-                mes = mesS;
-            }
-            
-			//Setar valor na data "Valido De"
-			var dtValidFrom = "01" + "-" + mes + "-" + ano;
-			this.getView().byId("dtValidFrom").setValue(dtValidFrom);
 		},
 
-		onFormulario: function () {
+		onFormulario: function() {
 
 			var that = this;
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_FINAC_VEIC_SRV/");
@@ -492,7 +510,7 @@ sap.ui.define([
 			oModel.read("FinancVeiculoSet" + url, null, null, false, fSuccess, fError);
 
 		},
-		fObligatoryFields: function () {
+		fObligatoryFields: function() {
 
 			if (parseFloat(this.getView().byId("ipRequestedValue").getValue()) <= 0 || this.getView().byId("dtValidFrom").getValue() == "" ||
 				this.getView().byId("dtValidTo").getValue() == "" || this.getView().byId("dtDateCred").getValue() == "") {
@@ -501,15 +519,15 @@ sap.ui.define([
 			}
 
 		},
-/*		onChangeDtFrom: function (oEvent) {
-			var dtFrom = this.getView().byId("dtValidFrom").getValue();
-			var ano = dtFrom.substring(6, 10);
-			var mes = dtFrom.substring(3, 5);
-			var dia = dtFrom.substring(0, 2);
-			this.getView().byId("dtValidTo").setMinDate(new Date(ano, mes - 1, dia));
-		},*/
+		/*		onChangeDtFrom: function (oEvent) {
+					var dtFrom = this.getView().byId("dtValidFrom").getValue();
+					var ano = dtFrom.substring(6, 10);
+					var mes = dtFrom.substring(3, 5);
+					var dia = dtFrom.substring(0, 2);
+					this.getView().byId("dtValidTo").setMinDate(new Date(ano, mes - 1, dia));
+				},*/
 
-		onChangeDtTo: function () {
+		onChangeDtTo: function() {
 			var dtFrom = this.getView().byId("dtValidFrom").getValue();
 			var dtTo = this.getView().byId("dtValidTo").getValue();
 
@@ -524,7 +542,7 @@ sap.ui.define([
 			}
 		},
 
-		validValue: function () {
+		validValue: function() {
 			var model = this.getView().getModel("ET_BLOCK").getData();
 			if (parseFloat(model.VALUE_MAX) <= 0) {
 				return true;
