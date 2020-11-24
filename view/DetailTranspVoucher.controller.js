@@ -1181,9 +1181,29 @@ sap.ui.define([
             
             var dados = this.getView().getModel("ET_DATA_FORM").getData();
             
-            if (dados.SUBTY == "" || dados.MEIO_TRANS == "" || dados.TARIFA == "" || dados.N_IDA == "" || dados.N_VOLTA == "") {
+            if (dados.SUBTY == "" || dados.MEIO_TRANS == "" || dados.TARIFA == "" || ( dados.N_IDA == "" && dados.N_VOLTA == "")) {
               this.handleErrorMessageBoxPress();
               return;
+            }
+            
+            //calculate number of transport lines already included
+            var oModel = this.getView().getModel("ET_TRANSP");
+            var countIda = 0;
+            var countVolta = 0;
+            for (let i = 0; i < oModel.oData.length; i++) {
+              const item = oModel.oData[i];
+              countIda = countIda + item.N_IDA;
+              countVolta = countVolta + item.N_VOLTA;
+            }
+            
+            countIda = countIda + dados.N_IDA;
+            countVolta = countVolta + dados.N_VOLTA;
+            
+            if(countIda > 4 || countVolta > 4){
+              var oBundle = this.getView().getModel("i18n").getResourceBundle();
+              var message = oBundle.getText("maximo_4_linhas");
+              var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+              MessageBox.error(message, { styleClass: bCompact ? "sapUiSizeCompact" : "" });
             }
             
             this.getView().byId("btnAccept").setVisible(true);
@@ -1195,7 +1215,7 @@ sap.ui.define([
             if (this.getView().getModel("ET_ACTION").getData().ACTION == "I") {
               this.fAddNewLine();
               this.getView().byId("btnAdd").setEnabled(true);
-            } else if (this.getView().getModel("ET_ACTION").getData().ACTION == "M") {
+            } else if(this.getView().getModel("ET_ACTION").getData().ACTION == "M") {
               this.fEditLine(this.getView().getModel("ET_ACTION").getData().ROW);
               this.getView().byId("btnModify").setEnabled(true);
             }
