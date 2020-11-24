@@ -1305,7 +1305,8 @@ sap.ui.define([
             var that = this;
             var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_VALE_TRANS_SRV/");
             var url = "ValeTransSet?$filter="
-            var index = 0;
+            var indexIda = 0;
+            var indexVolta = 0;
             // var block = this.getView().getModel("ET_BLOCK").getData();
             
             var modelTable = this.getView().getModel("ET_TRANSP");
@@ -1360,51 +1361,73 @@ sap.ui.define([
               // var url = "ValeTransSet?$filter=FLD01 eq '1234' and FLD02 eq '123'";
               for (var i = 0; lines.length > i; i++) {
                 if (lines[i].ACTION == "INS") {
-                  if (index == 0) {
+                  switch (indexIda) {
+                    case 0:
                     if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
                       url += " and FLD07 eq '" + lines[i].MEIO_TRANS + "' and FLD08 eq '" + lines[i].LINHA + "' and FLD10 eq '" + valor + "'";
+                      indexIda++;
                     }
-                    
-                    if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
-                      valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
-                      url += " and FLD32 eq '" + lines[i].MEIO_TRANS + "' and FLD33 eq '" + lines[i].LINHA + "' and FLD35 eq '" + valor + "'";
-                    }
-                    
-                  } else if (index == 1) {
+                    break;
+                    case 1:
                     if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
                       url += " and FLD13 eq '" + lines[i].MEIO_TRANS + "' and FLD14 eq '" + lines[i].LINHA + "' and FLD16 eq '" + valor + "'";
+                      indexIda++;
                     }
+                    break;
                     
-                    if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
-                      valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
-                      url += " and FLD38 eq '" + lines[i].MEIO_TRANS + "' and FLD39 eq '" + lines[i].LINHA + "' and FLD41 eq '" + valor + "'";
-                    }
-                    
-                  } else if (index == 2) {
+                    case 2:
                     if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
                       url += " and FLD19 eq '" + lines[i].MEIO_TRANS + "' and FLD20 eq '" + lines[i].LINHA + "' and FLD22 eq '" + valor + "'";
+                      indexIda++;
                     }
+                    break;
                     
-                    if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
-                      valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
-                      url += " and FLD44 eq '" + lines[i].MEIO_TRANS + "' and FLD45 eq '" + lines[i].LINHA + "' and FLD47 eq '" + valor + "'";
-                    }
-                  } else if (index == 3) {
+                    case 3:
                     if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
                       url += " and FLD25 eq '" + lines[i].MEIO_TRANS + "' and FLD26 eq '" + lines[i].LINHA + "' and FLD28 eq '" + valor + "'";
+                      indexIda++;
                     }
-                    
-                    if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
-                      valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
-                      url += " and FLD50 eq '" + lines[i].MEIO_TRANS + "' and FLD51 eq '" + lines[i].LINHA + "' and FLD53 eq '" + valor + "'";
-                    }
+                    break;
+                    default:
+                    break;
                   }
                   
-                  index += 1;
+                  switch (indexVolta) {
+                    case 0:
+                      if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
+                        valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
+                        url += " and FLD32 eq '" + lines[i].MEIO_TRANS + "' and FLD33 eq '" + lines[i].LINHA + "' and FLD35 eq '" + valor + "'";
+                        indexVolta++;
+                      }
+                    break;
+                    case 1:
+                      if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
+                        valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
+                        url += " and FLD38 eq '" + lines[i].MEIO_TRANS + "' and FLD39 eq '" + lines[i].LINHA + "' and FLD41 eq '" + valor + "'";
+                        indexVolta++;
+                      }
+                    break;
+                    case 2:
+                      if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
+                        valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
+                        url += " and FLD44 eq '" + lines[i].MEIO_TRANS + "' and FLD45 eq '" + lines[i].LINHA + "' and FLD47 eq '" + valor + "'";
+                        indexVolta++;
+                      }
+                    break;
+                    case 3:
+                      if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
+                        valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
+                        url += " and FLD50 eq '" + lines[i].MEIO_TRANS + "' and FLD51 eq '" + lines[i].LINHA + "' and FLD53 eq '" + valor + "'";
+                        indexVolta++;
+                      }
+                    break;
+                    default:
+                    break;
+                  }  
                 }
               }
               
