@@ -85,8 +85,8 @@ sap.ui.define([
 					}
 				}
 
-				that.fSearchHelpPltyp(that, oEvent.BLOCK.PERNR);
-				that.fSearchHelpBplan(that, oEvent.BLOCK.PERNR, oEvent.BLOCK.PLTYP, true);
+				that.fSearchHelpPltyp(that, oGlobalData.IM_PERNR);
+				that.fSearchHelpBplan(that, oGlobalData.IM_PERNR, oEvent.BLOCK.PLTYP, true);
 
 				that.preenchimentoAutomatico(that, oEvent.BLOCK);
 				that.fSetGlobalInformation(oEvent, that);
