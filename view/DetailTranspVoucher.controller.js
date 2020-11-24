@@ -1345,7 +1345,7 @@ sap.ui.define([
                 let countVolta = parseInt(line.N_VOLTA);
                 const max = countIda > countVolta ? countIda : countVolta;
                 for (let i = 0; i < max; i++) {
-                  let newLine = [...line];
+                  let newLine = Object.assign({},line);
                   newLine.N_IDA = i >= countIda ? "0": "1";
                   newLine.N_VOLTA = i >= countVolta ? "0": "1";
                   newLines.push(newLine);
