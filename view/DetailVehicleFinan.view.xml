@@ -100,7 +100,7 @@
 				</f:content>
 			</f:SimpleForm>
 		</VBox>
-		<!--ATTACHMENT TIAGO-->
+		<!--ATTACHMENT TIAGO -->
 		<UploadCollection id="UploadCollection" maximumFilenameLength="50" maximumFileSize="1" multiple="false" change="onChangeAttachment"
 			items="{ path: 'Attachments>/table' }" uploadComplete="onUploadAttComplete" beforeUploadStarts="onBeforeUpload"
 			fileType="{uploadOptions>/selected}" instantUpload="false" noDataDescription="Mova o Arquivo ou Insira um clicando no botão &quot;+&quot;"
