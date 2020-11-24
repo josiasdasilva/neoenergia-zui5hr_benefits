@@ -1222,7 +1222,6 @@ sap.ui.define([
             
             this.fRefreshTable();
             this.fClearModelForm();
-            
           },
           fEditLine: function (row) {
             var oModel = this.getView().getModel("ET_TRANSP");
