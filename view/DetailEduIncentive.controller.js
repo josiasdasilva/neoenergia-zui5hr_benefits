@@ -32,6 +32,12 @@ sap.ui.define([
       this.fSearchHelps(this, this.getView().getModel("ET_HEADER").getData().PERNR);
     },
     
+    setParticProgFieldsVisibility: function (visible) {
+      this.getView().byId("lblDescProg").setVisible(visible);
+      this.getView().byId("ipDescProg").setVisible(visible);
+      this.getView().byId("lblEncBolsa").setVisible(visible);
+      this.getView().byId("ipEncBolsa").setVisible(visible);
+    },
     //	--------------------------------------------
     //	fGetBlock
     //	--------------------------------------------		
@@ -60,6 +66,9 @@ sap.ui.define([
       
       var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
       
+      //initial state
+      this.setParticProgFieldsVisibility(this.getView().byId("sJaPartic").getSelectedKey() === "S");
+
       function fSuccess(oEvent) {
         var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
         if (parseFloat(oEvent.BLOCK.VALUE_APPR) <= 0) {
@@ -89,7 +98,7 @@ sap.ui.define([
             }
             that.fUnableFields();
           }
-          
+
           var filters = [];
           
           filters = [new sap.ui.model.Filter("IDREQ", sap.ui.model.FilterOperator.EQ, oEvent.BLOCK.REQUISITION_ID)];
@@ -100,6 +109,7 @@ sap.ui.define([
           // that.getView().byId("upldAttachments").getBinding("items").filter(filters);
         }
         
+        that.setParticProgFieldsVisibility(oValue.JA_PARTIC_PRG_EST === "S");
         that.getView().setModel(oValue, "ET_BLOCK");
         
         if (oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A") {
@@ -800,22 +810,8 @@ sap.ui.define([
       },
       onChangeParticBolsa: function(oEvent) {
         const value = oEvent.getValue();
-        const lblDescProg = this.getView().byId('lblDescProg');
-        const ipDescProg = this.getView().byId('ipDescProg');
-        const lblEncBolsa = this.getView().byId('lblEncBolsa');
-        const ipEncBolsa = this.getView().byId('ipEncBolsa');
-        
-        if(value==="S"){
-          lblDescProg.setVisible(true);
-          ipDescProg.setVisible(true);
-          lblEncBolsa.setVisible(true);
-          ipEncBolsa.setVisible(true);
-        }else{
-          lblDescProg.setVisible(false);
-          ipDescProg.setVisible(false);
-          lblEncBolsa.setVisible(false);
-          ipEncBolsa.setVisible(false);
-        }
+        //show/hide fields 
+        this.setParticProgFieldsVisibility(value === "S")
       },
       isAcordoSelectionOk: function(){
         var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
