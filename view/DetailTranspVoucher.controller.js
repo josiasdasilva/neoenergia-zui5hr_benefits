@@ -29,12 +29,10 @@ sap.ui.define([
       this.globalVar();
       this.segButtonHandle(this.getView().getModel("ET_HEADER").getData().BUKRS);
     },
-    
     segButtonHandle: function (vEmpresa) {
       //var vEmpresa = that.getView().getModel("ET_HEADER").oData.BUKRS;
-      
       if (vEmpresa === "NEO") {
-        this.getView().byId("btnSeg").setVisible(true);
+        this.getView().byId("btnSeg").setVisible(this.getView().getModel("ET_GLOBAL_DATA").IM_LOGGED_IN == 0);
       } else {
         this.getView().byId("btnSeg").setVisible(false);
       }
