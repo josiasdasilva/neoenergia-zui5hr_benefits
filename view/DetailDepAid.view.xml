@@ -158,7 +158,7 @@
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
 					</DatePicker>
-					<Label text="{i18n>valor_pago}" class="sapUiSmallMarginTop" id="lblRequestedValue" required="true">
+					<Label text="{i18n>valor_pago}" displayFormat="MM/yyyy" valueFormat="dd-MM-yyyy" class="sapUiSmallMarginTop" id="lblRequestedValue" required="true">
 						<layoutData>
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>

@@ -613,13 +613,18 @@ sap.ui.define([
 		},
 		onChangeSol: function (oEvent) {
 			var key = oEvent.getSource().getSelectedKey();
+			var today = new Date();
 			if (key == "M") {    // solicitacao mensal
+				var dateMon = new Date(today.getFullYear(), 5, 30);
 				this.getView().byId("lblPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setVisible(false);
-				this.getView().byId("dtPeriodTo").setValue();
+				this.getView().byId("dtPeriodTo").setDateValue(dateMon);
 			} else {            // solicitacao semestral
+				var dateSem = new Date(today.getFullYear(), 11, 31);
 				this.getView().byId("lblPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setVisible(true);
+				this.getView().byId("dtPeriodTo").setEnabled(false);
+				this.getView().byId("dtPeriodTo").setDateValue(dateSem);
 			}
 
 		},
@@ -663,7 +668,7 @@ sap.ui.define([
 			var IvOpPer = this.getView().byId("slSolType").getSelectedKey();
 			var IvValAux = block.BETRG;
 			var IvNomeDep = block.FCNAM;
-			var IvInstBaba = block.INSTITUICAO;;
+			var IvInstBaba = block.INSTITUICAO;
 			var IvCnpjCpf = block.CNPJ_INST;
 			var IvTpSoli;
 
@@ -718,7 +723,6 @@ sap.ui.define([
 
 			switch (oButtonName) {
 			case "btnAddSol":
-
 				var model = this.getView().getModel("ET_BLOCK");
 				model.getData().OBJPS = selectedRow.OBJPS;
 				model.getData().FCNAM = selectedRow.FCNAM;
@@ -734,8 +738,8 @@ sap.ui.define([
 				this.exclude = false;
 				model.getData().EXCLUDE = false;
 				break;
-			case "btnReembolso":
 
+			case "btnReembolso":
 				model = this.getView().getModel("ET_BLOCK");
 				model.getData().OBJPS = selectedRow.OBJPS;
 				model.getData().FCNAM = selectedRow.FCNAM;
@@ -750,6 +754,7 @@ sap.ui.define([
 				this.exclude = false;
 				model.getData().EXCLUDE = false;
 				break;
+
 			case "btnExcluir":
 				model = this.getView().getModel("ET_BLOCK");
 				model.getData().OBJPS = selectedRow.OBJPS;
