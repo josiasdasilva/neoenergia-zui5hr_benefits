@@ -1210,6 +1210,7 @@ sap.ui.define([
               var message = oBundle.getText("maximo_4_linhas");
               var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
               MessageBox.error(message, { styleClass: bCompact ? "sapUiSizeCompact" : "" });
+              return;
             }
             
             this.getView().byId("btnAccept").setVisible(true);
@@ -1332,12 +1333,28 @@ sap.ui.define([
             }
             
             if (modelTable.getData().length == 0 && (this.exclude == "" && this.seccond == "")) {
-              MessageBox.error("Realize alguma anteração para imprimir o formulário");
+              MessageBox.error("Realize alguma alteração para imprimir o formulário");
               return;
             }
             
+            const splitLines = (lines) => {
+              newLines = [];
+              for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const max = line.N_IDA > line.N_VOLTA ? line.N_IDA : line.N_VOLTA;
+                let countIda = parseInt(line.N_IDA);
+                let countVolta = parseInt(line.N_VOLTA);
+                for (let i = 0; i < max; i++) {
+                  let newLine = [...line];
+                  newLine.N_IDA = i >= countIda ? "0": "1";
+                  newLine.N_VOLTA = i >= countVolta ? "0": "1";
+                  newLines.push(newLine);
+                }
+              }
+              return newLines;
+            }
             if (this.insert != "") {
-              lines = modelTable.getData();
+              lines = splitLines(modelTable.getData());
               url = url + "FLD01 eq 'X'";
               
               // var url = "ValeTransSet?$filter=FLD01 eq '1234' and FLD02 eq '123'";
@@ -1392,7 +1409,7 @@ sap.ui.define([
               }
               
             } else if (this.modify != "") {
-              lines = modelTable.getData();
+              lines = splitLines(modelTable.getData());
               
               url = url + "FLD02 eq 'X'";
               
