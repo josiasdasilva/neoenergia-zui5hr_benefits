@@ -457,7 +457,7 @@ sap.ui.define([
         if(!this.isAcordoSelectionOk()){
           MessageBox.error("Favor marcar campo De Acordo");
         }
-        
+
         that.fActions(that, "envio", "S");
       },
       // --------------------------------------------
@@ -823,7 +823,7 @@ sap.ui.define([
         const selType = this.getView().byId('slSolType').getSelectedKey();
         
         if(selType === "P" && empresa !== "NEO"){
-          return this.getView().byId('cbDeAcordo').getSelected;
+          return this.getView().byId('cbDeAcordo').getSelected();
         }
         return true;
       },
