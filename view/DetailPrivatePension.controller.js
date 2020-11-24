@@ -95,6 +95,11 @@ sap.ui.define([
 				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
 					that.getAttachment(oEvent.BLOCK.REQUISITION_ID, "BDV");
 					that.getView().byId("btnExclude").setVisible(false);
+					
+					if(oEvent.BLOCK.ACTIO == "DEL"){
+						that.getView().byId("btnExclude").setVisible(true);
+						that.getView().byId("btnExclude").setEnabled(false);
+					}
 				}
 
 			}

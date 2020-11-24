@@ -4,15 +4,15 @@ sap.ui.define([
 	"sap/m/MessageBox",
 	"cadastralMaintenance/view/BaseController",
 	"cadastralMaintenance/formatter/Formatter"
-], function (Controller, ResourceModel, MessageBox, BaseController) {
+], function(Controller, ResourceModel, MessageBox, BaseController) {
 	"use strict";
 
 	return BaseController.extend("cadastralMaintenance.view.DetailHealth", {
-		onInit: function () {
+		onInit: function() {
 			this.oInitialLoadFinishedDeferred = jQuery.Deferred();
 
 			if (sap.ui.Device.system.phone) {
-				//Do not wait for the master2 when in mobile phone resolution
+				//Do not wait for the master2 when in mobile phone resolution 
 				this.oInitialLoadFinishedDeferred.resolve();
 			} else {
 				// var oEventBus = this.getEventBus();
@@ -29,10 +29,10 @@ sap.ui.define([
 			this.fCheckSaneaBtn("114");
 		},
 		// teste
-		onJustChange: function (oEvent) { 
+		onJustChange: function(oEvent) {
 			this.getView().byId("btnSave").setEnabled(true);
 		},
-		onChangeHealth: function (oEvent) {
+		onChangeHealth: function(oEvent) {
 
 			if (this.getView().getModel("ET_HEADER").getData().BUKRS != "NEO") {
 				this.fCheckChangeElek("tHealth");
@@ -45,7 +45,7 @@ sap.ui.define([
 			this.getView().byId("btnSanity").setVisible(false);
 		},
 
-		fRemoveDependents: function (table) {
+		fRemoveDependents: function(table) {
 			var oModelDependents = this.getView().byId(table).getModel().getData();
 
 			if (oModelDependents === null) {
@@ -72,8 +72,6 @@ sap.ui.define([
 				// this.getView().byId("ipHealthInsurance").setValue("Exclusão");
 				this.getView().byId("ipHealthInsurance").setEditable(false);
 
-			} else {
-
 			}
 
 			var oModelDependents = this.getView().byId(table).getModel();
@@ -81,7 +79,7 @@ sap.ui.define([
 
 		},
 
-		fHideOption: function () {
+		fHideOption: function() {
 			//this.getView().byId("columnOpcaoOdonto").setVisible(false);
 			this.getView().byId("columnOpcaoHealth").setVisible(false);
 		},
@@ -89,7 +87,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fCheckChange
 		//	--------------------------------------------		
-		fCheckChange: function (model) {
+		fCheckChange: function(model) {
 
 			var oModel = this.getView().getModel("ET_PLANS_ORIG");
 			var oModelDependents = this.getView().byId(model).getModel().getData();
@@ -123,7 +121,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fGetBlock
 		//	--------------------------------------------		
-		fGetBlock: function () {
+		fGetBlock: function() {
 			var that = this;
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
@@ -133,7 +131,7 @@ sap.ui.define([
 			function fSuccess(oEvent) {
 				var results = oEvent.results[0];
 				var requisitionId;
-				var isApprover = results.EX_IS_APPROVER; 
+				var isApprover = results.EX_IS_APPROVER;
 
 				if (oEvent.results[0].PLANS_HOLDER.results.length > 0) {
 					requisitionId = oEvent.results[0].PLANS_HOLDER.results[0].REQUISITION_ID;
@@ -143,7 +141,7 @@ sap.ui.define([
 					var oResults = JSON.parse(JSON.stringify(oModel.oData.results));
 					that.getView().setModel(oResults, "ET_PLANS_ORIG");
 					that.getView().setModel(oResults, "ET_PLANS_ELEK");
-					
+
 					//Sets the models to View
 					that.fSetsModels(oEvent, that, isApprover);
 					that.fSetModelElektro(oEvent, that, isApprover);
@@ -176,8 +174,6 @@ sap.ui.define([
 							MessageBox.warning(oEvent.results[0].EX_MESSAGE.MESSAGE);
 						}
 					}
-				} else {
-
 				}
 
 				that.fSearchHelps();
@@ -246,7 +242,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fSetsModels
 		//	--------------------------------------------
-		fSetsModels: function (oEvent, that, isApprover) {
+		fSetsModels: function(oEvent, that, isApprover) {
 
 			var oModel = new sap.ui.model.json.JSONModel(oEvent.results[0].PLANS_HOLDER);
 			var oResults = JSON.parse(JSON.stringify(oModel.oData.results));
@@ -294,7 +290,7 @@ sap.ui.define([
 		//--------------------------------------------
 		//	onHelpRequestHealthInsurance
 		//--------------------------------------------		
-		onHelpRequestHealthInsurance: function () {
+		onHelpRequestHealthInsurance: function() {
 			var cols = [{
 				label: "Plano",
 				template: "BPLAN"
@@ -310,7 +306,7 @@ sap.ui.define([
 		//--------------------------------------------
 		//	fHelpRequest
 		//--------------------------------------------		
-		fHelpRequest: function (key, descriptionKey, cols, modelName, that, title, screenKeyField, screenTextField, onlyDesc, onlyKey) {
+		fHelpRequest: function(key, descriptionKey, cols, modelName, that, title, screenKeyField, screenTextField, onlyDesc, onlyKey) {
 			var oScreenKeyField = that.getView().byId(screenKeyField);
 			var oScreenTextField = that.getView().byId(screenTextField);
 			var aData = that.getView().getModel("ET_PLANS").getData();
@@ -322,7 +318,7 @@ sap.ui.define([
 				key: key,
 				descriptionKey: descriptionKey,
 
-				ok: function (oEvent) {
+				ok: function(oEvent) {
 					var aTokens = oEvent.getParameter("tokens");
 
 					//Set values into others corresponding fiels in screen
@@ -352,7 +348,7 @@ sap.ui.define([
 					that.getView().byId("slHealthInsuranceAccommodation").setEnabled(true);
 					this.close();
 				},
-				cancel: function () {
+				cancel: function() {
 					this.close();
 				}
 			});
@@ -393,7 +389,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fValidInputFields
 		//	--------------------------------------------		
-		fValidInputFields: function () {
+		fValidInputFields: function() {
 
 			if (this.getView().byId("ipHealthInsurance").getValue() !== "") {
 
@@ -417,7 +413,7 @@ sap.ui.define([
 		//--------------------------------------------
 		//	fSetViewData
 		//--------------------------------------------			
-		fSetViewData: function (that) {
+		fSetViewData: function(that) {
 			// var oModel = that.getView().getModel("ET_PLANS");
 			var oModel = that.getView().getModel("ET_HOLDER");
 			// var oModelData = oModel.getData();
@@ -431,7 +427,7 @@ sap.ui.define([
 		//--------------------------------------------
 		//	fAccomodationFilter
 		//--------------------------------------------			
-		fAccomodationFilter: function (that) {
+		fAccomodationFilter: function(that) {
 			// var aData = that.getView().getModel("ET_PLANS").getData();
 			var aData = that.getView().getModel("ET_HOLDER");
 			var aAccomodationValues = that.getView().getModel("ET_SH_PLANS");
@@ -460,7 +456,7 @@ sap.ui.define([
 		//--------------------------------------------
 		//	fHealth
 		//--------------------------------------------			
-		fHealth: function (aData, that) {
+		fHealth: function(aData, that) {
 			var oView = that.getView();
 
 			// that.getView().byId("ipHealthInsurance").setValue("");
@@ -469,70 +465,70 @@ sap.ui.define([
 			that.fAccomodationFilter(that);
 
 			switch (aData.ACTIO_BRHE) {
-			case "DEL":
-				oView.byId("slHealthInsuranceAccommodation").setSelectedKey(aData.BOPTI_BRHE);
-				oView.byId("btnIncludeHealthInsurance").setVisible(false);
-				oView.byId("btnCancelHealthInsurance").setVisible(false);
-
-				that.fSetFieldCssStyle("lblHealthInsurance", "highlight");
-				that.fSetFieldCssStyle("lblHealthInsuranceAccommodation", "highlight");
-				break;
-
-			case "INS":
-				oView.byId("btnCancelHealthInsurance").setVisible(true);
-				oView.byId("btnIncludeHealthInsurance").setVisible(false);
-				oView.byId("ipHealthInsurance").setValue(aData.LTEXT_BRHE);
-				oView.byId("slHealthInsuranceAccommodation").setSelectedKey(aData.BOPTI_BRHE);
-				oView.byId("slHealthInsuranceAccommodation").setEnabled(true);
-
-				that.fAccomodationFilter(that);
-
-				that.fSetFieldCssStyle("lblHealthInsurance", "highlight");
-				that.fSetFieldCssStyle("lblHealthInsuranceAccommodation", "highlight");
-				break;
-
-			default:
-				// oView.byId("linkExcludeHealthInsurance").setVisible(false);
-				that.fSetFieldCssStyle("lblHealthInsurance", "default");
-				that.fSetFieldCssStyle("lblHealthInsuranceAccommodation", "default");
-
-				if (aData.BPLAN_BRHE !== "") {
-					oView.byId("ipHealthInsurance").setValue(aData.LTEXT_BRHE);
-
-					if (aData.BOPTI_BRHE !== "") {
-						oView.byId("slHealthInsuranceAccommodation").setSelectedKey(aData.BOPTI_BRHE);
-						oView.byId("slHealthInsuranceAccommodation").setEnabled(true);
-					}
-
-					if (aData.ACTIVE_BRHE === "" || (aData.ACTIVE_BRHE === "X" && aData.BPLAN_BRHE === "BRNO")) {
-						oView.byId("btnIncludeHealthInsurance").setVisible(true);
-						oView.byId("btnCancelHealthInsurance").setVisible(false);
-					} else {
-						oView.byId("btnIncludeHealthInsurance").setVisible(false);
-						oView.byId("btnCancelHealthInsurance").setVisible(true);
-					}
-
-				} else {
+				case "DEL":
+					oView.byId("slHealthInsuranceAccommodation").setSelectedKey(aData.BOPTI_BRHE);
+					oView.byId("btnIncludeHealthInsurance").setVisible(false);
 					oView.byId("btnCancelHealthInsurance").setVisible(false);
 
-					if (aData.ACTIVE_BRDE === "") {
-						oView.byId("btnIncludeHealthInsurance").setVisible(true);
+					that.fSetFieldCssStyle("lblHealthInsurance", "highlight");
+					that.fSetFieldCssStyle("lblHealthInsuranceAccommodation", "highlight");
+					break;
+
+				case "INS":
+					oView.byId("btnCancelHealthInsurance").setVisible(true);
+					oView.byId("btnIncludeHealthInsurance").setVisible(false);
+					oView.byId("ipHealthInsurance").setValue(aData.LTEXT_BRHE);
+					oView.byId("slHealthInsuranceAccommodation").setSelectedKey(aData.BOPTI_BRHE);
+					oView.byId("slHealthInsuranceAccommodation").setEnabled(true);
+
+					that.fAccomodationFilter(that);
+
+					that.fSetFieldCssStyle("lblHealthInsurance", "highlight");
+					that.fSetFieldCssStyle("lblHealthInsuranceAccommodation", "highlight");
+					break;
+
+				default:
+					// oView.byId("linkExcludeHealthInsurance").setVisible(false);
+					that.fSetFieldCssStyle("lblHealthInsurance", "default");
+					that.fSetFieldCssStyle("lblHealthInsuranceAccommodation", "default");
+
+					if (aData.BPLAN_BRHE !== "") {
+						oView.byId("ipHealthInsurance").setValue(aData.LTEXT_BRHE);
+
+						if (aData.BOPTI_BRHE !== "") {
+							oView.byId("slHealthInsuranceAccommodation").setSelectedKey(aData.BOPTI_BRHE);
+							oView.byId("slHealthInsuranceAccommodation").setEnabled(true);
+						}
+
+						if (aData.ACTIVE_BRHE === "" || (aData.ACTIVE_BRHE === "X" && aData.BPLAN_BRHE === "BRNO")) {
+							oView.byId("btnIncludeHealthInsurance").setVisible(true);
+							oView.byId("btnCancelHealthInsurance").setVisible(false);
+						} else {
+							oView.byId("btnIncludeHealthInsurance").setVisible(false);
+							oView.byId("btnCancelHealthInsurance").setVisible(true);
+						}
+
 					} else {
+						oView.byId("btnCancelHealthInsurance").setVisible(false);
 
-						oView.byId("btnIncludeHealthInsurance").setVisible(true);
+						if (aData.ACTIVE_BRDE === "") {
+							oView.byId("btnIncludeHealthInsurance").setVisible(true);
+						} else {
 
-						//It's going to be enabled if the user click on Insert
-						oView.byId("ipHealthInsurance").setEnabled(false);
-						oView.byId("slHealthInsuranceAccommodation").setEnabled(false);
+							oView.byId("btnIncludeHealthInsurance").setVisible(true);
+
+							//It's going to be enabled if the user click on Insert
+							oView.byId("ipHealthInsurance").setEnabled(false);
+							oView.byId("slHealthInsuranceAccommodation").setEnabled(false);
+						}
 					}
-				}
 			}
 		},
 
 		//--------------------------------------------
 		//	fUnableFields
 		//--------------------------------------------	
-		fUnableFields: function () {
+		fUnableFields: function() {
 			var oView = this.getView();
 
 			oView.byId("UploadCollection").setUploadButtonInvisible(true);
@@ -560,7 +556,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fSearchHelps
 		//	--------------------------------------------		
-		fSearchHelps: function () {
+		fSearchHelps: function() {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var aData = this.getView().getModel("ET_HOLDER");
@@ -580,7 +576,7 @@ sap.ui.define([
 			oModel.read("ET_SH_PLANS", null, urlParamPlans, false, fSuccessPlans, fError);
 		},
 
-		fSearchHelpHealthPlan: function () {
+		fSearchHelpHealthPlan: function() {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var aData = this.getView().getModel("ET_HOLDER");
@@ -601,7 +597,7 @@ sap.ui.define([
 				}
 
 				that.getView().setModel(jsonModel, "ET_SH_TYPE_PLANS");
-				that.byId("ipHealthInsurance").setSelectedKey(aData.BPLAN_BRHE)
+				that.byId("ipHealthInsurance").setSelectedKey(aData.BPLAN_BRHE);
 
 			}
 
@@ -617,7 +613,7 @@ sap.ui.define([
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
 		},
 
-		fSearchHelpOption: function () {
+		fSearchHelpOption: function() {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var aData = this.getView().getModel("ET_HOLDER");
@@ -632,12 +628,12 @@ sap.ui.define([
 						IM_PERNR: oValue.oData[i].IM_PERNR,
 						BPLAN: oValue.oData[i].BPLAN,
 						BOPTI: oValue.oData[i].BOPTI,
-						LTEXT: oValue.oData[i].LTEXT,
+						LTEXT: oValue.oData[i].LTEXT
 					});
 				}
 
 				that.getView().setModel(jsonModelOpt, "ET_SH_ACCOMMODATION");
-				that.byId("slHealthInsuranceAccommodation").setSelectedKey(aData.BOPTI_BRHE)
+				that.byId("slHealthInsuranceAccommodation").setSelectedKey(aData.BOPTI_BRHE);
 
 			}
 
@@ -651,7 +647,7 @@ sap.ui.define([
 			oModel.read("ET_SH_ACCOMMODATION", null, urlParam, false, fSuccessOpt, fErrorOpt);
 		},
 
-		changeHealthInsurance: function () {
+		changeHealthInsurance: function() {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var aData = this.getView().getModel("ET_HOLDER");
@@ -687,7 +683,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onCancelHealthInsurance
 		//	--------------------------------------------
-		fCancelHealthInsurance: function () {
+		fCancelHealthInsurance: function() {
 			var oCurrentData = this.getView().getModel("ET_HOLDER");
 			var oOrigData = this.getView().getModel("ET_PLANS_ORIG");
 
@@ -739,7 +735,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onCancelHealthInsurance
 		//	--------------------------------------------		
-		onCancelHealthInsurance: function () {
+		onCancelHealthInsurance: function() {
 
 			var that = this;
 
@@ -747,7 +743,7 @@ sap.ui.define([
 				"Confirma exclusão do plano de saúde ?", {
 					title: "Exclusão",
 					initialFocus: sap.m.MessageBox.Action.CANCEL,
-					onClose: function (sButton) {
+					onClose: function(sButton) {
 						if (sButton === MessageBox.Action.OK) {
 							that.fCancelHealthInsurance();
 							return true;
@@ -760,7 +756,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onIncludeHealthInsurance
 		//	--------------------------------------------
-		onIncludeHealthInsurance: function () {
+		onIncludeHealthInsurance: function() {
 			var oCurrentData = this.getView().getModel("ET_HOLDER");
 			var oHealthData = this.getView().getModel("ET_SH_TYPE_PLANS").aBindings;
 
@@ -810,18 +806,18 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onHealthInsuranceAccommodationChange
 		//	--------------------------------------------		
-		onHealthInsuranceAccommodationChange: function () {
+		onHealthInsuranceAccommodationChange: function() {
 
 			this.getView().byId("btnAccept").setEnabled(true);
 			this.getView().byId("btnSave").setEnabled(true);
 			this.getView().byId("btnSanity").setVisible(false);
 		},
 
-		onFileDeleted: function (oEvent) {
+		onFileDeleted: function(oEvent) {
 			this.getView().byId("btnSave").setEnabled(true);
 		},
 
-		onBeforeUpload: function (oEvent) {
+		onBeforeUpload: function(oEvent) {
 
 			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
 			var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
@@ -837,7 +833,7 @@ sap.ui.define([
 			}));
 
 		},
-		onUploadAttComplete: function (oEvent) {
+		onUploadAttComplete: function(oEvent) {
 			if (oEvent.mParameters.mParameters.status !== 201) {
 				MessageBox.error("Falha ao Salvar Arquivo ..!!");
 			} else {
@@ -851,7 +847,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fCreateRequisition
 		// -------------------------------------------- 
-		fCreateRequisition: function (that, action, req, newDt) {
+		fCreateRequisition: function(that, action, req, newDt) {
 			var oCreate = {};
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 			var observation;
@@ -883,48 +879,48 @@ sap.ui.define([
 				that.obligatoryChanged = false;
 
 				switch (action) {
-				case "A":
-					MessageBox.success("Requisição " + oEvent.EX_REQUISITION_ID + " aprovada com sucesso!");
-					that.fUnableApprovalButtons(that);
-					that.fUnableAllButtons(that);
+					case "A":
+						MessageBox.success("Requisição " + oEvent.EX_REQUISITION_ID + " aprovada com sucesso!");
+						that.fUnableApprovalButtons(that);
+						that.fUnableAllButtons(that);
 
-					break;
+						break;
 
-				case "D":
-					MessageBox.success("Requisição " + oEvent.EX_REQUISITION_ID + " reprovada!");
-					that.fUnableApprovalButtons(that);
+					case "D":
+						MessageBox.success("Requisição " + oEvent.EX_REQUISITION_ID + " reprovada!");
+						that.fUnableApprovalButtons(that);
 
-					break;
+						break;
 
-				case "S":
-					that.fSucessMessageFromSendAction(oEvent);
-					that.fHideOption();
-					// *** ANEXO ***
-					that.saveAttachment();
-					break;
+					case "S":
+						that.fSucessMessageFromSendAction(oEvent);
+						that.fHideOption();
+						// *** ANEXO ***
+						that.saveAttachment();
+						break;
 
-				case "C":
-					MessageBox.success("Operação realizada com sucesso! As alterações realizadas foram canceladas");
+					case "C":
+						MessageBox.success("Operação realizada com sucesso! As alterações realizadas foram canceladas");
 
-					that.fGetBlock();
+						that.fGetBlock();
 
-					break;
+						break;
 
-				case "X":
-					MessageBox.success("Dados confirmados com sucesso! Obrigado por validar suas informações para o eSocial");
-					that.getView().byId("btnSanity").setVisible(false);
-					oGlobalData.IM_REQUISITION_ID = "00000000";
-					break;
+					case "X":
+						MessageBox.success("Dados confirmados com sucesso! Obrigado por validar suas informações para o eSocial");
+						that.getView().byId("btnSanity").setVisible(false);
+						oGlobalData.IM_REQUISITION_ID = "00000000";
+						break;
 
-				case "R":
-					MessageBox.success(
-						"Operação realizada com sucesso! Após preencher todos os dados da solicitação, clique em enviar para dar continuidade ao atendimento"
-					);
+					case "R":
+						MessageBox.success(
+							"Operação realizada com sucesso! Após preencher todos os dados da solicitação, clique em enviar para dar continuidade ao atendimento"
+						);
 
-					that.fSetGlobalInformation(oEvent, that, undefined, true);
+						that.fSetGlobalInformation(oEvent, that, undefined, true);
 
-					// *** ANEXO ***
-					break;
+						// *** ANEXO ***
+						break;
 
 				}
 				that.getView().byId("btnSave").setEnabled(false);
@@ -962,7 +958,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fFillCreateHealthData
 		// --------------------------------------------		
-		fFillCreateHealthData: function (oCreate, that, req, newDt) {
+		fFillCreateHealthData: function(oCreate, that, req, newDt) {
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 			var oHolder = that.getView().getModel("ET_HOLDER");
 			var oDependents = that.getView().getModel("ET_DEPENDENTS").getData();
@@ -1034,30 +1030,30 @@ sap.ui.define([
 		// --------------------------------------------
 		// fActions
 		// -------------------------------------------- 		
-		fActions: function (that, actionText, action, req, newDt) {
+		fActions: function(that, actionText, action, req, newDt) {
 			var question;
 
 			switch (action) {
-			case "A": //Approve
-				question = "Confirmar aprovação?";
-				break;
+				case "A": //Approve
+					question = "Confirmar aprovação?";
+					break;
 
-			case "D": //Decline
-				question = "Confirmar reprovação?";
-				break;
+				case "D": //Decline
+					question = "Confirmar reprovação?";
+					break;
 
-			case "C": //Cancel
-				question = "Confirmar cancelamento?";
-				break;
+				case "C": //Cancel
+					question = "Confirmar cancelamento?";
+					break;
 
-			default:
-				question = "Confirmar " + actionText + "?";
+				default:
+					question = "Confirmar " + actionText + "?";
 			}
 
 			MessageBox.confirm(question, {
 				title: actionText,
 				initialFocus: sap.m.MessageBox.Action.CANCEL,
-				onClose: function (sButton) {
+				onClose: function(sButton) {
 					if (sButton === MessageBox.Action.OK) {
 						that.fCreateRequisition(that, action, req, newDt);
 						return true;
@@ -1069,7 +1065,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// onSend
 		// --------------------------------------------  
-		onSend: function () {
+		onSend: function() {
 			var attachment = this.validAttachment();
 			var that = this;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -1101,7 +1097,7 @@ sap.ui.define([
 					message, {
 						title: "Termo de responsabilidade",
 						initialFocus: sap.m.MessageBox.Action.CANCEL,
-						onClose: function (sButton) {
+						onClose: function(sButton) {
 							if (sButton === MessageBox.Action.OK) {
 								that.fActions(that, "envio", "S");
 							}
@@ -1116,7 +1112,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// onCancel
 		// -------------------------------------------- 		
-		onCancel: function () {
+		onCancel: function() {
 			var oGlobalData = this.getView().getModel("ET_GLOBAL_DATA");
 			var observationSSG = this.getView().byId("taJustSSG").getValue();
 
@@ -1130,7 +1126,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// onSanitation
 		// --------------------------------------------  
-		onSanitation: function () {
+		onSanitation: function() {
 			var that = this;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var message = oBundle.getText("termo_responsabilidade");
@@ -1139,7 +1135,7 @@ sap.ui.define([
 				message, {
 					title: "Termo de responsabilidade",
 					initialFocus: sap.m.MessageBox.Action.CANCEL,
-					onClose: function (sButton) {
+					onClose: function(sButton) {
 						if (sButton === MessageBox.Action.OK) {
 							that.fActions(that, "saneamento", "X");
 						}
@@ -1151,21 +1147,21 @@ sap.ui.define([
 		// // onApprove
 		// // -------------------------------------------- 		
 
-		onApprove: function () {
+		onApprove: function() {
 			this.fActions(this, "Aprovação", "A");
 		},
 
 		// --------------------------------------------
 		// onSave
 		// --------------------------------------------  
-		onSave: function () {
+		onSave: function() {
 			this.fActions(this, "gravação", "R");
 		},
 
 		// --------------------------------------------
 		// onReject
 		// --------------------------------------------  
-		onReject: function () {
+		onReject: function() {
 			var oGlobalData = this.getView().getModel("ET_GLOBAL_DATA");
 			var observationSSG = this.getView().byId("taJustSSG").getValue();
 
@@ -1176,7 +1172,7 @@ sap.ui.define([
 			}
 		},
 		// Elektro
-		onAddPressed: function () {
+		onAddPressed: function() {
 			var oView = this.getView();
 			var oModelDependents = oView.getModel("ET_DEP_MASTER");
 			var oTableHealth = this.getView().byId("tHealth");
@@ -1203,7 +1199,7 @@ sap.ui.define([
 			this.statusMod = "INS";
 			this.fEnableButtonDep(true);
 		},
-		onModPressed: function () {
+		onModPressed: function() {
 			var that = this;
 			var oView = this.getView();
 			var index = oView.byId("tPlan").getSelectedIndex();
@@ -1235,7 +1231,7 @@ sap.ui.define([
 			this.statusMod = "MOD";
 			this.fEnableButtonDep(true);
 		},
-		onRemPressed: function () {
+		onRemPressed: function() {
 			var that = this;
 			var oView = this.getView();
 			var index = oView.byId("tPlan").getSelectedIndex();
@@ -1262,7 +1258,7 @@ sap.ui.define([
 			oView.setModel(new sap.ui.model.json.JSONModel(plans.getData()), "ET_PLAN_MASTER");
 			oView.setModel(master, "ET_PLANS_ELEK");
 		},
-		onVisPressed: function () {
+		onVisPressed: function() {
 			var that = this;
 			var oView = this.getView();
 			var index = oView.byId("tPlan").getSelectedIndex();
@@ -1293,13 +1289,13 @@ sap.ui.define([
 			this.fEnableButtonDep(false);
 
 		},
-		fEnableButtonDep: function (enable) {
+		fEnableButtonDep: function(enable) {
 			var oDependents = this.getView().getModel("ET_DEPENDENTS");
 			for (var i = 0; i < oDependents.getData().length; i++) {
 				this.getView().byId("__xmlview3--selHE-col2-row" + i).setEnabled(enable);
 			}
 		},
-		fSetDepenElektro: function (plan) {
+		fSetDepenElektro: function(plan) {
 			var oModelDependents = new sap.ui.model.json.JSONModel([]);
 			var oTableHealth = this.getView().byId("tHealth");
 			var oInitial = this.getView().getModel("ET_PLANS_ELEK");
@@ -1325,7 +1321,7 @@ sap.ui.define([
 			oTableHealth.setVisibleRowCount(oModelDependents.getData().length);
 			oTableHealth.setVisible(true);
 		},
-		fSetModelElektro: function (oEvent, that, isApprover) {
+		fSetModelElektro: function(oEvent, that, isApprover) {
 
 			var oModel = new sap.ui.model.json.JSONModel(oEvent.results[0].PLANS_HOLDER);
 			var oResults = JSON.parse(JSON.stringify(oModel.oData.results));
@@ -1351,7 +1347,7 @@ sap.ui.define([
 			oTableHealth.setVisible(true);
 
 		},
-		fInsertItem: function () {
+		fInsertItem: function() {
 			var oView = this.getView();
 			var plan = oView.getModel("ET_PLAN_MASTER");
 			var tPlan = oView.byId("tPlan");
@@ -1405,7 +1401,7 @@ sap.ui.define([
 			this.fEnableButtonsAction(false);
 			this.statusMod = "";
 		},
-		fModifyItem: function () {
+		fModifyItem: function() {
 			var oView = this.getView();
 			var plan = oView.getModel("ET_PLAN_MASTER");
 			var tPlan = oView.byId("tPlan");
@@ -1478,7 +1474,7 @@ sap.ui.define([
 			oView.byId("toolbarList").setVisible(true);
 			this.statusMod = "";
 		},
-		onCancelItem: function () {
+		onCancelItem: function() {
 			var oView = this.getView();
 			oView.byId("formHealthInsurance").setVisible(false);
 			oView.byId("tHealth").setVisible(false);
@@ -1489,7 +1485,7 @@ sap.ui.define([
 
 			MessageBox.success("Ação Cancelada!");
 		},
-		onAcceptItem: function () {
+		onAcceptItem: function() {
 
 			if (this.statusMod == "INS") {
 				this.fInsertItem();
@@ -1498,13 +1494,13 @@ sap.ui.define([
 			}
 
 		},
-		fEnableButtonsAction: function (action) {
+		fEnableButtonsAction: function(action) {
 			var oView = this.getView();
 			oView.byId("btnCancelItem").setVisible(action);
 			oView.byId("btnAcceptItem").setVisible(action);
 			oView.byId("btnAccept").setVisible(!action);
 		},
-		fSearchHelpHealthPlanElek: function () {
+		fSearchHelpHealthPlanElek: function() {
 			var oView = this.getView();
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
@@ -1561,7 +1557,7 @@ sap.ui.define([
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
 		},
-		fSearchHelpHealthPlanElekMod: function (brde,bplan) {
+		fSearchHelpHealthPlanElekMod: function(brde, bplan) {
 			var oView = this.getView();
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
@@ -1588,7 +1584,7 @@ sap.ui.define([
 					}
 
 				}
-			
+
 				that.getView().setModel(jsonModel, "ET_SH_TYPE_PLANS");
 				that.byId("ipHealthInsurance").setSelectedKey(key)
 
@@ -1612,7 +1608,7 @@ sap.ui.define([
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
 		},
-		fFillCreateHealthDataElek: function (oCreate, that, req, newDt) {
+		fFillCreateHealthDataElek: function(oCreate, that, req, newDt) {
 			var oView = this.getView();
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 			var oHolder = that.getView().getModel("ET_HOLDER");
@@ -1646,7 +1642,7 @@ sap.ui.define([
 			}
 			oCreate.PLANS_HOLDER = PLANS_HOLDER.getData();
 		},
-		fCheckChangeElek: function (model) {
+		fCheckChangeElek: function(model) {
 
 			var oModel = this.getView().getModel("ET_PLANS_ORIG");
 			var oModelDependents = this.getView().byId(model).getModel().getData();
