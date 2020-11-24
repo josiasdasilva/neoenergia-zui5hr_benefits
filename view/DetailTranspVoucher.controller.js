@@ -1338,7 +1338,7 @@ sap.ui.define([
             }
             
             const splitLines = (lines) => {
-              newLines = [];
+              const newLines = [];
               for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 let countIda = parseInt(line.N_IDA);
