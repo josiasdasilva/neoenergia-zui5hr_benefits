@@ -5,7 +5,7 @@ sap.ui.define([
 	"cadastralMaintenance/view/BaseController",
 	"cadastralMaintenance/formatter/Formatter",
 	"sap/ui/model/json/JSONModel",
-	"sap/m/Dialog",
+	"sap/m/Dialog"
 ], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog) {
 	"use strict";
 

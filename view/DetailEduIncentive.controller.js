@@ -434,6 +434,7 @@ sap.ui.define([
         oModel.create("ET_EDUCATIONAL_INCENTIVE", oCreate, null, fSuccess, fError);
       },
       
+      
       // --------------------------------------------
       // onSend
       // --------------------------------------------  
@@ -451,6 +452,10 @@ sap.ui.define([
         
         if (valid === false) {
           return;
+        }
+        
+        if(!this.isAcordoSelectionOk()){
+          MessageBox.error("Favor marcar campo De Acordo");
         }
         
         that.fActions(that, "envio", "S");
