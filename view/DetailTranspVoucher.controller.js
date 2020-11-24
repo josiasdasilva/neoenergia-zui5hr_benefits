@@ -310,7 +310,9 @@ sap.ui.define([
       var oModelNew = this.getView().getModel("ET_DATA_FORM");
       var length = oModel.oData.length;
       
-      oModelNew.getData().TVIAG = parseInt(oModelNew.getData().N_IDA) + parseInt(oModelNew.getData().N_VOLTA);
+      const ida = parseInt(oModelNew.getData().N_IDA) === NaN ? 0 :  parseInt(oModelNew.getData().N_IDA);
+      const volta = parseInt(oModelNew.getData().N_VOLTA) === NaN ? 0 :  parseInt(oModelNew.getData().N_VOLTA);
+      oModelNew.getData().TVIAG = ida + volta;
       
       oModel.oData[length] = {};
       oModel.oData[length] = oModelNew.getData();
@@ -1191,13 +1193,17 @@ sap.ui.define([
             var countIda = 0;
             var countVolta = 0;
             for (let i = 0; i < oModel.oData.length; i++) {
-              const item = oModel.oData[i];
-              countIda = countIda + item.N_IDA;
-              countVolta = countVolta + item.N_VOLTA;
+              let item = oModel.oData[i];
+              if (item.N_IDA == "") item.N_IDA = "0";
+              if (item.N_VOLTA == "") item.N_VOLTA = "0";
+              countIda = countIda + parseInt(item.N_IDA);
+              countVolta = countVolta + parseInt(item.N_VOLTA);
             }
             
-            countIda = countIda + dados.N_IDA;
-            countVolta = countVolta + dados.N_VOLTA;
+            if (dados.N_IDA == "") dados.N_IDA = "0";
+            if (dados.N_VOLTA == "") dados.N_VOLTA = "0";
+            countIda = countIda + parseInt(dados.N_IDA);
+            countVolta = countVolta + parseInt(dados.N_VOLTA);
             
             if(countIda > 4 || countVolta > 4){
               var oBundle = this.getView().getModel("i18n").getResourceBundle();
