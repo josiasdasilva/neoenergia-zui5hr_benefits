@@ -809,7 +809,7 @@ sap.ui.define([
         return allOk;
       },
       onChangeParticBolsa: function(oEvent) {
-        const value = oEvent.getValue();
+        const value = oEvent.getSource().getSelectedKey();
         //show/hide fields 
         this.setParticProgFieldsVisibility(value === "S")
       },
