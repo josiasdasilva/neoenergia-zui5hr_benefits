@@ -749,6 +749,10 @@ sap.ui.define([
         oView.byId("btnSave").setEnabled(false);
         oView.byId("btnAccept").setEnabled(false);
         oView.byId("btnCancel").setEnabled(false);
+
+        oView.byId("btnModify").setEnabled(false);
+        oView.byId("btnRemove").setEnabled(false);
+        oView.byId("btnSeg").setEnabled(false);
       }
     },
     
@@ -1245,11 +1249,18 @@ sap.ui.define([
             var length = oModel.oData.length;
             
             if(length){
-              //if there are items, do not enable the other buttons
+              //there are items
               if (this.getView().getModel("ET_ACTION").getData().ACTION == "I") {
                 this.getView().byId("btnAdd").setEnabled(true);
               } else if (this.getView().getModel("ET_ACTION").getData().ACTION == "M") {
                 this.getView().byId("btnModify").setEnabled(true);
+                this.getView().byId("btnRemove").setEnabled(true);
+                this.getView().byId("btnSeg").setEnabled(true);		
+              } else {
+                this.getView().byId("btnModify").setEnabled(true);
+                this.getView().byId("btnRemove").setEnabled(true);
+                this.getView().byId("btnSeg").setEnabled(true);	
+                this.getView().byId("btnAdd").setEnabled(true);
               }
             }else{
               //if there are no items, clear ET_ACTION model and enable buttons
@@ -1258,11 +1269,12 @@ sap.ui.define([
               };
               var oModel = new sap.ui.model.json.JSONModel(obj);
               this.getView().setModel(oModel, "ET_ACTION");
-              //enable all buttons
+              //enable addl button
               this.getView().byId("btnAdd").setEnabled(true);
-              this.getView().byId("btnModify").setEnabled(true);
-              this.getView().byId("btnRemove").setEnabled(true);
-              this.getView().byId("btnSeg").setEnabled(true);			
+              //there is no item, so disable modify, remove and second request buttons
+              this.getView().byId("btnModify").setEnabled(false);
+              this.getView().byId("btnRemove").setEnabled(false);
+              this.getView().byId("btnSeg").setEnabled(false);			
             }
             this.getView().byId("btnAccept").setVisible(true);
             this.getView().byId("btnForms").setVisible(true);

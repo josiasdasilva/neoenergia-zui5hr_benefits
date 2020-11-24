@@ -573,13 +573,15 @@ sap.ui.define([
 			var selectedRow = this.fGetSelectedRowDetail();
 			this.fFillDependentDetail(selectedRow);
 
+            // habilita botoes conforme disponibilidade
 			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
 			for (var i = 0; i < results.length; i++) {
 				if (results[i].OBJPS === selectedRow.OBJPS) {
 					var str = results[i].TIP_AUX_ATUAL;
-					this.getView().byId("btnAddSol").setEnabled(str.includes("INS"));
-					this.getView().byId("btnReembolso").setEnabled(str.includes("UPD"));
-					this.getView().byId("btnExcluir").setEnabled(str.includes("DEL"));
+					this.getView().byId("btnAddSol").setEnabled(results[i].I0377 === "");
+					this.getView().byId("btnReembolso").setEnabled(results[i].I0377 !== "");
+					this.getView().byId("btnExcluir").setEnabled(results[i].I0377 !== "");
+					break;
 				}
 			}
 			// model.getData().OBJPS = selectedRow.OBJPS;
@@ -611,11 +613,11 @@ sap.ui.define([
 		},
 		onChangeSol: function (oEvent) {
 			var key = oEvent.getSource().getSelectedKey();
-			if (key == "M") {
+			if (key == "M") {    // solicitacao mensal
 				this.getView().byId("lblPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setValue();
-			} else {
+			} else {            // solicitacao semestral
 				this.getView().byId("lblPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setVisible(true);
 			}
@@ -769,13 +771,26 @@ sap.ui.define([
 		fObligatoryFields: function () {
 
 			var model = this.getView().getModel("ET_BLOCK").getData();
+			// if (model.TYPE_DEPEN == "" || model.TYPE_DEPEN == undefined || 
+			//     model.FCNAM == "" || model.FCNAM == undefined || 
+			//     model.TYPE_SOL == "" || model.TYPE_SOL == undefined ||
+			//     model.TIP_AUX == "" || model.TIP_AUX == undefined || 
+			//     parseFloat(model.BETRG) <= 0 || model.BETRG == "" || model.BETRG == undefined || 
+			//     model.INSTITUICAO == "" || model.INSTITUICAO == undefined ) {
+			// 	return false;
+			// }
 
-			if (model.TYPE_DEPEN == "" || model.TYPE_DEPEN == undefined || model.FCNAM == "" || model.FCNAM == undefined || model.TYPE_SOL ==
-				"" || model.TIP_AUX == "" || model.TIP_AUX == undefined || model.TYPE_SOL == undefined || parseFloat(model.BETRG) <= 0 || model.BETRG ==
-				"" || model.BETRG == undefined || model.INSTITUICAO ==
-				"" || model.INSTITUICAO == undefined) {
+			// Verifica se campos obrigatórios foram preenchidos
+			// (rever obrigatoriedade)
+			if (model.TYPE_DEPEN == "" || model.TYPE_DEPEN == undefined || 
+			    model.FCNAM == "" || model.FCNAM == undefined || 
+			    model.TYPE_SOL == "" || model.TYPE_SOL == undefined ||
+			    model.TIP_AUX == "" || model.TIP_AUX == undefined || 
+			    //parseFloat(model.BETRG) <= 0 || model.BETRG == "" || model.BETRG == undefined || 
+			    model.INSTITUICAO == "" || model.INSTITUICAO == undefined ) {
 				return false;
 			}
+
 
 		},
 		fEsconderCamposExcluir: function (status) {
@@ -820,6 +835,29 @@ sap.ui.define([
 			var dias = parseInt(block.IDADE_DIA);
 			var valid = true;
 
+			// verifica se pode executar a ação
+            if (block.TYPE_SOL === "Primeira Solicitação"){
+            	if (block.I0377.includes(block.TIP_AUX)) {
+					this.getView().byId("cbTypeAux").setSelectedKey();
+					MessageBox.error("Benefício já foi solicitado anteriormente.");
+					return false;
+            	}
+            }
+            if (block. TYPE_SOL === "Reembolso") {
+            	if (!block.I0377.includes(block.TIP_AUX)) {
+					this.getView().byId("cbTypeAux").setSelectedKey();
+					MessageBox.error("Benefício não solicitado. Fazer Primeira solicitação.");
+					return false;
+            	}
+            }
+            if (block. TYPE_SOL === "Exclusão") {
+            	if (!block.I0377.includes(block.TIP_AUX)) {
+					this.getView().byId("cbTypeAux").setSelectedKey();
+					MessageBox.error("Benefício não solicitado. Não é possível excluir.");
+					return false;
+            	}
+            }
+			// outras validações (idade e elegibilidade)
 			if (block.TIP_AUX == "ACRC") {
 				if ((meses < 7 && (anos < 1)) || (anos > 4)) {
 					valid = false;
