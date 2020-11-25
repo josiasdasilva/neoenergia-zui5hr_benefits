@@ -616,6 +616,7 @@ sap.ui.define([
 			}
 		},
 		onChangeSol: function (oEvent) {
+			var block = this.getView().getModel("ET_BLOCK").getData();
 			var key = oEvent.getSource().getSelectedKey();
 			var today = new Date();
 			if (key === "M") {    // solicitacao mensal
@@ -623,12 +624,14 @@ sap.ui.define([
 				this.getView().byId("lblPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setDateValue(dateMon);
+				block.PERIOD_TO = this.yyyymmdd(dateMon);
 			} else {            // solicitacao semestral
 				var dateSem = new Date(today.getFullYear(), 11, 31);
 				this.getView().byId("lblPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setEnabled(false);
 				this.getView().byId("dtPeriodTo").setDateValue(dateSem);
+				block.PERIOD_TO = this.yyyymmdd(dateSem);
 			}
 
 		},
@@ -943,8 +946,12 @@ sap.ui.define([
 		},
 		onCloseDialogExclude: function () {
 			this._getDialog().close();
+		},
+		yyyymmdd: function(lData) {
+			var mm = lData.getMonth() + 1; // getMonth() is zero-based
+			var dd = lData.getDate();
+			return [lData.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('');
 		}
-
 	});
 
 });
