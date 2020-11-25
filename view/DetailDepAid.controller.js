@@ -673,7 +673,7 @@ sap.ui.define([
 			var IvTpAux = this.getView().byId("cbTypeAux").getValue();
 			var IvPeriodo = data.substring(6, 10) + data.substring(3, 5);
 			var IvOpPer = this.getView().byId("slSolType").getSelectedKey();
-			var IvValAux = block.BETRG;
+			var IvValAux = block.BETRG.replace(/\./g, '').replace(',', '.');
 			var IvNomeDep = block.FCNAM;
 			var IvInstBaba = block.INSTITUICAO;
 			var IvCnpjCpf = block.CNPJ_INST;
@@ -792,6 +792,9 @@ sap.ui.define([
 			// 	return false;
 			// }
 
+            if (model.BETRG === undefined) {
+            	model.BETRG = this.getView().byId("ipRequestedValue").getValue();
+            }
 			// Verifica se campos obrigatórios foram preenchidos
 			// (rever obrigatoriedade)
 			if (model.TYPE_DEPEN === "" || model.TYPE_DEPEN === undefined || 
