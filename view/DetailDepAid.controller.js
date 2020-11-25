@@ -837,12 +837,25 @@ sap.ui.define([
 
 		},
 		onRegras: function () {
-
+			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
 			var block = this.getView().getModel("ET_BLOCK").getData();
 			var anos = parseInt(block.IDADE);
 			var meses = parseInt(block.IDADE_MES);
 			var dias = parseInt(block.IDADE_DIA);
 			var valid = true;
+
+			for (var i = 0; results.length > i; i++) {
+				if (block.FCNAM == results[i].FCNAM) {
+					block.TYPE_DEPEN = results[i].TYPE_DEPEN;
+					block.IDADE = results[i].IDADE;
+					block.IDADE_MES = results[i].IDADE_MES;
+					block.IDADE_DIA = results[i].IDADE_DIA;
+					block.MGUA_ERROR = results[i].MGUA_ERROR;
+					block.I0377 = results[i].I0377;
+					block.I9377 = results[i].I9377;
+					break;
+				}
+			}
 
 			// verifica se pode executar a ação
             if (block.TYPE_SOL === "Primeira Solicitação"){
