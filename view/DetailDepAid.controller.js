@@ -523,6 +523,10 @@ sap.ui.define([
 		},
 
 		onChange: function (oEvent) {},
+		onliveChange: function (oEvent) {
+			var block = this.getView().getModel("ET_BLOCK").getData();
+			block.BETRG = oEvent.getParameter("value");
+		},
 		getDependents: function (that, pernr) {
 			// var oEntry = [];
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
