@@ -852,7 +852,7 @@ sap.ui.define([
       onChangeValidateNumeric: function(oEvent){
         const source = oEvent.getSource();
         const value = oEvent.getParameter('value');
-        if(value===NaN){
+        if(isNaN(value)){
           source.setValueState(sap.ui.core.ValueState.Error);
         }else{
           source.setValueState(sap.ui.core.ValueState.None);
@@ -883,7 +883,7 @@ sap.ui.define([
       },
       isValidNumber: function (id) {
         const value = this.getView().byId(id).getValue();
-        return !(value === NaN);
+        return !(isNaN(value));
       }
     })
   });
