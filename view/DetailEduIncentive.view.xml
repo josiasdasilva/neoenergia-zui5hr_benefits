@@ -159,7 +159,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input id="ipInstituicao" value="{ET_BLOCK>/INSTITUICAO}" maxLength="80">
+					<Input id="ipInstituicao" value="{ET_BLOCK>/NOME_INST}" maxLength="80">
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>

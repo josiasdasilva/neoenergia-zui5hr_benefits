@@ -131,6 +131,9 @@ sap.ui.define([
           that.getAttachment(oEvent.BLOCK.REQUISITION_ID, "BIE");
         }
         if (oGlobalData.IM_LOGGED_IN !== 0) {
+          that.getView().byId("lblMesRef").setVisible(true);
+          that.getView().byId("dtMesRef").setVisible(true);
+          that.getView().byId("dtMesRef").setEnabled(true);
           if (empresa == "NEO") {
             that.getView().byId("lblPerc").setVisible(true);
             that.getView().byId("ipPerc").setVisible(true);
