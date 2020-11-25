@@ -340,8 +340,10 @@ sap.ui.define([
           oCreate.BLOCK.BEGDA = oActualModel.BEGDA;
           oCreate.BLOCK.ENDDA = oActualModel.ENDDA;
           oCreate.BLOCK.VALOR_MEN = oActualModel.VALOR_MEN;
+          oCreate.BLOCK.VALOR_TOT = oActualModel.VALOR_TOT;
           oCreate.BLOCK.OBJETIVO = oActualModel.OBJETIVO;
           oCreate.BLOCK.PROG_BOLSA = oActualModel.PROG_BOLSA;
+          oCreate.BLOCK.JA_PARTIC_PRG_EST = oActualModel.JA_PARTIC_PRG_EST;
           oCreate.BLOCK.DESCR_PROG = oActualModel.DESCR_PROG;
           oCreate.BLOCK.ENC_BOLSA = oActualModel.ENC_BOLSA;
           oCreate.BLOCK.ACORDO = oActualModel.ACORDO ? 1 : 0;
