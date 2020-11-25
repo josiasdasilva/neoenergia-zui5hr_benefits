@@ -145,6 +145,7 @@ sap.ui.define([
           } else {
             that.getView().byId("slEduIncType").setVisible(false);
             that.getView().byId("ipEduIncTypeADP").setVisible(true);
+            that.getView().byId("lblEduIncTypeADP").setVisible(true);
           }
         }
         if (empresa != "NEO") {

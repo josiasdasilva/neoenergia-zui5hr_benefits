@@ -128,7 +128,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input id="ipCargaHoraria" value="{ET_BLOCK>/CARGA_HORARIA}" maxLength="80">
+					<Input id="ipCargaHoraria" value="{ET_BLOCK>/CARGA_HORARIA}" maxLength="80" change="onChangeValidateNumeric">
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>
