@@ -158,6 +158,7 @@ sap.ui.define([
 			}
 
 			//MAIN READ
+			debugger;
 			oModel.read("ET_DEP_AID" + urlParam, null, null, false, fSuccess, fError);
 		},
 
@@ -823,8 +824,11 @@ sap.ui.define([
 					model.getData().IDADE_MES = results[i].IDADE_MES;
 					model.getData().IDADE_DIA = results[i].IDADE_DIA;
 					model.getData().MGUA_ERROR = results[i].MGUA_ERROR;
+					model.getData().I0377 = results[i].I0377;
+					model.getData().I9377 = results[i].I9377;
 					this.getView().setModel(model, "ET_BLOCK");
 					encontrou = true;
+					break;
 				}
 			}
 			if (encontrou === true) {
