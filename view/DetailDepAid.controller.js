@@ -158,7 +158,6 @@ sap.ui.define([
 			}
 
 			//MAIN READ
-			debugger;
 			oModel.read("ET_DEP_AID" + urlParam, null, null, false, fSuccess, fError);
 		},
 
@@ -792,7 +791,7 @@ sap.ui.define([
 			    model.FCNAM == "" || model.FCNAM == undefined || 
 			    model.TYPE_SOL == "" || model.TYPE_SOL == undefined ||
 			    model.TIP_AUX == "" || model.TIP_AUX == undefined || 
-			    //parseFloat(model.BETRG) <= 0 || model.BETRG == "" || model.BETRG == undefined || 
+			    parseFloat(model.BETRG) <= 0 || model.BETRG == "" || model.BETRG == undefined || 
 			    model.INSTITUICAO == "" || model.INSTITUICAO == undefined ) {
 				return false;
 			}
@@ -845,7 +844,7 @@ sap.ui.define([
 			var valid = true;
 
 			for (var i = 0; results.length > i; i++) {
-				if (block.FCNAM == results[i].FCNAM) {
+				if (block.FCNAM === results[i].FCNAM) {
 					block.TYPE_DEPEN = results[i].TYPE_DEPEN;
 					block.IDADE = results[i].IDADE;
 					block.IDADE_MES = results[i].IDADE_MES;
