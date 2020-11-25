@@ -216,6 +216,8 @@ sap.ui.define([
       
       oView.byId("taJust").setEnabled(false);
       oView.byId("sJaPartic").setEnabled(false);
+      oView.byId("ipValorTot").setEnabled(false);
+      oView.byId("cbDeAcordo").setEnabled(false);
     },
     //	--------------------------------------------
     //	fUnableAllButtons
