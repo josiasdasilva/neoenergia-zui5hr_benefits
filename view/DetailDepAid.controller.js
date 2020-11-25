@@ -523,7 +523,7 @@ sap.ui.define([
 		},
 
 		onChange: function (oEvent) {},
-		onliveChange: function (oEvent) {
+		onLiveChange: function (oEvent) {
 			var block = this.getView().getModel("ET_BLOCK").getData();
 			block.BETRG = oEvent.getParameter("value");
 		},
