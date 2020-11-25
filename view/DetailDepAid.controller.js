@@ -18,7 +18,7 @@ sap.ui.define([
 				//Do not wait for the master2 when in mobile phone resolution
 				this.oInitialLoadFinishedDeferred.resolve();
 			} else {
-				var oEventBus = this.getEventBus();
+				// var oEventBus = this.getEventBus();
 				// oEventBus.subscribe("Master2", "LoadFinished", this.onMasterLoaded, this);
 			}
 
@@ -105,9 +105,9 @@ sap.ui.define([
 						oEvent.BLOCK.TYPE_SOL = "Exclusão";
 					}
 
-					var filters = [];
+					// var filters = [];
 
-					filters = [new sap.ui.model.Filter("IDREQ", sap.ui.model.FilterOperator.EQ, oEvent.BLOCK.REQUISITION_ID)];
+					// var filters = [new sap.ui.model.Filter("IDREQ", sap.ui.model.FilterOperator.EQ, oEvent.BLOCK.REQUISITION_ID)];
 
 					that.getView().setModel(oModel, "anexo");
 
@@ -122,7 +122,7 @@ sap.ui.define([
 						oEvent.BLOCK.REQUISITION_ID !== "00000000") {
 
 						//retornou req do model, mas não tem na url
-						if (oGlobalData.IM_REQ_URL == "") {
+						if (oGlobalData.IM_REQ_URL === "") {
 							MessageBox.warning(oEvent.EX_MESSAGE.MESSAGE);
 						}
 					}
@@ -144,7 +144,7 @@ sap.ui.define([
 			function fError(oEvent) {
 				var message = $(oEvent.response.body).find('message').first().text();
 
-				if (message.substring(2, 4) == "99") {
+				if (message.substring(2, 4) === "99") {
 					var detail = ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body));
 					var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
 					var zMessage = formattedDetail.replace("error", "");
@@ -252,7 +252,7 @@ sap.ui.define([
 			function fError(oEvent) {
 				var message = $(oEvent.response.body).find('message').first().text();
 
-				if (message.substring(2, 4) == "99") {
+				if (message.substring(2, 4) === "99") {
 					var detail = ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body));
 					var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
 					var zMessage = formattedDetail.replace("error", "");
@@ -285,7 +285,7 @@ sap.ui.define([
 				oCreate.BLOCK.INSTITUICAO = "";
 				oCreate.BLOCK.CNPJ_INST = "";
 				oCreate.BLOCK.REEMBOLSO = "";
-				if (oCreate.BLOCK.REQUISITION_ID == "00000000" || oCreate.BLOCK.REQUISITION_ID == undefined) {
+				if (oCreate.BLOCK.REQUISITION_ID === "00000000" || oCreate.BLOCK.REQUISITION_ID === undefined) {
 					oCreate.BLOCK.DT_SOLICIT = that.dataAtualFormatada();
 				} else {
 					oCreate.BLOCK.DT_SOLICIT = oActualModel.DT_SOLICIT;
@@ -303,7 +303,7 @@ sap.ui.define([
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
-			if (oCreate.BLOCK.REQUISITION_ID == "00000000" || oCreate.BLOCK.REQUISITION_ID == undefined) {
+			if (oCreate.BLOCK.REQUISITION_ID === "00000000" || oCreate.BLOCK.REQUISITION_ID === undefined) {
 				oCreate.BLOCK.DT_SOLICIT = that.dataAtualFormatada();
 			} else {
 				oCreate.BLOCK.DT_SOLICIT = oActualModel.DT_SOLICIT;
@@ -313,9 +313,9 @@ sap.ui.define([
 		dataAtualFormatada: function () {
 			var data = new Date(),
 				dia = data.getDate().toString(),
-				diaF = (dia.length == 1) ? "0" + dia : dia,
+				diaF = (dia.length === 1) ? "0" + dia : dia,
 				mes = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
-				mesF = (mes.length == 1) ? "0" + mes : mes,
+				mesF = (mes.length === 1) ? "0" + mes : mes,
 				anoF = data.getFullYear();
 			return anoF + mesF + diaF;
 		},
@@ -335,7 +335,7 @@ sap.ui.define([
 			oCreate.IM_PERNR = oGlobalData.IM_PERNR;
 			oCreate.OBSERVATION = that.getView().byId("taJust").getValue();
 
-			if (oCreate.IM_LOGGED_IN == 5) {
+			if (oCreate.IM_LOGGED_IN === 5) {
 				oCreate.OBSERVATION = that.getView().byId("taJustSSG").getValue();
 			}
 
@@ -384,7 +384,7 @@ sap.ui.define([
 			function fError(oEvent) {
 				oGlobalData.IM_REQUISITION_ID = that.fGetRequisitionId(oEvent);
 
-				if ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body).length == 0) {
+				if ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body).length === 0) {
 					var message = $(oEvent.response.body).find("message").first().text();
 
 					if (message === undefined || message === "" || message === " ") {
@@ -415,7 +415,7 @@ sap.ui.define([
 			var oBundle;
 			oBundle = this.getView().getModel("i18n").getResourceBundle();
 
-			if (this.exclude != true) {
+			if (this.exclude !== true) {
 				var regras = this.onRegras();
 				if (regras === false) {
 					return;
@@ -435,7 +435,7 @@ sap.ui.define([
 				return;
 			}
 
-			if (this.getView().getModel("ET_HEADER").getData().BUKRS == "NEO") {
+			if (this.getView().getModel("ET_HEADER").getData().BUKRS === "NEO") {
 				MessageBox.confirm(oBundle.getText('termo_dependente'), {
 					title: 'Termo',
 					initialFocus: sap.m.MessageBox.Action.OK,
@@ -500,7 +500,7 @@ sap.ui.define([
 			var filename = oEvent.getParameter("fileName");
 			var caracteristica = "FORMULARIOCOMPRAUXDEP";
 
-			if (req == '00000000') {
+			if (req === '00000000') {
 				return;
 			}
 
@@ -524,7 +524,7 @@ sap.ui.define([
 
 		onChange: function (oEvent) {},
 		getDependents: function (that, pernr) {
-			var oEntry = [];
+			// var oEntry = [];
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
 			var urlParam = null;
 
@@ -553,7 +553,7 @@ sap.ui.define([
 			function fError(oEvent) {
 				var message = $(oEvent.response.body).find('message').first().text();
 
-				if (message.substring(2, 4) == "99") {
+				if (message.substring(2, 4) === "99") {
 					var detail = ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body));
 					var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
 					var zMessage = formattedDetail.replace("error", "");
@@ -577,7 +577,7 @@ sap.ui.define([
 			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
 			for (var i = 0; i < results.length; i++) {
 				if (results[i].OBJPS === selectedRow.OBJPS) {
-					var str = results[i].TIP_AUX_ATUAL;
+					// var str = results[i].TIP_AUX_ATUAL;
 					this.getView().byId("btnAddSol").setEnabled(results[i].I0377 === "");
 					this.getView().byId("btnReembolso").setEnabled(results[i].I0377 !== "");
 					this.getView().byId("btnExcluir").setEnabled(results[i].I0377 !== "");
@@ -606,7 +606,7 @@ sap.ui.define([
 		},
 		fFillDependentDetail: function (selectedRow) {
 			var oView = this.getView();
-			if (selectedRow != undefined) {
+			if (selectedRow !== undefined) {
 				oView.byId("slFullName").setSelectedKey(selectedRow.FCNAM);
 				oView.byId("slMemberType").setSelectedKey(selectedRow.TYPE_DEPEN);
 			}
@@ -614,7 +614,7 @@ sap.ui.define([
 		onChangeSol: function (oEvent) {
 			var key = oEvent.getSource().getSelectedKey();
 			var today = new Date();
-			if (key == "M") {    // solicitacao mensal
+			if (key === "M") {    // solicitacao mensal
 				var dateMon = new Date(today.getFullYear(), 5, 30);
 				this.getView().byId("lblPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setVisible(false);
@@ -640,7 +640,7 @@ sap.ui.define([
 			function fError(oEvent) {
 				var message = $(oEvent.response.body).find('message').first().text();
 
-				if (message.substring(2, 4) == "99") {
+				if (message.substring(2, 4) === "99") {
 					var detail = ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body));
 					var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
 					var zMessage = formattedDetail.replace("error", "");
@@ -655,7 +655,7 @@ sap.ui.define([
 
 			var oblig = this.fObligatoryFields();
 
-			if (oblig === false && this.exclude != true) {
+			if (oblig === false && this.exclude !== true) {
 				this.handleErrorMessageBoxPress();
 				return;
 			}
@@ -683,20 +683,20 @@ sap.ui.define([
 				IvInstBaba = "";
 
 				if (this.getView().byId("cbTypeAuxExclude")) {
-					if (this.getView().byId("cbTypeAuxExclude").getValue() != "") {
+					if (this.getView().byId("cbTypeAuxExclude").getValue() !== "") {
 						IvInstBaba = this.getView().byId("cbTypeAuxExclude").getValue();
 					}
 				}
 			}
 
-			if (IvCnpjCpf == undefined) {
+			if (IvCnpjCpf === undefined) {
 				IvCnpjCpf = "";
 
 			}
 
-			if (block.TYPE_SOL == "Reembolso") {
+			if (block.TYPE_SOL === "Reembolso") {
 				IvTpSoli = "R";
-			} else if (this.exclude != true) {
+			} else if (this.exclude !== true) {
 				IvTpSoli = "P";
 			}
 
@@ -709,9 +709,9 @@ sap.ui.define([
 		},
 		onDependentsAction: function (oEvent) {
 			var oButtonName = oEvent.getParameter("id").substring(12);
-			var oView = this.getView();
-			var buttonAction;
-			var action = {};
+			// var oView = this.getView();
+			// var buttonAction;
+			// var action = {};
 			var selectedRow = this.fGetSelectedRowDetail();
 
 			if (selectedRow === undefined) {
@@ -787,16 +787,14 @@ sap.ui.define([
 
 			// Verifica se campos obrigatórios foram preenchidos
 			// (rever obrigatoriedade)
-			if (model.TYPE_DEPEN == "" || model.TYPE_DEPEN == undefined || 
-			    model.FCNAM == "" || model.FCNAM == undefined || 
-			    model.TYPE_SOL == "" || model.TYPE_SOL == undefined ||
-			    model.TIP_AUX == "" || model.TIP_AUX == undefined || 
-			    parseFloat(model.BETRG) <= 0 || model.BETRG == "" || model.BETRG == undefined || 
-			    model.INSTITUICAO == "" || model.INSTITUICAO == undefined ) {
+			if (model.TYPE_DEPEN === "" || model.TYPE_DEPEN === undefined || 
+			    model.FCNAM === "" || model.FCNAM === undefined || 
+			    model.TYPE_SOL === "" || model.TYPE_SOL === undefined ||
+			    model.TIP_AUX === "" || model.TIP_AUX === undefined || 
+			    parseFloat(model.BETRG) <= 0 || model.BETRG === "" || model.BETRG === undefined || 
+			    model.INSTITUICAO === "" || model.INSTITUICAO === undefined ) {
 				return false;
 			}
-
-
 		},
 		fEsconderCamposExcluir: function (status) {
 			this.getView().byId("lblSolType").setVisible(status);
@@ -817,7 +815,7 @@ sap.ui.define([
 			var encontrou = false;
 
 			for (var i = 0; results.length > i; i++) {
-				if (model.getData().FCNAM == results[i].FCNAM) {
+				if (model.getData().FCNAM === results[i].FCNAM) {
 					model.getData().TYPE_DEPEN = results[i].TYPE_DEPEN;
 					model.getData().IDADE = results[i].IDADE;
 					model.getData().IDADE_MES = results[i].IDADE_MES;
@@ -879,17 +877,17 @@ sap.ui.define([
             	}
             }
 			// outras validações (idade e elegibilidade)
-			if (block.TIP_AUX == "ACRC") {
+			if (block.TIP_AUX === "ACRC") {
 				if ((meses < 7 && (anos < 1)) || (anos > 4)) {
 					valid = false;
 				}
 			}
-			if (block.TIP_AUX == "CREC") {
+			if (block.TIP_AUX === "CREC") {
 				if (anos >= 1 || (anos < 1 && meses > 6)) {
 					valid = false;
 				}
 			}
-			if (block.TIP_AUX == "MGUA") {
+			if (block.TIP_AUX === "MGUA") {
 				if (block.MGUA_ERROR != "") {
 					valid = false;
 				}
@@ -898,8 +896,8 @@ sap.ui.define([
 					valid = false;
 				}
 			}
-			if (block.TIP_AUX == "PREE") {
-				if (anos < 2 || anos > 9 || (anos == 9 && meses >= 11 && dias > 29)) {
+			if (block.TIP_AUX === "PREE") {
+				if (anos < 2 || anos > 9 || (anos === 9 && meses >= 11 && dias > 29)) {
 					valid = false;
 				}
 			}
@@ -922,9 +920,8 @@ sap.ui.define([
 		},
 		onSendExclude: function () {
 			var model = this.getView().getModel("ET_BLOCK");
-			var block = this.getView().getModel("ET_BLOCK").getData();
 
-			if (block.TIP_AUX == "" || block.TIP_AUX == undefined) {
+			if (model.getData().TIP_AUX === "" || model.getData().TIP_AUX === undefined) {
 				this.handleErrorMessageBoxPress();
 				return;
 			}
