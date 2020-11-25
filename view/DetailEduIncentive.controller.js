@@ -68,7 +68,7 @@ sap.ui.define([
       
       //initial state
       this.setParticProgFieldsVisibility(this.getView().byId("sJaPartic").getSelectedKey() === "S");
-
+      
       function fSuccess(oEvent) {
         var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
         if (parseFloat(oEvent.BLOCK.VALUE_APPR) <= 0) {
@@ -98,7 +98,7 @@ sap.ui.define([
             }
             that.fUnableFields();
           }
-
+          
           var filters = [];
           
           filters = [new sap.ui.model.Filter("IDREQ", sap.ui.model.FilterOperator.EQ, oEvent.BLOCK.REQUISITION_ID)];
@@ -133,6 +133,7 @@ sap.ui.define([
         if (oGlobalData.IM_LOGGED_IN !== 0) {
           that.getView().byId("lblMesRef").setVisible(true);
           that.getView().byId("dtMesRef").setVisible(true);
+          if(oGlobalData.IM_LOGGED_IN !== 5)
           that.getView().byId("dtMesRef").setEnabled(true);
           if (empresa == "NEO") {
             that.getView().byId("lblPerc").setVisible(true);
@@ -466,12 +467,12 @@ sap.ui.define([
           MessageBox.error("Favor marcar campo De Acordo");
           return;
         }
-
+        
         if(!this.fNumericFieldsAreOk()){
           MessageBox.error("Informe apenas números em campos númericos");
           return;
         }
-
+        
         that.fActions(that, "envio", "S");
       },
       // --------------------------------------------
@@ -768,6 +769,12 @@ sap.ui.define([
           }else{
             that.getView().byId("dtMesRef").setValueState(sap.ui.core.ValueState.None);
           }
+          
+          if(oEvent && oEvent.BLOCK && oEvent.BLOCK.BETRG_ADM){
+            const oBlock = that.getView().getModel("ET_BLOCK");
+            oBlock.BETRG_ADM = oEvent.BLOCK.BETRG_ADM;
+            that.getView().setModel(oBlock, "ET_BLOCK");
+          }
         }
         
         var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/sap/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
@@ -894,3 +901,4 @@ sap.ui.define([
       }
     })
   });
+  
