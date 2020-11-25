@@ -850,10 +850,12 @@ sap.ui.define([
         this.setParticProgFieldsVisibility(value === "S")
       },
       onChangeValidateNumeric: function(oEvent){
-        if(oEvent.getSource().getValue()===NaN){
-          oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+        const source = oEvent.getSource();
+        const value = oEvent.getParameter('value');
+        if(value===NaN){
+          source.setValueState(sap.ui.core.ValueState.Error);
         }else{
-          oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+          source.setValueState(sap.ui.core.ValueState.None);
         }
       },
       isAcordoSelectionOk: function(){
