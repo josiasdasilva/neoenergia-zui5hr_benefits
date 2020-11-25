@@ -81,7 +81,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input value="{path:'ET_BLOCK>/BETRG', type:'sap.ui.model.type.Float'}" width="" id="ipBetrg" change="onChange" fieldWidth="30%"
+					<Input value="{path:'ET_BLOCK>/BETRG', type:'sap.ui.model.type.Float'}" width="" id="ipBetrg" change="onChangeValidateNumeric" fieldWidth="30%"
 						required="true">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
@@ -93,7 +93,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input value="{path:'ET_BLOCK>/PERCENTUAL', type:'sap.ui.model.type.Float'}" width="" id="ipPerc" change="onChange" fieldWidth="30%" visible="false">
+					<Input value="{path:'ET_BLOCK>/PERCENTUAL', type:'sap.ui.model.type.Float'}" width="" id="ipPerc" change="onChangeValidateNumeric" fieldWidth="30%" visible="false">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
@@ -103,7 +103,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input value="{path:'ET_BLOCK>/BETRG_ADM', type:'sap.ui.model.type.Float'}" width="" id="ipBetrgAdm" change="onChange" fieldWidth="30%"
+					<Input value="{path:'ET_BLOCK>/BETRG_ADM', type:'sap.ui.model.type.Float'}" width="" id="ipBetrgAdm" change="onChangeValidateNumeric" fieldWidth="30%"
 						required="true" visible="false">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
@@ -361,7 +361,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input id="ipCargaHorariaElek" value="{ET_BLOCK>/CARGA_HORARIA}" maxLength="80" required="true">
+					<Input id="ipCargaHorariaElek" value="{ET_BLOCK>/CARGA_HORARIA}" maxLength="80" required="true" change="onChangeValidateNumeric">
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>
@@ -401,7 +401,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input id="ipValorTot" value="{ET_BLOCK>/VALOR_TOT}" maxLength="80" required="true">
+					<Input id="ipValorTot" value="{ET_BLOCK>/VALOR_TOT}" maxLength="80" required="true" change="onChangeValidateNumeric">
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>
@@ -411,7 +411,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input id="ipValorMen" value="{ET_BLOCK>/VALOR_MEN}" maxLength="80" required="true">
+					<Input id="ipValorMen" value="{ET_BLOCK>/VALOR_MEN}" maxLength="80" required="true" change="onChangeValidateNumeric">
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>

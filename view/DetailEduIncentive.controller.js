@@ -110,6 +110,7 @@ sap.ui.define([
         }
         
         that.setParticProgFieldsVisibility(oValue.JA_PARTIC_PRG_EST === "S");
+        oValue.ACORDO == "1" ? oValue.ACORDO = true : oValue.ACORDO = false;
         that.getView().setModel(oValue, "ET_BLOCK");
         
         if (oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A") {
@@ -338,7 +339,7 @@ sap.ui.define([
           oCreate.BLOCK.PROG_BOLSA = oActualModel.PROG_BOLSA;
           oCreate.BLOCK.DESCR_PROG = oActualModel.DESCR_PROG;
           oCreate.BLOCK.ENC_BOLSA = oActualModel.ENC_BOLSA;
-          oCreate.BLOCK.ACORDO = oActualModel.ACORDO;
+          oCreate.BLOCK.ACORDO = oActualModel.ACORDO ? 1 : 0;
         }
       }
     },
@@ -456,6 +457,12 @@ sap.ui.define([
         
         if(!this.isAcordoSelectionOk()){
           MessageBox.error("Favor marcar campo De Acordo");
+          return;
+        }
+
+        if(!this.fNumericFieldsAreOk()){
+          MessageBox.error("Informe apenas números em campos númericos");
+          return;
         }
 
         that.fActions(that, "envio", "S");
@@ -574,6 +581,11 @@ sap.ui.define([
             return false;
           }
           return true;
+        }
+        
+        if(!this.fNumericFieldsAreOk()){
+          MessageBox.error("Informe apenas números em campos númericos");
+          return;
         }
         
         function fSuccess(oEvent) {
@@ -762,6 +774,25 @@ sap.ui.define([
         if(value == "") return true;
         return false;
       },
+      fNumericFieldsAreOk: function () {
+        var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
+        var allOk = true;
+        const selType = this.getView().byId('slSolType').getSelectedKey();
+        
+        if(!(this.isValidNumber('ipBetrgAdm'))) allOk = false;
+        if(selType === "P"){
+          if(empresa === "NEO"){
+            //Neo
+            if(!(this.isValidNumber('ipCargaHoraria'))) allOk = false;
+          }else{
+            //Elektro
+            if(!(this.isValidNumber('ipCargaHorariaElek'))) allOk = false;
+            if(!(this.isValidNumber('ipValorTot'))) allOk = false;
+            if(!(this.isValidNumber('ipValorMen'))) allOk = false;
+          }
+        }
+        return allOk;
+      },
       fRequiredFieldsAreOk: function () {
         var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
         var allOk = true;
@@ -818,6 +849,13 @@ sap.ui.define([
         //show/hide fields 
         this.setParticProgFieldsVisibility(value === "S")
       },
+      onChangeValidateNumeric: function(oEvent){
+        if(oEvent.getSource().getValue()===NaN){
+          oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+        }else{
+          oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+        }
+      },
       isAcordoSelectionOk: function(){
         var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
         const selType = this.getView().byId('slSolType').getSelectedKey();
@@ -840,6 +878,10 @@ sap.ui.define([
       },
       onClose: function (oEvent) {
         this._Dialog.close();
+      },
+      isValidNumber: function (id) {
+        const value = this.getView().byId(id).getValue();
+        return !(value === NaN);
       }
     })
   });
