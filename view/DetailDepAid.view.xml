@@ -163,18 +163,12 @@
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input value="{'ET_BLOCK>/BETRG'}" width="" class="sapUiSmallMarginBottom" id="ipRequestedValue"
+					<Input value="{path: 'ET_BLOCK>/BETRG', formatter: '.formatter.float2digStr' }" width="" class="sapUiSmallMarginBottom" id="ipRequestedValue"
 						change="onChange" fieldWidth="30%" required="true">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
 					</Input>
-					<!--<Input value="{path: 'ET_BLOCK>/BETRG', formatter: '.formatter.float2digStr' }" width="" class="sapUiSmallMarginBottom" id="ipRequestedValue"-->
-					<!--	change="onChange" fieldWidth="30%" required="true">-->
-					<!--	<layoutData>-->
-					<!--		<l:GridData span="L2 M2 S4"/>-->
-					<!--	</layoutData>-->
-					<!--</Input>-->
 					<Label text="{i18n>instituicao}" class="sapUiSmallMarginTop" id="lblInst" required="true">
 						<layoutData>
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
