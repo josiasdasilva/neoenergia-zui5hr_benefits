@@ -181,7 +181,7 @@
 						</layoutData>
 					</Label>
 					<Input value="{ET_BLOCK>/INSTITUICAO}" width="" class="sapUiSmallMarginBottom" id="ipInst"
-						liveChange="onLiveChange" change="onChange" fieldWidth="30%" required="true">
+						change="onChange" fieldWidth="30%" required="true">
 						<layoutData>
 							<l:GridData span="L4 M4 S4"/>
 						</layoutData>
