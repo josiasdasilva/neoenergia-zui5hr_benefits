@@ -435,6 +435,7 @@ sap.ui.define([
 			var atual = anoF + mesF + diaF;
 
 			if (begda < atual) {
+				this.getView().byId("dtValidFrom").setValue("");
 				MessageBox.error("Data não pode ser inferior a data atual");
 				return;
 			} else {
