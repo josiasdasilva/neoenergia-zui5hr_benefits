@@ -231,6 +231,11 @@ sap.ui.define([
 				table: []
 			});
 
+			that.BenefEx = new JSONModel();
+			that.BenefEx.setData({
+				table: []
+			});
+
 			if (pernr !== undefined && pernr !== null && pernr !== "") {
 				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
 			}
@@ -264,8 +269,38 @@ sap.ui.define([
 					MessageBox.error(message);
 				}
 			}
+			function fSuccessEx(oEvent) {
+				for (var i = 0; i < oEvent.results.length; i++) {
+					oEntry = {
+						key: oEvent.results[i].BPLAN,
+						desc: oEvent.results[i].LTEXT
+					};
+					that.BenefEx.getData().table.push(oEntry);
+
+					oEntry = [];
+				}
+				//Seta Lista no Model da View	
+				that.getView().setModel(that.BenefEx, "benefExx");
+			}
+
+			function fErrorEx(oEvent) {
+				var message = $(oEvent.response.body).find('message').first().text();
+
+				if (message.substring(2, 4) === "99") {
+					var detail = ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body));
+					var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
+					var zMessage = formattedDetail.replace("error", "");
+
+					that.fVerifyAllowedUser(message, that);
+					MessageBox.error(zMessage);
+
+				} else {
+					MessageBox.error(message);
+				}
+			}
 
 			oModel.read("ET_SH_DEPEN_TYPE_PLAN", null, urlParam, false, fSuccess, fError);
+			oModel.read("ET_SH_DEPEN_TYPE_PLAN_EXCL", null, urlParam, false, fSuccessEx, fErrorEx);
 		},
 		// --------------------------------------------
 		// fFillCreateDepAidData

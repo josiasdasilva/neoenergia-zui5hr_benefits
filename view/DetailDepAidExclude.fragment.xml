@@ -6,9 +6,9 @@
 					<l:GridData span="L2 M2 S3" linebreakL="true" linebreakM="true" linebreakS="true"/>
 				</layoutData>
 			</Label>
-			<ComboBox id="cbTypeAuxExclude" selectionChange="onTypeAuxExclude" items="{ path: 'benef>/table', sorter: { path: 'text' } }"
+			<ComboBox id="cbTypeAuxExclude" selectionChange="onTypeAuxExclude" items="{ path: 'benefEx>/table', sorter: { path: 'text' } }"
 				class="sapUiSmallMarginBottom" selectedKey="{ET_BLOCK>/TIP_AUX}">
-				<core:Item key="{benef>key}" text="{benef>desc}"/>
+				<core:Item key="{benefEx>key}" text="{benefEx>desc}"/>
 				<layoutData>
 					<l:GridData span="L2 M2 S6"/>
 				</layoutData>
