@@ -637,8 +637,8 @@ sap.ui.define([
           var IV_CARGA_HORARIA = block.CARGA_HORARIA;
           var IV_DATA_INICIO = block.BEGDA.substring(0, 6);
           var IV_DATA_FIM = block.ENDDA.substring(0, 6);
-          var IV_INSTITUICAO = block.INSTITUICAO;
-          var IV_TEL_INS = block.TELEFONE;
+          var IV_INSTITUICAO = block.NOME_INST;
+          var IV_TEL_INS = block.TEL_INST;
           var IV_CIDADE_INS = block.CIDADE;
           var IV_VLR_MENSALIDADE = block.BETRG;
           var IV_INCENTIVO = block.INC_RECEBIDO;
