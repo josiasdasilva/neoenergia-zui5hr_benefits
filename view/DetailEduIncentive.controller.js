@@ -109,11 +109,15 @@ sap.ui.define([
           // that.getView().byId("upldAttachments").getBinding("items").filter(filters);
         }
         
-        that.setParticProgFieldsVisibility(oValue.oData.JA_PARTIC_PRG_EST === "S");
-        oValue.oData.ACORDO == "1" ? oValue.oData.ACORDO = true : oValue.oData.ACORDO = false;
-        //convert from backend to frontend names
-        oValue.oData.NOME_INST = oValue.oData.INSTITUICAO;
-        oValue.oData.TEL_INST = oValue.oData.TELEFONE;
+        if(oValue && oValue.oData) {
+          that.setParticProgFieldsVisibility(oValue.oData.JA_PARTIC_PRG_EST === "S");
+          oValue.oData.ACORDO == "1" ? oValue.oData.ACORDO = true : oValue.oData.ACORDO = false;
+          //convert from backend to frontend names
+          if(empresa === "NEO") {
+            oValue.oData.NOME_INST = oValue.oData.INSTITUICAO;
+            oValue.oData.TEL_INST = oValue.oData.TELEFONE;
+          }
+        }
         that.getView().setModel(oValue, "ET_BLOCK");
         
         if (oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A") {
