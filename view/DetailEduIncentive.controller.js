@@ -864,6 +864,12 @@ sap.ui.define([
         //show/hide fields 
         this.setParticProgFieldsVisibility(value === "S")
       },
+      onChangePerc: function(oEvent) {
+        this.onChangeValidateNumeric(oEvent);
+        if(oEvent.getValueState()!==sap.ui.core.ValueState.None) return;
+        //call validate requisition to re-calculate amount
+        this.fValidateRequisition();
+      },
       onChangeValidateNumeric: function(oEvent){
         const source = oEvent.getSource();
         const value = oEvent.getParameter('value');
