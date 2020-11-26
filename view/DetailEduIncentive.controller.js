@@ -133,7 +133,6 @@ sap.ui.define([
         if (oGlobalData.IM_LOGGED_IN !== 0) {
           that.getView().byId("lblMesRef").setVisible(true);
           that.getView().byId("dtMesRef").setVisible(true);
-          if(oGlobalData.IM_LOGGED_IN !== 5)
           that.getView().byId("dtMesRef").setEnabled(true);
           if (empresa == "NEO") {
             that.getView().byId("lblPerc").setVisible(true);
@@ -307,8 +306,8 @@ sap.ui.define([
         oCreate.BLOCK.TYPE_INC = oActualModel.TYPE_INC;
         if (oActualModel.TYPE_REQ == "P") {
           oCreate.BLOCK.CURSO = oActualModel.CURSO;
-          oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
-          oCreate.BLOCK.TELEFONE = oActualModel.TELEFONE;
+          oCreate.BLOCK.INSTITUICAO = oActualModel.NOME_INST;
+          oCreate.BLOCK.TELEFONE = oActualModel.TEL_INST;
           oCreate.BLOCK.CIDADE = oActualModel.CIDADE;
           oCreate.BLOCK.INC_RECEBIDO = oActualModel.INC_RECEBIDO;
           oCreate.BLOCK.PRI_FORM = oActualModel.PRI_FORM;
@@ -866,7 +865,7 @@ sap.ui.define([
       },
       onChangePerc: function(oEvent) {
         this.onChangeValidateNumeric(oEvent);
-        if(oEvent.getValueState()!==sap.ui.core.ValueState.None) return;
+        if(oEvent.getSource().getValueState()!==sap.ui.core.ValueState.None) return;
         //call validate requisition to re-calculate amount
         this.fValidateRequisition();
       },
