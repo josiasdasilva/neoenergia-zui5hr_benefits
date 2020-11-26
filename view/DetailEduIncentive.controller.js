@@ -109,11 +109,11 @@ sap.ui.define([
           // that.getView().byId("upldAttachments").getBinding("items").filter(filters);
         }
         
-        that.setParticProgFieldsVisibility(oValue.JA_PARTIC_PRG_EST === "S");
-        oValue.ACORDO == "1" ? oValue.ACORDO = true : oValue.ACORDO = false;
+        that.setParticProgFieldsVisibility(oValue.oData.JA_PARTIC_PRG_EST === "S");
+        oValue.oData.ACORDO == "1" ? oValue.oData.ACORDO = true : oValue.oData.ACORDO = false;
         //convert from backend to frontend names
-        oValue.NOME_INST = oValue.INSTITUICAO;
-        oValue.TEL_INST = oValue.TELEFONE;
+        oValue.oData.NOME_INST = oValue.oData.INSTITUICAO;
+        oValue.oData.TEL_INST = oValue.oData.TELEFONE;
         that.getView().setModel(oValue, "ET_BLOCK");
         
         if (oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A") {
