@@ -111,6 +111,9 @@ sap.ui.define([
         
         that.setParticProgFieldsVisibility(oValue.JA_PARTIC_PRG_EST === "S");
         oValue.ACORDO == "1" ? oValue.ACORDO = true : oValue.ACORDO = false;
+        //convert from backend to frontend names
+        oValue.NOME_INST = oValue.INSTITUICAO;
+        oValue.TEL_INST = oValue.TELEFONE;
         that.getView().setModel(oValue, "ET_BLOCK");
         
         if (oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A") {
