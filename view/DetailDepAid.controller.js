@@ -316,10 +316,10 @@ sap.ui.define([
 				oCreate.BLOCK.FCNAM = "";
 				oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
 				oCreate.BLOCK.PERIOD_FROM = that.dataAtualFormatada();
-				if (that.getView().byId("slSolType").getSelectedKey() === "S") {
-					// oCreate.BLOCK.PERIOD_TO = 
+				oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
+				if (that.getView().byId("slSolType").getSelectedKey() === 'S') {
+					oCreate.BLOCK.PERIOD_TO = this.getView().byId("dtPeriodTo").getDateValue();
 				}
-				oCreate.BLOCK.PERIOD_FROM = that.dataAtualFormatada();
 				oCreate.BLOCK.BETRG = "";
 				oCreate.BLOCK.INSTITUICAO = "";
 				oCreate.BLOCK.CNPJ_INST = "";
@@ -338,6 +338,10 @@ sap.ui.define([
 			oCreate.BLOCK.FCNAM = oActualModel.FCNAM;
 			oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
 			oCreate.BLOCK.PERIOD_FROM = data.substring(6, 10) + data.substring(3, 5) + data.substring(0, 2);
+			oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
+			if (that.getView().byId("slSolType").getSelectedKey() === 'S') {
+				oCreate.BLOCK.PERIOD_TO = this.getView().byId("dtPeriodTo").getDateValue();
+			}
 			oCreate.BLOCK.BETRG = oActualModel.BETRG;
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
@@ -658,6 +662,7 @@ sap.ui.define([
 			var block = this.getView().getModel("ET_BLOCK").getData();
 			var key = oEvent.getSource().getSelectedKey();
 			var today = new Date();
+			block.PERIOD_TYPE = key;
 			if (key === "M") {    // solicitacao mensal
 				var dateMon = new Date(today.getFullYear(), 5, 30);
 				this.getView().byId("lblPeriodTo").setVisible(false);
