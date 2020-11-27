@@ -782,7 +782,8 @@ sap.ui.define([
           
           if(oEvent && oEvent.BLOCK && oEvent.BLOCK.BETRG_ADM){
             const oBlock = that.getView().getModel("ET_BLOCK");
-            oBlock.BETRG_ADM = oEvent.BLOCK.BETRG_ADM;
+            oBlock.oData.BETRG_ADM = oEvent.BLOCK.BETRG_ADM;
+            oBlock.oData.PERCENTUAL = oEvent.BLOCK.PERCENTUAL;
             that.getView().setModel(oBlock, "ET_BLOCK");
           }
         }
