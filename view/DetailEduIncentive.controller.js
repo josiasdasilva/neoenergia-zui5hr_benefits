@@ -322,6 +322,9 @@ sap.ui.define([
           oCreate.BLOCK.ENDDA = oActualModel.ENDDA;
           oCreate.BLOCK.OBSERVACAO = oActualModel.OBSERVACAO;
           oCreate.BLOCK.CARGA_HORARIA = oActualModel.CARGA_HORARIA;
+          oCreate.BLOCK.PERCENTUAL = oActualModel.PERCENTUAL;
+          oCreate.BLOCK.BETRG = oActualModel.BETRG;
+          oCreate.BLOCK.BETRG_ADM = oActualModel.BETRG_ADM;
         }
       } else {
         if (oActualModel.TYPE_INC_ELEK == "" || oActualModel.TYPE_INC_ELEK == undefined) {
