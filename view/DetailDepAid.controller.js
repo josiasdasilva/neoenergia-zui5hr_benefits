@@ -316,6 +316,10 @@ sap.ui.define([
 				oCreate.BLOCK.FCNAM = "";
 				oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
 				oCreate.BLOCK.PERIOD_FROM = that.dataAtualFormatada();
+				if (that.getView().byId("slSolType").getSelectedKey() === "S") {
+					// oCreate.BLOCK.PERIOD_TO = 
+				}
+				oCreate.BLOCK.PERIOD_FROM = that.dataAtualFormatada();
 				oCreate.BLOCK.BETRG = "";
 				oCreate.BLOCK.INSTITUICAO = "";
 				oCreate.BLOCK.CNPJ_INST = "";
