@@ -97,6 +97,12 @@ sap.ui.define([
 					that.getView().byId("lblIpDependentFullName").setVisible(true);
 					that.getView().byId("ipFullName").setVisible(true);
 
+                    if (oEvent.BLOCK.PERIOD_TO !== ""){
+                    	that.getView().byId("slSolType").setSelectedKey("S");
+                    	that.getView().byId("lblPeriodTo").setVisible(true);
+                    	that.getView().byId("dtPeriodTo").setVisible(true);
+                    }
+                    
 					if (oEvent.BLOCK.REEMBOLSO === "X") {
 						oEvent.BLOCK.TYPE_SOL = "Reembolso";
 					} else if (oEvent.BLOCK.REEMBOLSO === "" && oEvent.BLOCK.ACTIO === "INS") {
@@ -323,7 +329,7 @@ sap.ui.define([
 				} else {
 					oCreate.BLOCK.PERIOD_TO = "";
 				}
-				oCreate.BLOCK.BETRG = "";
+				oCreate.BLOCK.BETRG = 0;
 				oCreate.BLOCK.INSTITUICAO = "";
 				oCreate.BLOCK.CNPJ_INST = "";
 				oCreate.BLOCK.REEMBOLSO = "";
@@ -343,11 +349,11 @@ sap.ui.define([
 			oCreate.BLOCK.PERIOD_FROM = data.substring(6, 10) + data.substring(3, 5) + data.substring(0, 2);
 			oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
 			if (that.getView().byId("slSolType").getSelectedKey() === 'S') {
-				oCreate.BLOCK.PERIOD_TO = dateTo.substring(6, 10) + dateTo.substring(3, 5) + dateTo.substring(0, 2);
+				oCreate.BLOCK.PERIOD_TO = dateTo;
 			} else {
 				oCreate.BLOCK.PERIOD_TO = "";
 			}
-			oCreate.BLOCK.BETRG = oActualModel.BETRG;
+			oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g, '').replace(',', '.'));
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
