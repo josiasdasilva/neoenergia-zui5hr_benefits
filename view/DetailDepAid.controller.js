@@ -84,14 +84,14 @@ sap.ui.define([
 				// se tem id verificar os anexos
 				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
 					var data = oEvent.BLOCK.PERIOD_FROM;
-					var ano = data.substring(0, 4);
-					var mes = data.substring(4, 6);
-					that.getView().byId("dtPeriodFrom").setDateValue(new Date(ano, mes - 1));
+					var anoFrom = data.substring(0, 4);
+					var mesFrom = data.substring(4, 6);
+					that.getView().byId("dtPeriodFrom").setDateValue(new Date(anoFrom, mesFrom - 1));
 
 					data = oEvent.BLOCK.PERIOD_TO;
-					ano = data.substring(0, 4);
-					mes = data.substring(4, 6);
-					that.getView().byId("dtPeriodTo").setDateValue(new Date(ano, mes - 1));
+					var anoTo = data.substring(0, 4);
+					var mesTo = data.substring(4, 6);
+					that.getView().byId("dtPeriodTo").setDateValue(new Date(anoTo, mesTo - 1));
 					that.getView().byId("lblDependentFullName").setVisible(false);
 					that.getView().byId("slFullName").setVisible(false);
 					that.getView().byId("lblIpDependentFullName").setVisible(true);
@@ -308,6 +308,7 @@ sap.ui.define([
 		fFillCreateDepAidData: function (oCreate, that) {
 			var oActualModel = that.getView().getModel("ET_BLOCK").getData();
 			var data = that.getView().byId("dtPeriodFrom").getValue();
+			var dateTo = this.getView().byId("dtPeriodTo").getValue();
 
 			if (oActualModel.EXCLUDE === true || oActualModel.ACTIO === "DEL") {
 				oCreate.BLOCK.ACTIO = "DEL";
@@ -315,17 +316,19 @@ sap.ui.define([
 				oCreate.BLOCK.OBJPS = "";
 				oCreate.BLOCK.FCNAM = "";
 				oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
-				oCreate.BLOCK.PERIOD_FROM = that.dataAtualFormatada();
+				oCreate.BLOCK.PERIOD_FROM = that.dataFormatada(new Date());
 				oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
 				if (that.getView().byId("slSolType").getSelectedKey() === 'S') {
-					oCreate.BLOCK.PERIOD_TO = this.getView().byId("dtPeriodTo").getDateValue();
+					oCreate.BLOCK.PERIOD_TO = dateTo.substring(6, 10) + dateTo.substring(3, 5) + dateTo.substring(0, 2);
+				} else {
+					oCreate.BLOCK.PERIOD_TO = "";
 				}
 				oCreate.BLOCK.BETRG = "";
 				oCreate.BLOCK.INSTITUICAO = "";
 				oCreate.BLOCK.CNPJ_INST = "";
 				oCreate.BLOCK.REEMBOLSO = "";
 				if (oCreate.BLOCK.REQUISITION_ID === "00000000" || oCreate.BLOCK.REQUISITION_ID === undefined) {
-					oCreate.BLOCK.DT_SOLICIT = that.dataAtualFormatada();
+					oCreate.BLOCK.DT_SOLICIT = that.dataFormatada(new Date());
 				} else {
 					oCreate.BLOCK.DT_SOLICIT = oActualModel.DT_SOLICIT;
 				}
@@ -340,26 +343,27 @@ sap.ui.define([
 			oCreate.BLOCK.PERIOD_FROM = data.substring(6, 10) + data.substring(3, 5) + data.substring(0, 2);
 			oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
 			if (that.getView().byId("slSolType").getSelectedKey() === 'S') {
-				oCreate.BLOCK.PERIOD_TO = this.getView().byId("dtPeriodTo").getDateValue();
+				oCreate.BLOCK.PERIOD_TO = dateTo.substring(6, 10) + dateTo.substring(3, 5) + dateTo.substring(0, 2);
+			} else {
+				oCreate.BLOCK.PERIOD_TO = "";
 			}
 			oCreate.BLOCK.BETRG = oActualModel.BETRG;
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
 			if (oCreate.BLOCK.REQUISITION_ID === "00000000" || oCreate.BLOCK.REQUISITION_ID === undefined) {
-				oCreate.BLOCK.DT_SOLICIT = that.dataAtualFormatada();
+				oCreate.BLOCK.DT_SOLICIT = that.dataFormatada(new Date());
 			} else {
 				oCreate.BLOCK.DT_SOLICIT = oActualModel.DT_SOLICIT;
 			}
 
 		},
-		dataAtualFormatada: function () {
-			var data = new Date(),
-				dia = data.getDate().toString(),
+		dataFormatada: function (oData) {
+			var dia = oData.getDate().toString(),
 				diaF = (dia.length === 1) ? "0" + dia : dia,
-				mes = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+				mes = (oData.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
 				mesF = (mes.length === 1) ? "0" + mes : mes,
-				anoF = data.getFullYear();
+				anoF = oData.getFullYear();
 			return anoF + mesF + diaF;
 		},
 		// --------------------------------------------
@@ -712,6 +716,7 @@ sap.ui.define([
 			}
 
 			var data = this.getView().byId("dtPeriodFrom").getValue();
+			var dataTo = this.getView().byId("dtPeriodTo").getValue();
 			var block = this.getView().getModel("ET_BLOCK").getData();
 
 			var IvTpAux = this.getView().byId("cbTypeAux").getValue();
@@ -783,6 +788,7 @@ sap.ui.define([
 				model.getData().TYPE_SOL = "Primeira Solicitação";
 				model.getData().REEMBOLSO = "";
 				this.getView().byId("dtPeriodFrom").setValue();
+				this.getView().byId("dtPeriodTo").setValue();
 				this.fEsconderCamposExcluir(true);
 				this.getView().byId("slSolType").setEnabled(false);
 				this.getView().byId("slSolType").setSelectedKey("M");
@@ -800,6 +806,7 @@ sap.ui.define([
 				model.getData().TYPE_SOL = "Reembolso";
 				model.getData().REEMBOLSO = "X";
 				this.getView().byId("dtPeriodFrom").setValue();
+				this.getView().byId("dtPeriodTo").setValue();
 				this.fEsconderCamposExcluir(true);
 				this.getView().byId("slSolType").setEnabled(true);
 				this.exclude = false;
@@ -816,6 +823,7 @@ sap.ui.define([
 				model.getData().TYPE_SOL = "Exclusão";
 				model.getData().REEMBOLSO = "";
 				this.getView().byId("dtPeriodFrom").setValue();
+				this.getView().byId("dtPeriodTo").setValue();
 				this.fEsconderCamposExcluir(false);
 				break;
 			}
