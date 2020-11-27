@@ -434,7 +434,7 @@
 					</Label>
 					<Select id="sJaPartic" selectedKey="{ET_BLOCK>/JA_PARTIC_PRG_EST}" change="onChangeParticBolsa">
 						<items>
-							<core:Item text="Sim" key="S"/>
+							<core:Item text="Sim" key="X"/>
 							<core:Item text="Não" key=""/>
 						</items>
 						<layoutData>

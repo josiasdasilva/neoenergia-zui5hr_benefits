@@ -67,7 +67,7 @@ sap.ui.define([
       var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
       
       //initial state
-      this.setParticProgFieldsVisibility(this.getView().byId("sJaPartic").getSelectedKey() === "S");
+      this.setParticProgFieldsVisibility(this.getView().byId("sJaPartic").getSelectedKey() === "X");
       
       function fSuccess(oEvent) {
         var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
@@ -110,8 +110,8 @@ sap.ui.define([
         }
         
         if(oValue && oValue.oData) {
-          that.setParticProgFieldsVisibility(oValue.oData.JA_PARTIC_PRG_EST === "S");
-          oValue.oData.ACORDO == "1" ? oValue.oData.ACORDO = true : oValue.oData.ACORDO = false;
+          that.setParticProgFieldsVisibility(oValue.oData.JA_PARTIC_PRG_EST === "X");
+          oValue.oData.ACORDO == "X" ? oValue.oData.ACORDO = true : oValue.oData.ACORDO = false;
           //convert from backend to frontend names
           if(empresa === "NEO") {
             oValue.oData.NOME_INST = oValue.oData.INSTITUICAO;
@@ -151,7 +151,9 @@ sap.ui.define([
           } else {
             that.getView().byId("slEduIncType").setVisible(false);
             that.getView().byId("ipEduIncTypeADP").setVisible(true);
+            that.getView().byId("ipEduIncTypeADP").setEnabled(false);
             that.getView().byId("lblEduIncTypeADP").setVisible(true);
+            that.getView().byId("ipBetrg").setEnabled(true);
           }
         }
         if (empresa != "NEO") {
@@ -357,7 +359,7 @@ sap.ui.define([
           oCreate.BLOCK.JA_PARTIC_PRG_EST = oActualModel.JA_PARTIC_PRG_EST;
           oCreate.BLOCK.DESCR_PROG = oActualModel.DESCR_PROG;
           oCreate.BLOCK.ENC_BOLSA = oActualModel.ENC_BOLSA;
-          oCreate.BLOCK.ACORDO = oActualModel.ACORDO ? 1 : 0;
+          oCreate.BLOCK.ACORDO = oActualModel.ACORDO ? "X" : " ";
         }
       }
     },
@@ -804,6 +806,7 @@ sap.ui.define([
         var allOk = true;
         const selType = this.getView().byId('slSolType').getSelectedKey();
         
+        if(!(this.isValidNumber('ipBetrg'))) allOk = false;
         if(selType === "P"){
           if(empresa === "NEO"){
             //Neo
@@ -861,7 +864,7 @@ sap.ui.define([
             if(this.fFieldIsEmpty('ipObjetivo')) allOk = false;
             
             const jaPartic = this.getView().byId('sJaPartic').getSelectedKey();
-            if(jaPartic==="S"){
+            if(jaPartic==="X"){
               if(this.fFieldIsEmpty('ipDescProg')) allOk = false;
               if(this.fFieldIsEmpty('ipEncBolsa')) allOk = false;
             }
@@ -872,7 +875,7 @@ sap.ui.define([
       onChangeParticBolsa: function(oEvent) {
         const value = oEvent.getSource().getSelectedKey();
         //show/hide fields 
-        this.setParticProgFieldsVisibility(value === "S")
+        this.setParticProgFieldsVisibility(value === "X")
       },
       onChangePerc: function(oEvent) {
         this.onChangeValidateNumeric(oEvent);
