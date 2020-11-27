@@ -17,18 +17,15 @@ sap.ui.define(function () {
 
 			return oNumberFormat.format(val);
 		},
-		float2digStr: function (sValue) {
+		float2dig: function (sValue) {
 			var number = new Intl.NumberFormat("pt-BR", {
 				minimumFractionDigits: 2,
 				maximumFractionDigits: 2
 			});
-			if (sValue.indexOf(',') > 0) {
-				sValue = parseFloat(sValue.replace(/\./g, '').replace(',', '.'));
-			} 
 			if ((!sValue) || (sValue === 0)) {
 				return "";
 			}
-			return number.format(sValue).toString();
+			return number.format(sValue);
 		},
 		membro: function (type) {
 			switch (type) {
