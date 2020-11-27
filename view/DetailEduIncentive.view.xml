@@ -251,7 +251,7 @@
 							<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input id="ipLocTrab" value="{ET_BLOCK>/XXX}" maxLength="80" required="true">
+					<Input id="ipLocTrab" value="{ET_BLOCK>/LOCAL_TRAB}" maxLength="80" required="true">
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>

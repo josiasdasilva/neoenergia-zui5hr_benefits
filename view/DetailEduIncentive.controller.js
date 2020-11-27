@@ -114,7 +114,7 @@ sap.ui.define([
           oValue.oData.ACORDO == "X" ? oValue.oData.ACORDO = true : oValue.oData.ACORDO = false;
           //convert from backend to frontend names
           if(empresa === "NEO") {
-            oValue.oData.NOME_INST = oValue.oData.INSTITUICAO;
+            oValue.oData.NOME_INST = oValue.oData.INSTITUICAO;    
             oValue.oData.TEL_INST = oValue.oData.TELEFONE;
           }
         }
@@ -358,6 +358,7 @@ sap.ui.define([
           oCreate.BLOCK.PROG_BOLSA = oActualModel.PROG_BOLSA;
           oCreate.BLOCK.JA_PARTIC_PRG_EST = oActualModel.JA_PARTIC_PRG_EST;
           oCreate.BLOCK.DESCR_PROG = oActualModel.DESCR_PROG;
+          oCreate.BLOCK.LOCAL_TRAB = oActualModel.LOCAL_TRAB;
           oCreate.BLOCK.ENC_BOLSA = oActualModel.ENC_BOLSA;
           oCreate.BLOCK.ACORDO = oActualModel.ACORDO ? "X" : " ";
         }
