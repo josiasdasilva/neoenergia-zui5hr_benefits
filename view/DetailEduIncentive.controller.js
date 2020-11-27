@@ -804,10 +804,10 @@ sap.ui.define([
         var allOk = true;
         const selType = this.getView().byId('slSolType').getSelectedKey();
         
-        if(!(this.isValidNumber('ipBetrgAdm'))) allOk = false;
         if(selType === "P"){
           if(empresa === "NEO"){
             //Neo
+            if(!(this.isValidNumber('ipBetrgAdm'))) allOk = false;
             if(!(this.isValidNumber('ipCargaHoraria'))) allOk = false;
           }else{
             //Elektro
