@@ -353,7 +353,7 @@ sap.ui.define([
 			} else {
 				oCreate.BLOCK.PERIOD_TO = "";
 			}
-			oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g, '').replace(',', '.'));
+			oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
@@ -748,7 +748,7 @@ sap.ui.define([
 			var IvTpAux = this.getView().byId("cbTypeAux").getValue();
 			var IvPeriodo = data.substring(6, 10) + data.substring(3, 5);
 			var IvOpPer = this.getView().byId("slSolType").getSelectedKey();
-			var IvValAux = block.BETRG.replace(/\./g, '').replace(',', '.');
+			var IvValAux = parseFloat(block.BETRG.replace(/\./g,'').replace(',', '.'));
 			var IvNomeDep = block.FCNAM;
 			var IvInstBaba = block.INSTITUICAO;
 			var IvCnpjCpf = block.CNPJ_INST;
