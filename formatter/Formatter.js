@@ -22,6 +22,9 @@ sap.ui.define(function () {
 				minimumFractionDigits: 2,
 				maximumFractionDigits: 2
 			});
+			if (sValue.indexOf(',') > 0) {
+				sValue = parseFloat(sValue.replace(/\./g, '').replace(',', '.'));
+			} 
 			if ((!sValue) || (sValue === 0)) {
 				return "";
 			}

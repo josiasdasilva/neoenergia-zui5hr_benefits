@@ -98,7 +98,7 @@ sap.ui.define([
 					that.getView().byId("ipFullName").setVisible(true);
 
                     if (oEvent.BLOCK.PERIOD_TO !== ""){
-                    	that.getView().byId("slSolType").setSelectedKey("S");
+                    	that.getView().byId("slSolType").setSelectedKey('S');
                     	that.getView().byId("lblPeriodTo").setVisible(true);
                     	that.getView().byId("dtPeriodTo").setVisible(true);
                     }
@@ -668,6 +668,27 @@ sap.ui.define([
 				oView.byId("slMemberType").setSelectedKey(selectedRow.TYPE_DEPEN);
 			}
 		},
+		onChangePeriod: function (oEvent) {
+			var block = this.getView().getModel("ET_BLOCK").getData();
+			var key = this.getView().byId("slSolType").getSelectedKey();
+			var date = oEvent.getSource().getValue();
+
+			if (key === "M") {    // solicitacao mensal
+				var dateMon = new Date(today.getFullYear(), 5, 30);
+				this.getView().byId("lblPeriodTo").setVisible(false);
+				this.getView().byId("dtPeriodTo").setVisible(false);
+				this.getView().byId("dtPeriodTo").setDateValue(dateMon);
+				block.PERIOD_TO = this.yyyymmdd(dateMon);
+			} else {            // solicitacao semestral
+				var dateSem = new Date(today.getFullYear(), 11, 31);
+				this.getView().byId("lblPeriodTo").setVisible(true);
+				this.getView().byId("dtPeriodTo").setVisible(true);
+				this.getView().byId("dtPeriodTo").setEnabled(false);
+				this.getView().byId("dtPeriodTo").setDateValue(dateSem);
+				block.PERIOD_TO = this.yyyymmdd(dateSem);
+			}
+			
+		},
 		onChangeSol: function (oEvent) {
 			var block = this.getView().getModel("ET_BLOCK").getData();
 			var key = oEvent.getSource().getSelectedKey();
@@ -687,7 +708,6 @@ sap.ui.define([
 				this.getView().byId("dtPeriodTo").setDateValue(dateSem);
 				block.PERIOD_TO = this.yyyymmdd(dateSem);
 			}
-
 		},
 		onFormulario: function () {
 
