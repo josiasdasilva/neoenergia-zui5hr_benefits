@@ -286,7 +286,7 @@ sap.ui.define([
 					oEntry = [];
 				}
 				//Seta Lista no Model da View	
-				that.getView().setModel(that.BenefEx, "benefExx");
+				that.getView().setModel(that.BenefEx, "benefEx");
 			}
 
 			function fErrorEx(oEvent) {
