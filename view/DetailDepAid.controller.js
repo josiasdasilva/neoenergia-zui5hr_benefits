@@ -88,16 +88,20 @@ sap.ui.define([
 					var mesFrom = data.substring(4, 6);
 					that.getView().byId("dtPeriodFrom").setDateValue(new Date(anoFrom, mesFrom - 1));
 
-					data = oEvent.BLOCK.PERIOD_TO;
-					var anoTo = data.substring(0, 4);
-					var mesTo = data.substring(4, 6);
-					that.getView().byId("dtPeriodTo").setDateValue(new Date(anoTo, mesTo - 1));
 					that.getView().byId("lblDependentFullName").setVisible(false);
 					that.getView().byId("slFullName").setVisible(false);
 					that.getView().byId("lblIpDependentFullName").setVisible(true);
 					that.getView().byId("ipFullName").setVisible(true);
 
-                    if (oEvent.BLOCK.PERIOD_TO !== ""){
+                    if (oEvent.BLOCK.PERIOD_TO === ""){
+                    	that.getView().byId("slSolType").setSelectedKey('M');
+                    	that.getView().byId("lblPeriodTo").setVisible(false);
+                    	that.getView().byId("dtPeriodTo").setVisible(false);
+                    } else {
+						data = oEvent.BLOCK.PERIOD_TO;
+						var anoTo = data.substring(0, 4);
+						var mesTo = data.substring(4, 6);
+						that.getView().byId("dtPeriodTo").setDateValue(new Date(anoTo, mesTo - 1));
                     	that.getView().byId("slSolType").setSelectedKey('S');
                     	that.getView().byId("lblPeriodTo").setVisible(true);
                     	that.getView().byId("dtPeriodTo").setVisible(true);
