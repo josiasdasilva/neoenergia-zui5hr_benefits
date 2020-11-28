@@ -93,8 +93,10 @@ sap.ui.define([
 					that.getView().byId("slFullName").setVisible(false);
 					that.getView().byId("lblIpDependentFullName").setVisible(true);
 					that.getView().byId("ipFullName").setVisible(true);
+					that.getView().byId("ipRequestedValue").setValue(oEvent.BLOCK.BETRG);
 
                     if (oEvent.BLOCK.PERIOD_TO === ""){
+                    	that.getView().byId("slSolType").setSelectedKey('M');
                     	that.getView().byId("slSolType").setSelectedKey('M');
                     	that.getView().byId("lblPeriodTo").setVisible(false);
                     	that.getView().byId("dtPeriodTo").setVisible(false);
@@ -246,6 +248,22 @@ sap.ui.define([
 			that.BenefEx.setData({
 				table: []
 			});
+
+			that.TipoSolic = new JSONModel();
+			that.TipoSolic.setData({
+				table: []
+			});
+			oEntry = {
+				key: "M",
+				text: "Mensal"
+			};
+			that.TipoSolic.getData().table.push(oEntry);
+			oEntry = {
+				key: "S",
+				text: "Semestral"
+			};
+			that.TipoSolic.getData().table.push(oEntry);
+			that.getView().setModel(that.TipoSolic, "tiposolic");
 
 			if (pernr !== undefined && pernr !== null && pernr !== "") {
 				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
