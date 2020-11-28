@@ -116,7 +116,7 @@
 						</layoutData>
 					</Label>
 					<Select width="50%" id="slSolType" selectedKey="{}" change="onChangeSol"
-							items="{path: 'tiposolic>/table', sorter: { path: 'tiposolic>text' }}">
+							items="{path: 'tiposolic>/table', sorter: { path: 'text' }}">
 						<core:Item text="{tiposolic>text}" key="{tiposolic>key}"/>
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>

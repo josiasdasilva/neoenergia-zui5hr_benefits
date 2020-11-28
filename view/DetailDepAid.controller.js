@@ -29,6 +29,7 @@ sap.ui.define([
 			this.fSetHeader();
 			this.fSetGlobalInformation();
 
+			this.fTipoSolicitacao();
 			this.fGetBlock();
 			this.fSearchHelps(this, this.getView().getModel("ET_HEADER").getData().PERNR);
 			this.fDisableAll();
@@ -231,6 +232,24 @@ sap.ui.define([
 			oView.byId("btnAccept").setVisible(false);
 			oView.byId("btnCancel").setVisible(false);
 		},
+		fTipoSolicitacao: function () {
+			var oEntry = [];
+			this.TipoSolic = new JSONModel();
+			this.TipoSolic.setData({
+				table: []
+			});
+			oEntry = {
+				key: "M",
+				text: "Mensal"
+			};
+			this.TipoSolic.getData().table.push(oEntry);
+			oEntry = {
+				key: "S",
+				text: "Semestral"
+			};
+			this.TipoSolic.getData().table.push(oEntry);
+			this.getView().setModel(this.TipoSolic, "tiposolic");
+		},
 		//	--------------------------------------------
 		//	fSearchHelps
 		//	--------------------------------------------		
@@ -248,22 +267,6 @@ sap.ui.define([
 			that.BenefEx.setData({
 				table: []
 			});
-
-			that.TipoSolic = new JSONModel();
-			that.TipoSolic.setData({
-				table: []
-			});
-			oEntry = {
-				key: "M",
-				text: "Mensal"
-			};
-			that.TipoSolic.getData().table.push(oEntry);
-			oEntry = {
-				key: "S",
-				text: "Semestral"
-			};
-			that.TipoSolic.getData().table.push(oEntry);
-			that.getView().setModel(that.TipoSolic, "tiposolic");
 
 			if (pernr !== undefined && pernr !== null && pernr !== "") {
 				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
@@ -695,6 +698,7 @@ sap.ui.define([
 			var block = this.getView().getModel("ET_BLOCK").getData();
 			var key = this.getView().byId("slSolType").getSelectedKey();
 			var date = oEvent.getSource().getValue();
+			var today = new Date();
 
 			if (key === "M") {    // solicitacao mensal
 				var dateMon = new Date(today.getFullYear(), 5, 30);
