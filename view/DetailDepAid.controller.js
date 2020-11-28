@@ -69,6 +69,7 @@ sap.ui.define([
 				if (parseFloat(oEvent.BLOCK.VALUE_APPR) <= 0) {
 					oEvent.BLOCK.VALUE_APPR = oEvent.BLOCK.VALUE;
 				}
+				debugger;
 
 				//Isolates the model
 				var oDataOrig = JSON.parse(JSON.stringify(oValue.oData));
