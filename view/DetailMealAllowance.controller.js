@@ -848,13 +848,13 @@ sap.ui.define([
           const benef = oModelBenef.oData[i];
           if(benef.key === combo){
             switch (benef.desc) {
-              case identificationText_100VA():
+              case this.identificationText_100VA():
                 type = "A";
                 break;
-              case identificationText_100VR():
+              case this.identificationText_100VR():
                 type = "R";
                 break;
-              case identificationText_50VR_50VA():
+              case this.identificationText_50VR_50VA():
                 type = "AR";
                 break;
               default:
