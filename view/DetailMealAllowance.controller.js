@@ -172,7 +172,13 @@ sap.ui.define([
 					oEntry = {
 						key: oEvent.results[i].Idac,
 						desc: oEvent.results[i].Nmac
-					};
+          };
+          if(oEntry.key === 'ALIM'){
+            oEntry.desc = 'Alimentação';
+          }
+          if(oEntry.key === 'REFE'){
+            oEntry.desc = 'Refeição';
+          }
 					that.Benef.getData().table.push(oEntry);
 
 					oEntry = [];
