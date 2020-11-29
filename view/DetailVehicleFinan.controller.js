@@ -541,6 +541,8 @@ sap.ui.define([
 			var dif = ((((anot - anof) * 12) + Number(mest)) - mesf);
 			if (dif > 36) {
 				MessageBox.error("A validade final não pode ser maior que 36 meses a partir da validade inicial");
+				dtTo = "";
+				this.getView().byId("dtValidTo").setValue(dtTo);
 			}
 		},
 
