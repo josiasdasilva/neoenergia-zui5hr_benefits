@@ -1440,7 +1440,7 @@ sap.ui.define([
 			oView.setModel(new sap.ui.model.json.JSONModel(plan.getData()), "ET_PLAN_MASTER");
 
 			changed.push(obj);
-			debugger;
+			
 			for (i = 0; i < depTable.length; i++) {
 
 				if (depTable[i].ACTIVE_BRHE == "X") {

@@ -141,6 +141,15 @@ sap.ui.define([
 			oModel.read("ET_MEAL_ALLOWANCE" + urlParam, null, null, false, fSuccess, fError);
 		},
 
+		identificationText_100VA: function () {
+			return '100% Vale Alimentação';
+		},
+		identificationText_100VR: function () {
+			return '100% Vale Refeição';
+		},
+		identificationText_50VR_50VA: function () {
+			return '50% Vale Alimentação/50% Refeição';
+		},
 		//	--------------------------------------------
 		//	fGetBlock
 		//	--------------------------------------------		
@@ -814,7 +823,7 @@ sap.ui.define([
 			}
 		},
 		onFormulario: function () {
-
+			const oModelBenef = this.getView().getModel("benef");
 			var sServiceUrl = "/sap/opu/odata/sap/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/";
 			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
 			var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
@@ -833,16 +842,34 @@ sap.ui.define([
 			}
 
 			if (empresa === "NEO") {
+        const combo = this.getView().byId("idCombo").getSelectedItem().getKey();
+        //identify selection in benef model
+        for (let i = 0; i < oModelBenef.oData.length; i++) {
+          const benef = oModelBenef.oData[i];
+          if(benef.key === combo){
+            switch (benef.desc) {
+              case identificationText_100VA():
+                type = "A";
+                break;
+              case identificationText_100VR():
+                type = "R";
+                break;
+              case identificationText_50VR_50VA():
+                type = "AR";
+                break;
+              default:
+                break;
+            }
+          }
+        }
 
-				var combo = this.getView().byId("idCombo").getSelectedItem().getKey();
-
-				if (combo == "VALI" || combo == "VAES" || combo == "VA02" || combo == "VAE2") {
-					type = "A";
-				} else if (combo == "VREF" || combo == "VRES" || combo == "VR02" || combo == "VRE2") {
-					type = "R";
-				} else if (combo == "VAVR" || combo == "VARE" || combo == "VAR2" || combo == "ARE2") {
-					type = "AR";
-				}
+				//if (combo == "VALI" || combo == "VAES" || combo == "VA02" || combo == "VAE2") {
+				//	type = "A";
+				//} else if (combo == "VREF" || combo == "VRES" || combo == "VR02" || combo == "VRE2") {
+				//	type = "R";
+				//} else if (combo == "VAVR" || combo == "VARE" || combo == "VAR2" || combo == "ARE2") {
+				//	type = "AR";
+				//}
 			} else {
 				var radioBtn = this.getView().byId("idRadio").getSelectedIndex();
 
