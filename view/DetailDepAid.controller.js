@@ -97,8 +97,7 @@ sap.ui.define([
 					that.getView().byId("ipRequestedValue").setValue(oEvent.BLOCK.BETRG);
 
                     if (oEvent.BLOCK.PERIOD_TO === ""){
-                    	that.getView().byId("slSolType").setSelectedKey('M');
-                    	that.getView().byId("slSolType").setSelectedKey('M');
+                    	that.getView().byId("slSolType").setSelectedKey("");
                     	that.getView().byId("lblPeriodTo").setVisible(false);
                     	that.getView().byId("dtPeriodTo").setVisible(false);
                     } else {
@@ -106,7 +105,7 @@ sap.ui.define([
 						var anoTo = data.substring(0, 4);
 						var mesTo = data.substring(4, 6);
 						that.getView().byId("dtPeriodTo").setDateValue(new Date(anoTo, mesTo - 1));
-                    	that.getView().byId("slSolType").setSelectedKey('S');
+                    	that.getView().byId("slSolType").setSelectedKey("S");
                     	that.getView().byId("lblPeriodTo").setVisible(true);
                     	that.getView().byId("dtPeriodTo").setVisible(true);
                     }
@@ -350,7 +349,7 @@ sap.ui.define([
 				oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
 				oCreate.BLOCK.PERIOD_FROM = that.dataFormatada(new Date());
 				oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
-				if (that.getView().byId("slSolType").getSelectedKey() === 'S') {
+				if (that.getView().byId("slSolType").getSelectedKey() === "S") {
 					oCreate.BLOCK.PERIOD_TO = dateTo.substring(6, 10) + dateTo.substring(3, 5) + dateTo.substring(0, 2);
 				} else {
 					oCreate.BLOCK.PERIOD_TO = "";
@@ -372,14 +371,16 @@ sap.ui.define([
 			oCreate.BLOCK.OBJPS = oActualModel.OBJPS;
 			oCreate.BLOCK.FCNAM = oActualModel.FCNAM;
 			oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
-			oCreate.BLOCK.PERIOD_FROM = data.substring(6, 10) + data.substring(3, 5) + data.substring(0, 2);
+			// oCreate.BLOCK.PERIOD_FROM = data.substring(6, 10) + data.substring(3, 5) + data.substring(0, 2);
+			oCreate.BLOCK.PERIOD_FROM = data;
 			oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
-			if (that.getView().byId("slSolType").getSelectedKey() === 'S') {
+			if (that.getView().byId("slSolType").getSelectedKey() === "S") {
 				oCreate.BLOCK.PERIOD_TO = dateTo;
 			} else {
 				oCreate.BLOCK.PERIOD_TO = "";
 			}
-			oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
+			// oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
+			oCreate.BLOCK.BETRG = oActualModel.BETRG;
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
@@ -774,7 +775,11 @@ sap.ui.define([
 
 			var IvTpAux = this.getView().byId("cbTypeAux").getValue();
 			var IvPeriodo = data.substring(6, 10) + data.substring(3, 5);
-			var IvOpPer = this.getView().byId("slSolType").getSelectedKey();
+			var IvOpPer = this.getView().byId("slSolType").getSelectedKey() === "" ? "M" : "S" ;
+			
+// var a = {...oEvent};
+// this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004.getUser().getId();
+
 			var IvValAux = parseFloat(block.BETRG.replace(/\./g,'').replace(',', '.'));
 			var IvNomeDep = block.FCNAM;
 			var IvInstBaba = block.INSTITUICAO;
@@ -843,8 +848,8 @@ sap.ui.define([
 				this.getView().byId("dtPeriodFrom").setValue();
 				this.getView().byId("dtPeriodTo").setValue();
 				this.fEsconderCamposExcluir(true);
+				this.getView().byId("slSolType").setSelectedKey("");
 				this.getView().byId("slSolType").setEnabled(false);
-				this.getView().byId("slSolType").setSelectedKey("M");
 				this.exclude = false;
 				model.getData().EXCLUDE = false;
 				break;
