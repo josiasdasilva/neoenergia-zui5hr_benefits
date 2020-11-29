@@ -844,8 +844,8 @@ sap.ui.define([
 			if (empresa === "NEO") {
         const combo = this.getView().byId("idCombo").getSelectedItem().getKey();
         //identify selection in benef model
-        for (let i = 0; i < oModelBenef.oData.length; i++) {
-          const benef = oModelBenef.oData[i];
+        for (let i = 0; i < oModelBenef.oData.table.length; i++) {
+          const benef = oModelBenef.oData.table[i];
           if(benef.key === combo){
             switch (benef.desc) {
               case this.identificationText_100VA():
