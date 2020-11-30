@@ -337,8 +337,10 @@ sap.ui.define([
 		fFillCreateDepAidData: function (oCreate, that) {
 			var oActualModel = that.getView().getModel("ET_BLOCK").getData();
 			var dtFrom = this.dataFormatada(that.getView().byId("dtPeriodFrom").getDateValue());
-			var dtTo = this.dataFormatada(this.getView().byId("dtPeriodTo").getDateValue());
-
+			var key = that.getView().byId("slSolType").getSelectedKey();
+			if (key === "S"){
+				var dtTo = this.dataFormatada(this.getView().byId("dtPeriodTo").getDateValue());
+			}
 			if (oActualModel.EXCLUDE === true || oActualModel.ACTIO === "DEL") {
 				oCreate.BLOCK.ACTIO = "DEL";
 				oCreate.BLOCK.TYPE_DEPEN = "";
@@ -347,7 +349,7 @@ sap.ui.define([
 				oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
 				oCreate.BLOCK.PERIOD_FROM = dtFrom;
 				oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
-				if (that.getView().byId("slSolType").getSelectedKey() === "S") {
+				if (key === "S") {
 					oCreate.BLOCK.PERIOD_TO = dtTo;
 				} else {
 					oCreate.BLOCK.PERIOD_TO = "";
@@ -369,16 +371,16 @@ sap.ui.define([
 			oCreate.BLOCK.OBJPS = oActualModel.OBJPS;
 			oCreate.BLOCK.FCNAM = oActualModel.FCNAM;
 			oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
-			// oCreate.BLOCK.PERIOD_FROM = data.substring(6, 10) + data.substring(3, 5) + data.substring(0, 2);
 			oCreate.BLOCK.PERIOD_FROM = dtFrom;
 			oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
-			if (that.getView().byId("slSolType").getSelectedKey() === "S") {
+			if (key === "S") {
 				oCreate.BLOCK.PERIOD_TO = dtTo;
 			} else {
 				oCreate.BLOCK.PERIOD_TO = "";
 			}
 			// oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
-			oCreate.BLOCK.BETRG = oActualModel.BETRG;
+			// oCreate.BLOCK.BETRG = oActualModel.BETRG;
+			oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
