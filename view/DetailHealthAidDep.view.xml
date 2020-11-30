@@ -10,7 +10,7 @@
 			<statuses>
 				<ObjectStatus text="Cargo: {ET_HEADER>/STLTX}" class="" id="lblCargo" state="None"/>
 				<ObjectStatus text="Data de admissão: { path: 'ET_HEADER>/HIRE_DATE', formatter:'cadastralMaintenance.formatter.Formatter.dataAdmissao'}"
-					class="" id="lblAdmissao" state="None"/>
+					class="" id="lblAdmissao" state="None"/> 
 			</statuses>
 			<ObjectAttribute id='Pernr' text="Matrícula: {ET_HEADER>/PERNR}"/>
 			<ObjectAttribute text="" id="lblNumReq"/>

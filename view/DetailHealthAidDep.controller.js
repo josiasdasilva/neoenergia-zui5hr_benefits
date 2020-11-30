@@ -11,7 +11,7 @@ sap.ui.define([
 	return BaseController.extend("cadastralMaintenance.view.DetailHealthAidDep", {
 		onInit: function () {
 			this.oInitialLoadFinishedDeferred = jQuery.Deferred();
-
+ 
 			if (sap.ui.Device.system.phone) {
 				//Do not wait for the master2 when in mobile phone resolution
 				this.oInitialLoadFinishedDeferred.resolve();

@@ -9,7 +9,7 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("cadastralMaintenance.view.DetailHealthAid", {
-		onInit: function () {
+		onInit: function () { 
 			this.oInitialLoadFinishedDeferred = jQuery.Deferred();
 
 			if (sap.ui.Device.system.phone) {
