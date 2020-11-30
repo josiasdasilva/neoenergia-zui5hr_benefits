@@ -39,7 +39,8 @@ sap.ui.define([
 
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 
-			var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			// var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			var urlParam = this.fGetUrlBukrs(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, oGlobalData.IM_BUKRS);
 
 			function fSuccess(oEvent) {
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
@@ -312,6 +313,7 @@ sap.ui.define([
 		//  --------------------------------------------
 		fSearchHelpLifeAssurance: function () {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 
 			var urlParam = "";
 			//var ipLifeInsurancePlan = this.getView().byId("ipLifeInsurancePlan").getValue();
@@ -319,6 +321,7 @@ sap.ui.define([
 
 			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
 			urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 
 			this.fSetSearchHelpValue(oModel, "ET_SH_LIFE_ASSURANCE", urlParam);
 		},
@@ -328,6 +331,7 @@ sap.ui.define([
 		//  --------------------------------------------
 		fSearchHelpLifeAssurancePlan: function () {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 
 			var urlParam = "";
 			//var ipLifeInsurancePlan = this.getView().byId("ipLifeInsurancePlan").getValue();
@@ -335,6 +339,7 @@ sap.ui.define([
 
 			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
 			urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 
 			this.fSetSearchHelpValue(oModel, "ET_SH_LIFE_ASSURANCE_PLAN", urlParam);
 		},
@@ -438,6 +443,7 @@ sap.ui.define([
 			oCreate.IM_ACTION = action;
 			oCreate.IM_LOGGED_IN = oGlobalData.IM_LOGGED_IN;
 			oCreate.IM_PERNR = oGlobalData.IM_PERNR;
+			oCreate.IM_BUKRS = oGlobalData.IM_BUKRS;
 			oCreate.OBSERVATION = that.getView().byId("taJust").getValue();
 
 			if (oCreate.IM_LOGGED_IN == 5) {
