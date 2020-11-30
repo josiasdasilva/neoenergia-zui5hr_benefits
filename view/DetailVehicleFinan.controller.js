@@ -418,7 +418,6 @@ sap.ui.define([
 
 		onChangeDtCred: function() {
 
-//teste
 			var dia = this.getView().byId("dtDateCred").getValue().substring(0, 2);
 			var mes = this.getView().byId("dtDateCred").getValue().substring(3, 5);
 			var ano = this.getView().byId("dtDateCred").getValue().substring(6, 10);
@@ -435,9 +434,11 @@ sap.ui.define([
 			var atual = anoF + mesF + diaF;
 
 			if (begda < atual) {
-				this.getView().byId("dtValidFrom").setValue("");
 				MessageBox.error("Data não pode ser inferior a data atual");
-				return;
+				var dtDateCred = this.getView().byId("dtDateCred").getValue();
+				dtDateCred = "";
+				this.getView().byId("dtDateCred").setValue(dtDateCred);
+
 			} else {
 				//Setar Janeiro do proximo ano caso seja Dezembro
 				if (mes == "12") {
@@ -521,13 +522,6 @@ sap.ui.define([
 			}
 
 		},
-		/*		onChangeDtFrom: function (oEvent) {
-					var dtFrom = this.getView().byId("dtValidFrom").getValue();
-					var ano = dtFrom.substring(6, 10);
-					var mes = dtFrom.substring(3, 5);
-					var dia = dtFrom.substring(0, 2);
-					this.getView().byId("dtValidTo").setMinDate(new Date(ano, mes - 1, dia));
-				},*/
 
 		onChangeDtTo: function() {
 			var dtFrom = this.getView().byId("dtValidFrom").getValue();
@@ -553,6 +547,9 @@ sap.ui.define([
 			}
 
 			if (parseFloat(model.VALUE_SOL) > parseFloat(model.VALUE_MAX)) {
+				var valSolic = this.getView().byId("ipRequestedValue").getValue();
+				valSolic = "";
+				this.getView().byId("ipRequestedValue").setValue(valSolic);
 				var message = "Valor solicitado acima do limite de " + parseFloat(model.VALUE_MAX);
 				MessageBox.error(message);
 				return false;
