@@ -496,7 +496,7 @@ sap.ui.define([
 					oEntry = [];
 				}
 				//Seta Lista no Model da View	
-				that.getView().setModel(that.Banks, "banks");
+				that.getView().setModel(that.Banks, "banks"); 
 				that.getView().byId("cbBank").setSelectedKey("1");
 
 			}
