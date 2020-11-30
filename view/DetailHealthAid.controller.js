@@ -45,7 +45,8 @@ sap.ui.define([
 				return;
 			}
 
-			var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			// var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			var urlParam = this.fGetUrlBukrs(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, oGlobalData.IM_BUKRS);
 
 			function fSuccess(oEvent) {
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
@@ -172,7 +173,8 @@ sap.ui.define([
 		fSearchHelps: function (that, pernr) {
 			var oEntry = [];
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
-			var urlParam = null;
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
+			var urlParam = "";
 
 			that.Benef = new JSONModel();
 			that.Benef.setData({
@@ -182,6 +184,8 @@ sap.ui.define([
 			if (pernr !== undefined && pernr !== null && pernr !== "") {
 				urlParam = this.fFillURLFilterParam("PERNR", pernr);
 			}
+			
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 
 			function fSuccess(oEvent) {
 				for (var i = 0; i < oEvent.results.length; i++) {
@@ -214,7 +218,7 @@ sap.ui.define([
 					MessageBox.error(message);
 				}
 			}
-
+			debugger;
 			oModel.read("ET_SH_HEALTH_AID_TYPE", null, urlParam, false, fSuccess, fError);
 		},
 		//	--------------------------------------------
@@ -282,6 +286,7 @@ sap.ui.define([
 			oCreate.IM_ACTION = action;
 			oCreate.IM_LOGGED_IN = oGlobalData.IM_LOGGED_IN;
 			oCreate.IM_PERNR = oGlobalData.IM_PERNR;
+			oCreate.IM_BUKRS = oGlobalData.IM_BUKRS;
 			oCreate.OBSERVATION = that.getView().byId("taJust").getValue();
 
 			if (oCreate.IM_LOGGED_IN == 5) {

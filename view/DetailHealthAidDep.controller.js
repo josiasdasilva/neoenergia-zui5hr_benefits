@@ -36,19 +36,21 @@ sap.ui.define([
 		fGetBlock: function () {
 			var that = this;
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
-
+			var paramDep = "";
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 			this.getDependents();
 
 			var oModelDep = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
-			this.fSetSearchHelpValue(oModelDep, "ET_SH_DEPENDENTS");
+			paramDep = this.fFillURLParamFilter("IM_BUKRS", oGlobalData.IM_BUKRS);
+			this.fSetSearchHelpValue(oModelDep, "ET_SH_DEPENDENTS", paramDep);
 
 			if (oGlobalData.IM_LOGGED_IN === 0) {
 				this.getView().setModel(new sap.ui.model.json.JSONModel(), "ET_BLOCK");
 				return;
 			}
 
-			var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			// var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			var urlParam = this.fGetUrlBukrs(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, oGlobalData.IM_BUKRS);
 
 			function fSuccess(oEvent) {
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
@@ -178,7 +180,8 @@ sap.ui.define([
 		fSearchHelps: function (that, pernr, TYPE_DEPEN) {
 			var oEntry = [];
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
-			var urlParam = null;
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
+			var urlParam = "";
 
 			that.Benef = new JSONModel();
 			that.Benef.setData({
@@ -192,6 +195,8 @@ sap.ui.define([
 			if (TYPE_DEPEN !== undefined && TYPE_DEPEN !== null && TYPE_DEPEN !== "") {
 				urlParam = this.fFillURLParamFilter("TYPE_DEPEN", TYPE_DEPEN, urlParam);
 			}
+			
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 
 			function fSuccess(oEvent) {
 
@@ -266,6 +271,7 @@ sap.ui.define([
 			oCreate.IM_REQUISITION_ID = oGlobalData.IM_REQUISITION_ID;
 			oCreate.IM_ACTION = action;
 			oCreate.IM_LOGGED_IN = oGlobalData.IM_LOGGED_IN;
+			oCreate.IM_BUKRS = oGlobalData.IM_BUKRS;
 			oCreate.IM_PERNR = oGlobalData.IM_PERNR;
 			oCreate.OBSERVATION = that.getView().byId("taJust").getValue();
 
