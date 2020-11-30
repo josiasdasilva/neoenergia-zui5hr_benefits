@@ -709,6 +709,7 @@ sap.ui.define([
 			globalData.IM_PERNR = "";
 			globalData.IM_REQ_URL = "";
 			globalData.IM_LOGGED_IN = "";
+			globalData.IM_BUKRS = "";
 			globalData.MSG_RET = "";
 			globalData.NO_WORKFLOW = "";
 
@@ -718,6 +719,10 @@ sap.ui.define([
 
 			if (oStartupParameters.IM_PERNR) {
 				globalData.IM_PERNR = oStartupParameters.IM_PERNR[0];
+			}
+			
+			if (oStartupParameters.IM_BUKRS) {
+				globalData.IM_BUKRS = oStartupParameters.IM_BUKRS[0];
 			}
 
 			if (oEvent) {
@@ -781,6 +786,16 @@ sap.ui.define([
 			return urlParam;
 		},
 
+		fGetUrlBukrs: function (imPernr, imRequisitionId, imLoggedIn, imBukrs) {
+			var urlParam;
+
+			urlParam = this.fFillURLParam("IM_PERNR", imPernr);
+			urlParam = this.fFillURLParam("IM_REQUISITION_ID", imRequisitionId, urlParam);
+			urlParam = this.fFillURLParam("IM_BUKRS", imBukrs, urlParam);
+			urlParam = this.fFillURLParam("IM_LOGGED_IN", imLoggedIn, urlParam, true);
+
+			return urlParam;
+		},
 		//	--------------------------------------------
 		//	fFillURLParam
 		//	--------------------------------------------
@@ -862,6 +877,7 @@ sap.ui.define([
 
 			//Shows Log only in Approval Mode
 			var urlParam = this.fFillURLParamFilter("REQUISITION_ID", oGlobalInformation.IM_REQUISITION_ID);
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalInformation.IM_BUKRS, urlParam);
 
 			oModel.read("ET_LOG", null, urlParam, false, fSuccess, fError);
 		},

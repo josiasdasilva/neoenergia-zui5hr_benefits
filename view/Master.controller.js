@@ -38,7 +38,8 @@ sap.ui.core.mvc.Controller.extend("cadastralMaintenance.view.Master", {
 		var oStartupParameters = jQuery.sap.getUriParameters().mParams;
 		var sReq = '',
 			sPernr = '',
-			sProfile = '';
+			sProfile = '',
+			sBukrs = '';
 
 		function fSuccessExecutar(oEvent) {
 			var oValue = new sap.ui.model.json.JSONModel(oEvent.results[0].EX_EMPLOYEE_HEADER);
@@ -106,9 +107,13 @@ sap.ui.core.mvc.Controller.extend("cadastralMaintenance.view.Master", {
 			sProfile = oStartupParameters.IM_PROFILE[0];
 		}
 
+		if (oStartupParameters.IM_BUKRS) {
+			sBukrs = oStartupParameters.IM_BUKRS[0];
+		}
+		
 		urlParam = "$expand=INIT_TO_BLOCK";
 
-		oModel.read("ET_INIT_MASTER?$filter=IM_PERNR eq'" + sPernr + "' and IM_REQUISITION_ID eq'" + sReq + "' ", null, urlParam, false,
+		oModel.read("ET_INIT_MASTER?$filter=IM_PERNR eq'" + sPernr + "' and IM_REQUISITION_ID eq'" + sReq + "' and IM_BUKRS eq'" + sBukrs + "' ", null, urlParam, false,
 			fSuccessExecutar, fErrorExecutar);
 	},
 

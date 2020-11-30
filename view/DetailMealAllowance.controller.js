@@ -8,12 +8,12 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"cadastralMaintenance/formatter/Formatter"
-], function (Controller, ResourceModel, JSONModel, MessageBox, BaseController, UploadCollectionParameter, Filter, FilterOperator,
+], function(Controller, ResourceModel, JSONModel, MessageBox, BaseController, UploadCollectionParameter, Filter, FilterOperator,
 	Formatter) {
 	"use strict";
 
 	return BaseController.extend("cadastralMaintenance.view.DetailMealAllowance", {
-		onInit: function () {
+		onInit: function() {
 			this.oInitialLoadFinishedDeferred = jQuery.Deferred();
 			this.novoVale = false;
 			if (sap.ui.Device.system.phone) {
@@ -47,13 +47,14 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fGetBlock
 		//	--------------------------------------------		
-		fGetBlock: function () {
+		fGetBlock: function() {
 			var that = this;
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
 
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 
-			var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			// var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			var urlParam = this.fGetUrlBukrs(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, oGlobalData.IM_BUKRS);
 
 			function fSuccess(oEvent) {
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
@@ -141,26 +142,29 @@ sap.ui.define([
 			oModel.read("ET_MEAL_ALLOWANCE" + urlParam, null, null, false, fSuccess, fError);
 		},
 
-		identificationText_100VA: function () {
+		identificationText_100VA: function() {
 			return '100% Vale Alimentação';
 		},
-		identificationText_100VR: function () {
+		identificationText_100VR: function() {
 			return '100% Vale Refeição';
 		},
-		identificationText_50VR_50VA: function () {
+		identificationText_50VR_50VA: function() {
 			return '50% Vale Alimentação/50% Refeição';
 		},
 		//	--------------------------------------------
 		//	fGetBlock
 		//	--------------------------------------------		
-		fGetAllowance: function () {
+		fGetAllowance: function() {
 			var that = this;
 			var oEntry = [];
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 			var lPernr = this.getView().getModel("ET_HEADER").oData.PERNR;
 			that.empresa = this.getView().getModel("ET_HEADER").oData.BUKRS;
 			var urlParam = "?$filter=Pernr eq '" + lPernr + "'";
-
+			
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
+			
 			this.Benef = new JSONModel();
 			this.Benef.setData({
 				table: []
@@ -172,13 +176,13 @@ sap.ui.define([
 					oEntry = {
 						key: oEvent.results[i].Idac,
 						desc: oEvent.results[i].Nmac
-          };
-          if(oEntry.key === 'ALIM'){
-            oEntry.desc = 'Alimentação';
-          }
-          if(oEntry.key === 'REFE'){
-            oEntry.desc = 'Refeição';
-          }
+					};
+					if (oEntry.key === 'ALIM') {
+						oEntry.desc = 'Alimentação';
+					}
+					if (oEntry.key === 'REFE') {
+						oEntry.desc = 'Refeição';
+					}
 					that.Benef.getData().table.push(oEntry);
 
 					oEntry = [];
@@ -212,7 +216,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fVerifyChange
 		//	--------------------------------------------		
-		fVerifyChange: function (that, key) {
+		fVerifyChange: function(that, key) {
 			var currentModel = that.getView().getModel("ET_BLOCK");
 			var vEmpresa = that.getView().getModel("ET_HEADER").oData.BUKRS;
 
@@ -268,7 +272,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fFormatDate - YYYY-MM-DDT:00:00
 		//	--------------------------------------------		
-		fFormatDate: function (date) {
+		fFormatDate: function(date) {
 			var day = date.substring(8, 10);
 			var month = date.substring(5, 7);
 			var year = date.substring(0, 4);
@@ -279,7 +283,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fSetEffectiveDateTextMeal
 		//	--------------------------------------------		
-		fSetEffectiveDateTextMeal: function () {
+		fSetEffectiveDateTextMeal: function() {
 			var aData = this.getView().getModel("ET_BLOCK").getData();
 			var textRefectoryUnit;
 			var textRefectoryFixed;
@@ -352,7 +356,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fSetMealFlag
 		// -------------------------------------------- 		
-		fSetMealFlag: function (that) {
+		fSetMealFlag: function(that) {
 			var vEmpresa = that.getView().getModel("ET_HEADER").oData.BUKRS;
 			var oModel = that.getView().getModel("ET_BLOCK");
 			var oCombo = that.getView().byId("idCombo");
@@ -385,7 +389,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fFillCreateMealAllowanceData
 		// -------------------------------------------- 		
-		fFillCreateMealAllowanceData: function (oCreate, that) {
+		fFillCreateMealAllowanceData: function(oCreate, that) {
 
 			var vEmpresa = that.getView().getModel("ET_HEADER").oData.BUKRS;
 			var vBplan = that.getView().byId("idCombo").getSelectedKey();
@@ -430,7 +434,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fCreateRequisition
 		// -------------------------------------------- 
-		fCreateRequisition: function (that, action) {
+		fCreateRequisition: function(that, action) {
 
 			var oCreate = {};
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
@@ -442,6 +446,7 @@ sap.ui.define([
 			oCreate.IM_ACTION = action;
 			oCreate.IM_LOGGED_IN = oGlobalData.IM_LOGGED_IN;
 			oCreate.IM_PERNR = oGlobalData.IM_PERNR;
+			oCreate.IM_BUKRS = oGlobalData.IM_BUKRS;
 			oCreate.OBSERVATION = that.getView().byId("taJust").getValue();
 
 			if (oCreate.IM_LOGGED_IN == 5) {
@@ -456,42 +461,42 @@ sap.ui.define([
 				oGlobalData.IM_REQUISITION_ID = oEvent.EX_REQUISITION_ID;
 
 				switch (action) {
-				case "A":
-					MessageBox.success("Aprovação realizada com sucesso!");
-					that.fVerifyAction(false, "A");
-					break;
+					case "A":
+						MessageBox.success("Aprovação realizada com sucesso!");
+						that.fVerifyAction(false, "A");
+						break;
 
-				case "S":
-					that.fSucessMessageFromSendAction(oEvent);
-					that.fVerifyAction(false, "S");
-					// *** ANEXO ***
-					that.saveAttachment();
-					break;
+					case "S":
+						that.fSucessMessageFromSendAction(oEvent);
+						that.fVerifyAction(false, "S");
+						// *** ANEXO ***
+						that.saveAttachment();
+						break;
 
-				case "C":
-					MessageBox.success("Operação realizada com sucesso! As alterações realizadas foram canceladas");
+					case "C":
+						MessageBox.success("Operação realizada com sucesso! As alterações realizadas foram canceladas");
 
-					that.fGetBlock();
+						that.fGetBlock();
 
-					var oUploadCollection = that.getView().byId("upldAttachments");
-					oUploadCollection.destroyItems();
-					that.fVerifyAction(false, "C");
-					// *** ANEXO ***
-					// that.fSaveAttachmentView(oEvent.EX_REQUISITION_ID);
-					break;
+						var oUploadCollection = that.getView().byId("upldAttachments");
+						oUploadCollection.destroyItems();
+						that.fVerifyAction(false, "C");
+						// *** ANEXO ***
+						// that.fSaveAttachmentView(oEvent.EX_REQUISITION_ID);
+						break;
 
-				case "R":
-					MessageBox.success(
-						"Operação realizada com sucesso! Após preencher todos os dados da solicitação, clique em enviar para dar continuidade ao atendimento"
-					);
+					case "R":
+						MessageBox.success(
+							"Operação realizada com sucesso! Após preencher todos os dados da solicitação, clique em enviar para dar continuidade ao atendimento"
+						);
 
-					that.fSetGlobalInformation(oEvent, that);
-					that.fVerifyAction(false, "R");
+						that.fSetGlobalInformation(oEvent, that);
+						that.fVerifyAction(false, "R");
 
-					// *** ANEXO ***
-					// that.fSaveAttachmentView(oEvent.EX_REQUISITION_ID);
+						// *** ANEXO ***
+						// that.fSaveAttachmentView(oEvent.EX_REQUISITION_ID);
 
-					break;
+						break;
 				}
 				that.fGetLog();
 			}
@@ -525,7 +530,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fUnableFields
 		//	--------------------------------------------		
-		fUnableFields: function () {
+		fUnableFields: function() {
 			var empresa = this.getView().getModel("ET_HEADER").oData.BUKRS;
 			var oView = this.getView();
 
@@ -544,7 +549,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fUnableAllButtons
 		//	--------------------------------------------			
-		fUnableAllButtons: function () {
+		fUnableAllButtons: function() {
 			var oView = this.getView();
 
 			//	oView.byId("btnSave").setEnabled(false);
@@ -557,14 +562,14 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onMealAllowanceSelect
 		//	--------------------------------------------		
-		onMealAllowanceSelect: function (oEvent) {
+		onMealAllowanceSelect: function(oEvent) {
 			var fieldname = oEvent.getParameter("id").substring(12);
 			var key = oEvent.mParameters.selectedItem.mProperties.key;
 
 			this.fVerifyChange(this, key);
 		},
 
-		onChangeRb: function (oEvent) {
+		onChangeRb: function(oEvent) {
 
 			if (oEvent.getParameter("selectedIndex") === 0) {
 				var key = "ALIM";
@@ -575,7 +580,7 @@ sap.ui.define([
 			this.fVerifyChange(this, key);
 		},
 
-		fSetScreen: function () {
+		fSetScreen: function() {
 			var oBenef = this.getView().getModel("benef");
 			var empresa = this.getView().getModel("ET_HEADER").oData.BUKRS;
 			var hBoxNeo = this.getView().byId("formMeal");
@@ -605,9 +610,9 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fModifyModel
 		//	--------------------------------------------		
-		fModifyModel: function (fieldname) {},
+		fModifyModel: function(fieldname) {},
 
-		onLiveChange: function (e) {
+		onLiveChange: function(e) {
 			var idInput = e.getParameter("id");
 
 			idInput = idInput.replace('__xmlview3--', '');
@@ -617,7 +622,7 @@ sap.ui.define([
 			this.validaPercent();
 
 		},
-		validaPercent: function () {
+		validaPercent: function() {
 			var oModel = this.getView().getModel("ET_BLOCK");
 
 			if (this.getView().byId("idAli").getValue() !== "") {
@@ -657,7 +662,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// onSend
 		// --------------------------------------------  
-		onSend: function () {
+		onSend: function() {
 
 			var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -683,21 +688,21 @@ sap.ui.define([
 		// --------------------------------------------
 		// onSend
 		// --------------------------------------------  
-		onApprove: function () {
+		onApprove: function() {
 			this.fActions(this, "aprovar", "A");
 		},
 
 		// --------------------------------------------
 		// onSave
 		// --------------------------------------------  
-		onSave: function () {
+		onSave: function() {
 			this.fActions(this, "gravação", "R");
 		},
 
 		// --------------------------------------------
 		// onCancel
 		// -------------------------------------------- 		
-		onCancel: function () {
+		onCancel: function() {
 			var justSSG = this.getView().byId("taJustSSG").getValue();
 			if (justSSG === "") {
 				MessageBox.error("É obrigatório informar o Motivo do cancelamento");
@@ -768,19 +773,19 @@ sap.ui.define([
 		// 	});
 
 		// },
-		onFilenameLengthExceed: function (oEvent) {
+		onFilenameLengthExceed: function(oEvent) {
 			MessageBox.error("Nome do Arquivo muito longo, max. 50 caracteres");
 		},
-		onFileSizeExceed: function (oEvent) {
+		onFileSizeExceed: function(oEvent) {
 
 			MessageBox.error("Arquivo excede tamanho máximo de 1MB");
 		},
-		saveAttachment: function () {
+		saveAttachment: function() {
 			var oUploadCollection = this.getView().byId("UploadCollection");
 			oUploadCollection.upload();
 		},
 
-		onBeforeUpload: function (oEvent) {
+		onBeforeUpload: function(oEvent) {
 
 			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
 			var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
@@ -800,7 +805,7 @@ sap.ui.define([
 
 		},
 
-		onChangeAttachment: function (oEvent) {
+		onChangeAttachment: function(oEvent) {
 			var csrfToken = this.getView().getModel().getSecurityToken();
 			var oUploadCollection = oEvent.getSource();
 
@@ -820,7 +825,7 @@ sap.ui.define([
 
 			}
 		},
-		onUploadComplete: function (oEvent) {
+		onUploadComplete: function(oEvent) {
 			if (oEvent.mParameters.mParameters.status !== 201) {
 				MessageBox.error("Falha ao Salvar Arquivo ..!!");
 			} else {
@@ -828,7 +833,7 @@ sap.ui.define([
 				this.getAttachment(req, "DOA");
 			}
 		},
-		onFormulario: function () {
+		onFormulario: function() {
 			const oModelBenef = this.getView().getModel("benef");
 			var sServiceUrl = "/sap/opu/odata/sap/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/";
 			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
@@ -848,26 +853,26 @@ sap.ui.define([
 			}
 
 			if (empresa === "NEO") {
-        const combo = this.getView().byId("idCombo").getSelectedItem().getKey();
-        //identify selection in benef model
-        for (let i = 0; i < oModelBenef.oData.table.length; i++) {
-          const benef = oModelBenef.oData.table[i];
-          if(benef.key === combo){
-            switch (benef.desc) {
-              case this.identificationText_100VA():
-                type = "A";
-                break;
-              case this.identificationText_100VR():
-                type = "R";
-                break;
-              case this.identificationText_50VR_50VA():
-                type = "AR";
-                break;
-              default:
-                break;
-            }
-          }
-        }
+				const combo = this.getView().byId("idCombo").getSelectedItem().getKey();
+				//identify selection in benef model
+				for (let i = 0; i < oModelBenef.oData.table.length; i++) {
+					const benef = oModelBenef.oData.table[i];
+					if (benef.key === combo) {
+						switch (benef.desc) {
+							case this.identificationText_100VA():
+								type = "A";
+								break;
+							case this.identificationText_100VR():
+								type = "R";
+								break;
+							case this.identificationText_50VR_50VA():
+								type = "AR";
+								break;
+							default:
+								break;
+						}
+					}
+				}
 
 				//if (combo == "VALI" || combo == "VAES" || combo == "VA02" || combo == "VAE2") {
 				//	type = "A";
@@ -894,7 +899,7 @@ sap.ui.define([
 			window.open(pdfURL);
 
 		},
-		fObligatoryFields: function () {
+		fObligatoryFields: function() {
 			var empresa = this.getView().getModel("ET_HEADER").getData().BUKRS;
 			if (empresa === "NEO") {
 				if (this.getView().byId("idCombo").getSelectedItem() == null || this.getView().byId("idCombo").getSelectedItem() == undefined) {
