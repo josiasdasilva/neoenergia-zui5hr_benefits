@@ -42,7 +42,8 @@ sap.ui.define([
 
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 
-			var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			// var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			var urlParam = this.fGetUrlBukrs(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, oGlobalData.IM_BUKRS);
 
 			function fSuccess(oEvent) {
 
@@ -276,6 +277,7 @@ sap.ui.define([
 			oCreate.IM_ACTION = action;
 			oCreate.IM_LOGGED_IN = oGlobalData.IM_LOGGED_IN;
 			oCreate.IM_PERNR = oGlobalData.IM_PERNR;
+			oCreate.IM_BUKRS = oGlobalData.IM_BUKRS;
 			oCreate.OBSERVATION = that.getView().byId("taJust").getValue();
 
 			if (oCreate.IM_LOGGED_IN == 5) {
@@ -531,6 +533,7 @@ sap.ui.define([
 		fSearchHelpPltyp: function (that, pernr) {
 			var oEntry = [];
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			var oGlobalModel = that.getView().getModel("ET_GLOBAL_DATA");
 			var urlParam = null;
 
 			that.pltyp = new JSONModel();
@@ -571,6 +574,7 @@ sap.ui.define([
 
 			var oFilters = [];
 			oFilters.push(new sap.ui.model.Filter("IM_PERNR", sap.ui.model.FilterOperator.EQ, pernr));
+			oFilters.push(new sap.ui.model.Filter("IM_BUKRS", sap.ui.model.FilterOperator.EQ, oGlobalModel.IM_BUKRS));
 			oModel.read("/ET_SH_PRI_PEN_BEN_PLTYP", {
 				filters: oFilters,
 				async: false,
@@ -582,6 +586,7 @@ sap.ui.define([
 			var oEntry = [];
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var block = that.getView().getModel("ET_BLOCK").getData();
+			var oGlobalModel = that.getView().getModel("ET_GLOBAL_DATA");
 			var encontrou = false;
 			var urlParam = null;
 
@@ -652,6 +657,7 @@ sap.ui.define([
 			var oFilters = [];
 			oFilters.push(new sap.ui.model.Filter("IM_PERNR", sap.ui.model.FilterOperator.EQ, pernr));
 			oFilters.push(new sap.ui.model.Filter("PLTYP", sap.ui.model.FilterOperator.EQ, pltyp));
+			oFilters.push(new sap.ui.model.Filter("IM_BUKRS", sap.ui.model.FilterOperator.EQ, oGlobalModel.IM_BUKRS));
 
 			oModel.read("/ET_SH_PRI_PEN_BEN_BPLAN", {
 				filters: oFilters,

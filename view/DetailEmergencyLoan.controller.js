@@ -39,7 +39,8 @@ sap.ui.define([
 
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 
-			var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			// var urlParam = this.fGetUrl(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN);
+			var urlParam = this.fGetUrlBukrs(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, oGlobalData.IM_BUKRS);
 
 			function fSuccess(oEvent) {
 				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
@@ -228,6 +229,7 @@ sap.ui.define([
 			oCreate.IM_ACTION = action;
 			oCreate.IM_LOGGED_IN = oGlobalData.IM_LOGGED_IN;
 			oCreate.IM_PERNR = oGlobalData.IM_PERNR;
+			oCreate.IM_BUKRS = oGlobalData.IM_BUKRS;
 			oCreate.OBSERVATION = that.getView().byId("taJust").getValue();
 
 			if (oCreate.IM_LOGGED_IN == 5) {

@@ -36,9 +36,6 @@
 								<t:Column sortProperty="tTransportation&gt;TDESC" name="C_TDESC" label="Transporte" filterProperty="TDESC">
 									<Text text="Transporte"/>
 									<t:template>
-										<!--<Text text="{TDESC}"/>-->
-										<!--<Input value="{ET_TRANSP>TDESC}" showSuggestion="true" showValueHelp="true" valueHelpRequest="onHelpRequestTranspVoucher"-->
-										<!--valueHelpOnly="true"/>-->
 										<Input id="ipTransp" type="Text" showSuggestion="true" showValueHelp="true" valueHelpOnly="true" change="onFieldChange"
 											valueHelpRequest="handleValueHelp" suggestionItems="{ET_SH_TRANSP_VOUCHER}" value="{ET_TRANSP>TDESC}"
 											app:fragment="cadastralMaintenance.view.SHTranspVoucher" app:field="" enabled="false">
@@ -81,11 +78,6 @@
 								</t:Column>
 							</t:columns>
 						</t:Table>
-						<!--<Text text="{i18n>texto_explicativo_vale_transp}">-->
-						<!--	<layoutData>-->
-						<!--		<l:GridData span="L12 M12 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>-->
-						<!--	</layoutData>-->
-						<!--</Text>-->
 					</f:content>
 				</f:SimpleForm>
 				<f:SimpleForm id="formGeneral" layout="ResponsiveGridLayout" title="{i18n>dados}" labelSpanL="1" labelSpanM="1" emptySpanL="0"
@@ -101,11 +93,6 @@
 								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 							</layoutData>
 						</Label>
-						<!--<Input value="{ET_DATA_FORM>/LINHA}" width="" id="ipLinha" change="onChange" fieldWidth="30%" required="true">-->
-						<!--	<layoutData>-->
-						<!--		<l:GridData span="L2 M2 S4"/>-->
-						<!--	</layoutData>-->
-						<!--</Input>-->
 						<Input id="ipLinha" type="Text" showSuggestion="true" showValueHelp="true" valueHelpOnly="true" change="onLinhaChange"
 							valueHelpRequest="handleValueHelp" suggestionItems="{ET_SH_TRANSP_VOUCHER}" value="{ET_DATA_FORM>/LINHA}"
 							app:fragment="cadastralMaintenance.view.SHTranspVoucher" app:field="">
