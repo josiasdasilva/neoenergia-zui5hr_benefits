@@ -671,7 +671,7 @@ sap.ui.define([
 			// model.getData().TYPE = ""; 
 			// model.getData().VALUE = "";
 			// model.getData().DATA = "";
-			// this.getView().byId("dtPeriodFrom").setValue();
+			// this.getView().byId("dtPeriodFrom").setDateValue();
 			// this.getView().setModel(model, "ET_BLOCK");
 
 			// this.getView().byId("formHealthAidDep").setVisible(true);
@@ -710,8 +710,8 @@ sap.ui.define([
 			if (key === "M") {    // solicitacao mensal
 				this.getView().byId("lblPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setVisible(false);
-				this.getView().byId("dtPeriodTo").setDateValue(this.dataFormatada(oDataFrom));
-				this.getView().byId("dtPeriodTo").setDateValue("");
+				this.getView().byId("dtPeriodTo").setDateValue(oDataFrom);
+				this.getView().byId("dtPeriodTo").setDateValue();
 				block.PERIOD_TO = "";
 			} else {            // solicitacao semestral
 			var dtTo = new Date();
@@ -723,7 +723,7 @@ sap.ui.define([
 				this.getView().byId("lblPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setEnabled(false);
-				this.getView().byId("dtPeriodTo").setDateValue(this.dataFormatada(dtTo));
+				this.getView().byId("dtPeriodTo").setDateValue(dtTo);
 				block.PERIOD_TO = this.dataFormatada(dtTo);
 			}
 		},
@@ -838,8 +838,8 @@ sap.ui.define([
 				model.getData().PERIOD_FROM = this.dataFormatada(new Date());
 				model.getData().PERIOD_TO = "";
 				model.getData().PERIOD_TYPE = "M";
-				this.getView().byId("dtPeriodFrom").setValue(new Date());
-				this.getView().byId("dtPeriodTo").setValue("");
+				this.getView().byId("dtPeriodFrom").setDateValue(new Date());
+				this.getView().byId("dtPeriodTo").setDateValue();
 				this.fEsconderCamposExcluir(true);
 				this.getView().byId("slSolType").setSelectedKey("M");
 				this.getView().byId("slSolType").setEnabled(false);
@@ -859,8 +859,8 @@ sap.ui.define([
 				model.getData().PERIOD_FROM = this.dataFormatada(new Date());
 				model.getData().PERIOD_TO = "";
 				model.getData().PERIOD_TYPE = "M";
-				this.getView().byId("dtPeriodFrom").setValue(new Date());
-				this.getView().byId("dtPeriodTo").setValue();
+				this.getView().byId("dtPeriodFrom").setDateValue(new Date());
+				this.getView().byId("dtPeriodTo").setDateValue();
 				this.fEsconderCamposExcluir(true);
 				this.getView().byId("slSolType").setSelectedKey("M");
 				this.getView().byId("slSolType").setEnabled(true);
@@ -881,7 +881,7 @@ sap.ui.define([
 				model.getData().PERIOD_TO = "";
 				model.getData().PERIOD_TYPE = "M";
 				this.getView().byId("dtPeriodFrom").setDateValue(new Date());
-				this.getView().byId("dtPeriodTo").setDateValue("");
+				this.getView().byId("dtPeriodTo").setDateValue();
 				this.fEsconderCamposExcluir(false);
 				break;
 			}
