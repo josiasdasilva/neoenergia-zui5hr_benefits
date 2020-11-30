@@ -139,7 +139,7 @@
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<DatePicker value="{ET_BLOCK>/PERIOD_FROM}" id="dtPeriodFrom" displayFormat="MM/yyyy" valueFormat="dd-MM-yyyy" change="onChangePeriod" placeholder="{i18n>periodo}"
+					<DatePicker value="{ET_BLOCK>/PERIOD_FROM}" id="dtPeriodFrom" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" change="onChangePeriod" placeholder="{i18n>periodo}"
 						class="sapUiSmallMarginBottom">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
@@ -150,7 +150,7 @@
 							<l:GridData span="L1 M1 S12" />
 						</layoutData>
 					</Label>
-					<DatePicker value="{ET_BLOCK>/PERIOD_TO}" id="dtPeriodTo" displayFormat="MM/yyyy" valueFormat="dd-MM-yyyy" change="onChange" placeholder="{i18n>periodo}"
+					<DatePicker value="{ET_BLOCK>/PERIOD_TO}" id="dtPeriodTo" displayFormat="MM/yyyy" valueFormat="yyyyMMdd" change="onChange" placeholder="{i18n>periodo}"
 						class="sapUiSmallMarginBottom" visible="false">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>

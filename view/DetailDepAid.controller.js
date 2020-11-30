@@ -85,10 +85,9 @@ sap.ui.define([
 
 				// se tem id verificar os anexos
 				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
-					var data = oEvent.BLOCK.PERIOD_FROM;
-					var anoFrom = data.substring(0, 4);
-					var mesFrom = data.substring(4, 6);
-					that.getView().byId("dtPeriodFrom").setDateValue(new Date(anoFrom, mesFrom - 1));
+					var dataFrom = oEvent.BLOCK.PERIOD_FROM;
+					var dtFrom = new Date(dataFrom.substring(0,4), dataFrom.substring(4,2) - 1, dataFrom.substring(6,2));
+					that.getView().byId("dtPeriodFrom").setDateValue(dtFrom);
 
 					that.getView().byId("lblDependentFullName").setVisible(false);
 					that.getView().byId("slFullName").setVisible(false);
@@ -97,14 +96,13 @@ sap.ui.define([
 					that.getView().byId("ipRequestedValue").setValue(oEvent.BLOCK.BETRG);
 
                     if (oEvent.BLOCK.PERIOD_TO === ""){
-                    	that.getView().byId("slSolType").setSelectedKey("");
+                    	that.getView().byId("slSolType").setSelectedKey("M");
                     	that.getView().byId("lblPeriodTo").setVisible(false);
                     	that.getView().byId("dtPeriodTo").setVisible(false);
                     } else {
-						data = oEvent.BLOCK.PERIOD_TO;
-						var anoTo = data.substring(0, 4);
-						var mesTo = data.substring(4, 6);
-						that.getView().byId("dtPeriodTo").setDateValue(new Date(anoTo, mesTo - 1));
+						var dataTo = oEvent.BLOCK.PERIOD_TO;
+						var dtTo = new Date(dataTo.substring(0,4), dataTo.substring(4,2) - 1, dataTo.substring(6,2));
+						that.getView().byId("dtPeriodTo").setDateValue(dtTo);
                     	that.getView().byId("slSolType").setSelectedKey("S");
                     	that.getView().byId("lblPeriodTo").setVisible(true);
                     	that.getView().byId("dtPeriodTo").setVisible(true);
@@ -338,8 +336,8 @@ sap.ui.define([
 		// -------------------------------------------- 		
 		fFillCreateDepAidData: function (oCreate, that) {
 			var oActualModel = that.getView().getModel("ET_BLOCK").getData();
-			var data = that.getView().byId("dtPeriodFrom").getValue();
-			var dateTo = this.getView().byId("dtPeriodTo").getValue();
+			var dtFrom = this.dataFormatada(that.getView().byId("dtPeriodFrom").getDateValue());
+			var dtTo = this.dataFormatada(this.getView().byId("dtPeriodTo").getDateValue());
 
 			if (oActualModel.EXCLUDE === true || oActualModel.ACTIO === "DEL") {
 				oCreate.BLOCK.ACTIO = "DEL";
@@ -347,10 +345,10 @@ sap.ui.define([
 				oCreate.BLOCK.OBJPS = "";
 				oCreate.BLOCK.FCNAM = "";
 				oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
-				oCreate.BLOCK.PERIOD_FROM = that.dataFormatada(new Date());
+				oCreate.BLOCK.PERIOD_FROM = dtFrom;
 				oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
 				if (that.getView().byId("slSolType").getSelectedKey() === "S") {
-					oCreate.BLOCK.PERIOD_TO = dateTo.substring(6, 10) + dateTo.substring(3, 5) + dateTo.substring(0, 2);
+					oCreate.BLOCK.PERIOD_TO = dtTo;
 				} else {
 					oCreate.BLOCK.PERIOD_TO = "";
 				}
@@ -372,10 +370,10 @@ sap.ui.define([
 			oCreate.BLOCK.FCNAM = oActualModel.FCNAM;
 			oCreate.BLOCK.TIP_AUX = oActualModel.TIP_AUX;
 			// oCreate.BLOCK.PERIOD_FROM = data.substring(6, 10) + data.substring(3, 5) + data.substring(0, 2);
-			oCreate.BLOCK.PERIOD_FROM = data;
+			oCreate.BLOCK.PERIOD_FROM = dtFrom;
 			oCreate.BLOCK.PERIOD_TYPE = that.getView().byId("slSolType").getSelectedKey();
 			if (that.getView().byId("slSolType").getSelectedKey() === "S") {
-				oCreate.BLOCK.PERIOD_TO = dateTo;
+				oCreate.BLOCK.PERIOD_TO = dtTo;
 			} else {
 				oCreate.BLOCK.PERIOD_TO = "";
 			}
@@ -696,45 +694,37 @@ sap.ui.define([
 			}
 		},
 		onChangePeriod: function (oEvent) {
-			var block = this.getView().getModel("ET_BLOCK").getData();
 			var key = this.getView().byId("slSolType").getSelectedKey();
-			var date = oEvent.getSource().getValue();
-			var today = new Date();
-
-			if (key === "M") {    // solicitacao mensal
-				var dateMon = new Date(today.getFullYear(), 5, 30);
-				this.getView().byId("lblPeriodTo").setVisible(false);
-				this.getView().byId("dtPeriodTo").setVisible(false);
-				this.getView().byId("dtPeriodTo").setDateValue(dateMon);
-				block.PERIOD_TO = this.yyyymmdd(dateMon);
-			} else {            // solicitacao semestral
-				var dateSem = new Date(today.getFullYear(), 11, 31);
-				this.getView().byId("lblPeriodTo").setVisible(true);
-				this.getView().byId("dtPeriodTo").setVisible(true);
-				this.getView().byId("dtPeriodTo").setEnabled(false);
-				this.getView().byId("dtPeriodTo").setDateValue(dateSem);
-				block.PERIOD_TO = this.yyyymmdd(dateSem);
-			}
-			
+			var date = oEvent.getSource().getDateValue();
+			this.ajusteDataTo( date, key );
 		},
 		onChangeSol: function (oEvent) {
-			var block = this.getView().getModel("ET_BLOCK").getData();
 			var key = oEvent.getSource().getSelectedKey();
-			var today = new Date();
+			var date = this.getView().byId("dtPeriodTo").getDateValue();
+			this.ajusteDataTo( date, key );
+		},
+		ajusteDataTo: function(oDataFrom, key) {
+			var block = this.getView().getModel("ET_BLOCK").getData();
+			block.PERIOD_FROM = this.dataFormatada(oDataFrom);
 			block.PERIOD_TYPE = key;
 			if (key === "M") {    // solicitacao mensal
-				var dateMon = new Date(today.getFullYear(), 5, 30);
 				this.getView().byId("lblPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setVisible(false);
-				this.getView().byId("dtPeriodTo").setDateValue(dateMon);
-				block.PERIOD_TO = this.yyyymmdd(dateMon);
+				this.getView().byId("dtPeriodTo").setDateValue(this.dataFormatada(oDataFrom));
+				this.getView().byId("dtPeriodTo").setDateValue("");
+				block.PERIOD_TO = "";
 			} else {            // solicitacao semestral
-				var dateSem = new Date(today.getFullYear(), 11, 31);
+			var dtTo = new Date();
+			    if (oDataFrom.getMonth() < 8) {
+			    	dtTo = this.dataFormatada(new Date(oDataFrom.getFullYear(), 7, 30));
+			    } else {
+			    	dtTo = this.dataFormatada(new Date(oDataFrom.getFullYear(), 11, 31));
+			    }
 				this.getView().byId("lblPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setEnabled(false);
-				this.getView().byId("dtPeriodTo").setDateValue(dateSem);
-				block.PERIOD_TO = this.yyyymmdd(dateSem);
+				this.getView().byId("dtPeriodTo").setDateValue(this.dataFormatada(dtTo));
+				block.PERIOD_TO = this.dataFormatada(dtTo);
 			}
 		},
 		onFormulario: function () {
@@ -769,12 +759,12 @@ sap.ui.define([
 				return;
 			}
 
-			var data = this.getView().byId("dtPeriodFrom").getValue();
-			var dataTo = this.getView().byId("dtPeriodTo").getValue();
+			var dataFrom = this.dataFormatada(this.getView().byId("dtPeriodFrom").getDateValue());
+			// var dataTo = this.dataFormatada(this.getView().byId("dtPeriodTo").getDateValue());
 			var block = this.getView().getModel("ET_BLOCK").getData();
 
 			var IvTpAux = this.getView().byId("cbTypeAux").getValue();
-			var IvPeriodo = data.substring(6, 10) + data.substring(3, 5);
+			var IvPeriodo = dataFrom.substring(6, 10) + dataFrom.substring(3, 5);
 			var IvOpPer = this.getView().byId("slSolType").getSelectedKey() === "" ? "M" : "S" ;
 			
 // var a = {...oEvent};
@@ -845,10 +835,13 @@ sap.ui.define([
 				model.getData().DATA = "";
 				model.getData().TYPE_SOL = "Primeira Solicitação";
 				model.getData().REEMBOLSO = "";
-				this.getView().byId("dtPeriodFrom").setValue();
-				this.getView().byId("dtPeriodTo").setValue();
+				model.getData().PERIOD_FROM = this.dataFormatada(new Date());
+				model.getData().PERIOD_TO = "";
+				model.getData().PERIOD_TYPE = "M";
+				this.getView().byId("dtPeriodFrom").setValue(new Date());
+				this.getView().byId("dtPeriodTo").setValue("");
 				this.fEsconderCamposExcluir(true);
-				this.getView().byId("slSolType").setSelectedKey("");
+				this.getView().byId("slSolType").setSelectedKey("M");
 				this.getView().byId("slSolType").setEnabled(false);
 				this.exclude = false;
 				model.getData().EXCLUDE = false;
@@ -863,9 +856,13 @@ sap.ui.define([
 				model.getData().DATA = "";
 				model.getData().TYPE_SOL = "Reembolso";
 				model.getData().REEMBOLSO = "X";
-				this.getView().byId("dtPeriodFrom").setValue();
+				model.getData().PERIOD_FROM = this.dataFormatada(new Date());
+				model.getData().PERIOD_TO = "";
+				model.getData().PERIOD_TYPE = "M";
+				this.getView().byId("dtPeriodFrom").setValue(new Date());
 				this.getView().byId("dtPeriodTo").setValue();
 				this.fEsconderCamposExcluir(true);
+				this.getView().byId("slSolType").setSelectedKey("M");
 				this.getView().byId("slSolType").setEnabled(true);
 				this.exclude = false;
 				model.getData().EXCLUDE = false;
@@ -880,8 +877,11 @@ sap.ui.define([
 				model.getData().DATA = "";
 				model.getData().TYPE_SOL = "Exclusão";
 				model.getData().REEMBOLSO = "";
-				this.getView().byId("dtPeriodFrom").setValue();
-				this.getView().byId("dtPeriodTo").setValue();
+				model.getData().PERIOD_FROM = this.dataFormatada(new Date());
+				model.getData().PERIOD_TO = "";
+				model.getData().PERIOD_TYPE = "M";
+				this.getView().byId("dtPeriodFrom").setDateValue(new Date());
+				this.getView().byId("dtPeriodTo").setDateValue("");
 				this.fEsconderCamposExcluir(false);
 				break;
 			}
