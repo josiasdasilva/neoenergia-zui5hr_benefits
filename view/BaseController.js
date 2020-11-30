@@ -190,7 +190,7 @@ sap.ui.define([
 
 			MessageBox.confirm(question, {
 				title: actionText,
-				initialFocus: sap.m.MessageBox.Action.CANCEL,
+				initialFocus: sap.m.MessageBox.Action.OK,
 				onClose: function (sButton) {
 					if (sButton === MessageBox.Action.OK) {
 						that.fCreateRequisition(that, action);
