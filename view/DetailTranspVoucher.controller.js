@@ -1250,13 +1250,14 @@ sap.ui.define([
 			oModel.oData[row] = oModelNew.getData();
 		},
 		onCancelItem: function() {
+			const that = this;
 			MessageBox.confirm(
 				'Suas alterações serão descartadas. Continuar?', {
 					title: "Cancelar alterações",
 					initialFocus: sap.m.MessageBox.Action.CANCEL,
 					onClose: function(sButton) {
 						if (sButton === MessageBox.Action.OK) {
-							this.onInit();
+							that.onInit();
 						}
 					}
 				});
