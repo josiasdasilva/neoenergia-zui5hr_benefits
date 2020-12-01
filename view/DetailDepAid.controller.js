@@ -86,7 +86,7 @@ sap.ui.define([
 				// se tem id verificar os anexos
 				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
 					var dataFrom = oEvent.BLOCK.PERIOD_FROM;
-					var dtFrom = new Date(dataFrom.substring(0,4), dataFrom.substring(4,2) - 1, dataFrom.substring(6,2));
+					var dtFrom = new Date(dataFrom.substring(0,4), dataFrom.substring(4,6) - 1, dataFrom.substring(6,8));
 					that.getView().byId("dtPeriodFrom").setDateValue(dtFrom);
 
 					that.getView().byId("lblDependentFullName").setVisible(false);
@@ -101,7 +101,7 @@ sap.ui.define([
                     	that.getView().byId("dtPeriodTo").setVisible(false);
                     } else {
 						var dataTo = oEvent.BLOCK.PERIOD_TO;
-						var dtTo = new Date(dataTo.substring(0,4), dataTo.substring(4,2) - 1, dataTo.substring(6,2));
+						var dtTo = new Date(dataTo.substring(0,4), dataTo.substring(4,6) - 1, dataTo.substring(6,8));
 						that.getView().byId("dtPeriodTo").setDateValue(dtTo);
                     	that.getView().byId("slSolType").setSelectedKey("S");
                     	that.getView().byId("lblPeriodTo").setVisible(true);
