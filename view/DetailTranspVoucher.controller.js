@@ -1543,7 +1543,7 @@ sap.ui.define([
         url = url + "FLD03 eq 'X'";
         
         for (var i = 0; lines.length > i; i++) {
-					if (lines[i].ACTION == "INS") {
+					if (lines[i].ACTION == "DEL") {
 						switch (indexIda) {
 							case 0:
 								if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
