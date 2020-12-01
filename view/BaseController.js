@@ -1626,7 +1626,7 @@ sap.ui.define([
 			// oFilters.push(new Filter("DocType", sap.ui.model.FilterOperator.EQ, doctype));
 			var urlParam;
 			if (requisition !== undefined && requisition !== null && requisition !== "") {
-				urlParam = this.fFillURLFilterParam("ReqNumber", requisition); 
+				urlParam = this.fFillURLFilterParam("ReqNumber", requisition);  
 			}
 
 			if (doctype !== undefined && doctype !== null && doctype !== "") {
