@@ -1539,6 +1539,7 @@ sap.ui.define([
 					}
 				}
 			} else if (this.exclude != "") {
+        lines = splitLines(modelTable.getData());
         url = url + "FLD03 eq 'X'";
         
         for (var i = 0; lines.length > i; i++) {
