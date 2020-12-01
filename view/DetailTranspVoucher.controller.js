@@ -1548,14 +1548,14 @@ sap.ui.define([
                     case 0:
                     if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
-                      url += " and FLD07 eq '" + lines[i].TDESC  + "'";// + "' and FLD08 eq '" + lines[i].LINHA + "' and FLD10 eq '" + valor + "'";
+                      url += " and FLD08 eq '" + lines[i].TDESC  + "'";// + "' and FLD08 eq '" + lines[i].LINHA + "' and FLD10 eq '" + valor + "'";
                       indexIda++;
                     }
                     break;
                     case 1:
                     if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
-                      url += " and FLD13 eq '" + lines[i].TDESC + "'";// + "' and FLD14 eq '" + lines[i].LINHA + "' and FLD16 eq '" + valor + "'";
+                      url += " and FLD14 eq '" + lines[i].TDESC + "'";// + "' and FLD14 eq '" + lines[i].LINHA + "' and FLD16 eq '" + valor + "'";
                       indexIda++;
                     }
                     break;
@@ -1563,7 +1563,7 @@ sap.ui.define([
                     case 2:
                     if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
-                      url += " and FLD19 eq '" + lines[i].TDESC + "'";// + "' and FLD20 eq '" + lines[i].LINHA + "' and FLD22 eq '" + valor + "'";
+                      url += " and FLD20 eq '" + lines[i].TDESC + "'";// + "' and FLD20 eq '" + lines[i].LINHA + "' and FLD22 eq '" + valor + "'";
                       indexIda++;
                     }
                     break;
@@ -1571,7 +1571,7 @@ sap.ui.define([
                     case 3:
                     if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
-                      url += " and FLD25 eq '" + lines[i].TDESC + "'";// + "' and FLD26 eq '" + lines[i].LINHA + "' and FLD28 eq '" + valor + "'";
+                      url += " and FLD26 eq '" + lines[i].TDESC + "'";// + "' and FLD26 eq '" + lines[i].LINHA + "' and FLD28 eq '" + valor + "'";
                       indexIda++;
                     }
                     break;
@@ -1583,28 +1583,28 @@ sap.ui.define([
                     case 0:
                     if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
-                      url += " and FLD32 eq '" + lines[i].TDESC + "'";// + "' and FLD33 eq '" + lines[i].LINHA + "' and FLD35 eq '" + valor + "'";
+                      url += " and FLD33 eq '" + lines[i].TDESC + "'";// + "' and FLD33 eq '" + lines[i].LINHA + "' and FLD35 eq '" + valor + "'";
                       indexVolta++;
                     }
                     break;
                     case 1:
                     if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
-                      url += " and FLD38 eq '" + lines[i].TDESC + "'";// + "' and FLD39 eq '" + lines[i].LINHA + "' and FLD41 eq '" + valor + "'";
+                      url += " and FLD39 eq '" + lines[i].TDESC + "'";// + "' and FLD39 eq '" + lines[i].LINHA + "' and FLD41 eq '" + valor + "'";
                       indexVolta++;
                     }
                     break;
                     case 2:
                     if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
-                      url += " and FLD44 eq '" + lines[i].TDESC + "'";// + "' and FLD45 eq '" + lines[i].LINHA + "' and FLD47 eq '" + valor + "'";
+                      url += " and FLD45 eq '" + lines[i].TDESC + "'";// + "' and FLD45 eq '" + lines[i].LINHA + "' and FLD47 eq '" + valor + "'";
                       indexVolta++;
                     }
                     break;
                     case 3:
                     if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
                       valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
-                      url += " and FLD50 eq '" + lines[i].TDESC + "'";// + "' and FLD51 eq '" + lines[i].LINHA + "' and FLD53 eq '" + valor + "'";
+                      url += " and FLD51 eq '" + lines[i].TDESC + "'";// + "' and FLD51 eq '" + lines[i].LINHA + "' and FLD53 eq '" + valor + "'";
                       indexVolta++;
                     }
                     break;
