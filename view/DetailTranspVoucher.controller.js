@@ -1042,18 +1042,6 @@ sap.ui.define([
 		// onCancel
 		// -------------------------------------------- 		
 		onCancel: function() {
-			MessageBox.confirm(
-				'Suas alterações serão descartadas. Continuar?', {
-					title: "Cancelar alterações",
-					initialFocus: sap.m.MessageBox.Action.CANCEL,
-					onClose: function(sButton) {
-						if (sButton === MessageBox.Action.OK) {
-							this.onInit();
-						}
-					}
-				});
-			
-			/*
 			var oGlobalData = this.getView().getModel("ET_GLOBAL_DATA");
 			var observationSSG = this.getView().byId("taJustSSG").getValue();
 
@@ -1062,7 +1050,6 @@ sap.ui.define([
 			} else {
 				this.fActions(this, "Cancelamento", "C");
 			}
-			*/
 		},
 
 		// --------------------------------------------
@@ -1263,6 +1250,18 @@ sap.ui.define([
 			oModel.oData[row] = oModelNew.getData();
 		},
 		onCancelItem: function() {
+			MessageBox.confirm(
+				'Suas alterações serão descartadas. Continuar?', {
+					title: "Cancelar alterações",
+					initialFocus: sap.m.MessageBox.Action.CANCEL,
+					onClose: function(sButton) {
+						if (sButton === MessageBox.Action.OK) {
+							this.onInit();
+						}
+					}
+				});
+
+/*
 			//check if there are items already
 			var oModel = this.getView().getModel("ET_TRANSP");
 			var length = oModel.oData.length;
@@ -1301,6 +1300,7 @@ sap.ui.define([
 			this.getView().byId("btnAcceptItem").setVisible(false);
 			this.getView().byId("formGeneral").setVisible(false);
 			this.fClearModelForm();
+			*/
 		},
 		fClearModelForm: function() {
 			this.getView().setModel(new sap.ui.model.json.JSONModel(), "ET_DATA_FORM");
