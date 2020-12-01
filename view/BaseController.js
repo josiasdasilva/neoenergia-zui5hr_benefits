@@ -1658,7 +1658,7 @@ sap.ui.define([
 					oEntry.Response = oDataResult.Response;
 					oEntry.Url = path + "/AnexoSet(Pernr='',Data='" + "20200101" +
 						"',DocumentId='" + oEntry.documentId + "',Version='" + "AA',Fileid='" + oEntry.Fileid + "',DocType='" + doctype + "',IM_BUKRS='" +
-						oGlobalData.IM_BUKRS + "')/$value";
+						oGlobalData.IM_BUKRS + "')/$value"; 
 					// oEntry.Url = path + "/AnexoSet(Pernr='',Data='" + "20200101" +
 					// 	"',DocumentId='" + oEntry.documentId + "',Version='" + "AA',Fileid='" + oEntry.Fileid + "',DocType='" + doctype + "')/$value";
 					oEntry.TipoAnexo = oDataResult.TipoAnexo;
