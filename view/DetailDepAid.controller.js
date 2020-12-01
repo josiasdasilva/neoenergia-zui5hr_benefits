@@ -5,9 +5,9 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/m/Dialog",
 	"cadastralMaintenance/view/BaseController",
-	"cadastralMaintenance/formatter/Formatter",
-	"cadastralMaintenance/formatter/accounting"
-], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog, accounting) {
+	"cadastralMaintenance/formatter/Formatter"
+	// "cadastralMaintenance/formatter/accounting"
+], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog) {
 	"use strict";
 
 	return BaseController.extend("cadastralMaintenance.view.DetailDepAid", {
@@ -379,9 +379,8 @@ sap.ui.define([
 			} else {
 				oCreate.BLOCK.PERIOD_TO = "";
 			}
-			// oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
+			oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
 			// oCreate.BLOCK.BETRG = oActualModel.BETRG;
-			oCreate.BLOCK.BETRG = this.toFloat(oActualModel.BETRG);
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
@@ -606,7 +605,7 @@ sap.ui.define([
 		onChange: function (oEvent) {},
 		onLiveChange: function (oEvent) {
 			var block = this.getView().getModel("ET_BLOCK").getData();
-			block.BETRG = toFloat(oEvent.getParameter("value"));
+			block.BETRG = parseFloat(oEvent.getParameter("value").replace(/\./g,'').replace(',', '.'));
 		},
 		getDependents: function (that, pernr) {
 			// var oEntry = [];
@@ -773,7 +772,8 @@ sap.ui.define([
 // var a = {...oEvent};
 // this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004.getUser().getId();
 
-			var IvValAux = toFloat(block.BETRG);
+			// var IvValAux = toFloat(block.BETRG);
+			var IvValAux = block.BETRG;
 			var IvNomeDep = block.FCNAM;
 			var IvInstBaba = block.INSTITUICAO;
 			var IvCnpjCpf = block.CNPJ_INST;
@@ -906,7 +906,8 @@ sap.ui.define([
 			// }
 
             if (model.BETRG === undefined) {
-            	model.BETRG = this.getView().byId("ipRequestedValue").getValue();
+            	var reqValue = this.getView().byId("ipRequestedValue").getValue(); 
+            	model.BETRG = parseFloat(reqValue.replace(/\./g,'').replace(',', '.'));
             }
 			// Verifica se campos obrigatórios foram preenchidos
 			// (rever obrigatoriedade)
@@ -914,7 +915,7 @@ sap.ui.define([
 			    model.FCNAM === "" || model.FCNAM === undefined || 
 			    model.TYPE_SOL === "" || model.TYPE_SOL === undefined ||
 			    model.TIP_AUX === "" || model.TIP_AUX === undefined || 
-			    this.toFloat(model.BETRG) <= 0 || model.BETRG === "" || model.BETRG === undefined || 
+			    model.BETRG <= 0 || model.BETRG === "" || model.BETRG === undefined || 
 			    model.INSTITUICAO === "" || model.INSTITUICAO === undefined ) {
 				return false;
 			}
@@ -1067,24 +1068,24 @@ sap.ui.define([
 			var mm = lData.getMonth() + 1; // getMonth() is zero-based
 			var dd = lData.getDate();
 			return [lData.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('');
-		},
-		toFloat: function (source) {
-		    let float = accounting.unformat(source);
-		    let posComma = source.indexOf(',');
-		    if (posComma > -1) {
-		        let posDot = source.indexOf('.');
-		        if (posDot > -1 && posComma > posDot) {
-		            let germanFloat = accounting.unformat(source, ',');
-		            if (Math.abs(germanFloat) > Math.abs(float)) {
-		                float = germanFloat;
-		            }
-		        } else {
-		            // source = source.replace(/,/g, '.');
-		            float = accounting.unformat(source, ',');
-		        }
-		    }
-		    return float;
 		}
+		// toFloat: function (source) {
+		//     let float = accounting.unformat(source);
+		//     let posComma = source.indexOf(',');
+		//     if (posComma > -1) {
+		//         let posDot = source.indexOf('.');
+		//         if (posDot > -1 && posComma > posDot) {
+		//             let germanFloat = accounting.unformat(source, ',');
+		//             if (Math.abs(germanFloat) > Math.abs(float)) {
+		//                 float = germanFloat;
+		//             }
+		//         } else {
+		//             // source = source.replace(/,/g, '.');
+		//             float = accounting.unformat(source, ',');
+		//         }
+		//     }
+		//     return float;
+		// }
 	});
 
 });
