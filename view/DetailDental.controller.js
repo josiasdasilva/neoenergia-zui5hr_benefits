@@ -137,12 +137,13 @@ sap.ui.define([
 
 			}
 		},
-		fGetUrlPlan: function (imPernr, imRequisitionId, imLoggedIn, plan) {
+		fGetUrlPlan: function (imPernr, imRequisitionId, imLoggedIn, plan, imBukrs) {
 			var urlParam;
 
 			urlParam = this.fFillURLParam("IM_PERNR", imPernr);
 			urlParam = this.fFillURLParam("IM_REQUISITION_ID", imRequisitionId, urlParam);
 			urlParam = this.fFillURLParam("IM_TYPE", plan, urlParam);
+			urlParam = this.fFillURLParam("IM_BUKRS", imBukrs, urlParam);
 			urlParam = this.fFillURLParam("IM_LOGGED_IN", imLoggedIn, urlParam, true);
 
 			return urlParam;
@@ -154,7 +155,7 @@ sap.ui.define([
 			var that = this;
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
 			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
-			var urlParam = this.fGetUrlPlan(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, 128);
+			var urlParam = this.fGetUrlPlan(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, 128, oGlobalData.IM_BUKRS);
 
 			//novo
 			function fSuccess(oEvent) {
@@ -268,10 +269,10 @@ sap.ui.define([
 
 			//MAIN READ
 			var urlParam = this.fFillURLParamFilter("IM_PERNR", oGlobalData.IM_PERNR);
-			// urlParam = this.fFillURLParamFilter("TYPE", "O");
 			urlParam = this.fFillURLParamFilter("IM_REQUISITION_ID", oGlobalData.IM_REQ_URL, urlParam);
 			urlParam = this.fFillURLParamFilter("IM_LOGGED_IN", oGlobalData.IM_LOGGED_IN, urlParam);
 			urlParam = this.fFillURLParamFilter("IM_TYPE", "128", urlParam);
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalData.IM_BUKRS, urlParam);
 			urlParam = urlParam + "&$expand=PLANS_HOLDER";
 			oModel.read("ET_PLANS", null, urlParam, false, fSuccess, fError);
 
@@ -581,6 +582,7 @@ sap.ui.define([
 		//	--------------------------------------------		
 		fSearchHelps: function () {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var that = this;
 
@@ -594,6 +596,7 @@ sap.ui.define([
 
 			//MAIN READ
 			var urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 			urlParam = urlParam + "&$expand=PLANS";
 
 			oModel.read("ET_SH_PLANS", null, urlParam, false, fSuccess, fError);
@@ -603,6 +606,7 @@ sap.ui.define([
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var aData = this.getView().getModel("ET_HOLDER");
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 			var that = this;
 
 			function fSuccess(oEvent) {
@@ -631,7 +635,7 @@ sap.ui.define([
 			//MAIN READ
 			var urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
 			urlParam = this.fFillURLParamFilter("TYPE", "", urlParam);
-			// urlParam = urlParam + "&$expand=PLANS";
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
 		},
@@ -862,6 +866,7 @@ sap.ui.define([
 				"IM_ACTION": action,
 				"IM_LOGGED_IN": oGlobalData.IM_LOGGED_IN,
 				"IM_PERNR": oGlobalData.IM_PERNR,
+				"IM_BUKRS": oGlobalData.IM_BUKRS,
 				"IM_REQUISITION_ID": oGlobalData.IM_REQUISITION_ID,
 				"OBSERVATION": observation,
 				"IM_TYPE": "128"
@@ -1186,6 +1191,7 @@ sap.ui.define([
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
 			var aData = this.getView().getModel("ET_HOLDER");
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 			var that = this;
 
 			function fSuccessOpt(oEvent) {
@@ -1210,6 +1216,7 @@ sap.ui.define([
 
 			var localBplan = this.byId("ipDentalInsurance").getSelectedKey();
 			var urlParam = this.fFillURLParamFilter("IM_BPLAN", localBplan);
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 			urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR, urlParam);
 
 			oModel.read("ET_SH_ACCOMMODATION", null, urlParam, false, fSuccessOpt, fErrorOpt);
@@ -1218,6 +1225,7 @@ sap.ui.define([
 		fSearchHelpOption: function () {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 			var aData = this.getView().getModel("ET_HOLDER");
 			var that = this;
 
@@ -1252,6 +1260,7 @@ sap.ui.define([
 			}else{
 				urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
 			}
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 
 			oModel.read("ET_SH_ACCOMMODATION", null, urlParam, false, fSuccessOpt, fErrorOpt);
 		},
@@ -1588,6 +1597,7 @@ sap.ui.define([
 			var oView = this.getView();
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 			var aData = this.getView().getModel("ET_HOLDER");
 			var that = this;
 			var encontrou = false;
@@ -1639,6 +1649,7 @@ sap.ui.define([
 			//MAIN READ
 			var urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
 			urlParam = this.fFillURLParamFilter("TYPE", "", urlParam);
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 			// urlParam = urlParam + "&$expand=PLANS";
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
@@ -1647,6 +1658,7 @@ sap.ui.define([
 			var oView = this.getView();
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var oData = this.getView().getModel("ET_HEADER").getData();
+			var oGlobalModel = this.getView().getModel("ET_GLOBAL_DATA");
 			var aData = this.getView().getModel("ET_HOLDER");
 			var that = this;
 			var pltyp = brde;
@@ -1690,6 +1702,7 @@ sap.ui.define([
 			//MAIN READ
 			var urlParam = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
 			urlParam = this.fFillURLParamFilter("TYPE", "", urlParam);
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
 			// urlParam = urlParam + "&$expand=PLANS";
 
 			oModel.read("E_SH_HEALTH_PLAN", null, urlParam, false, fSuccess, fError);
