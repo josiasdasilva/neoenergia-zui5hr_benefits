@@ -922,7 +922,8 @@ sap.ui.define([
 		},
 		isValidNumber: function(id) {
 			const value = this.getView().byId(id).getValue();
-			return !(isNaN(value)) || value == "0,0";
+			const translatedValue = value.replace(",",".");
+			return !(isNaN(translatedValue));
 		}
 	})
 });
