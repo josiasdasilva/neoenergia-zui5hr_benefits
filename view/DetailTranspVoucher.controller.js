@@ -1539,7 +1539,79 @@ sap.ui.define([
 					}
 				}
 			} else if (this.exclude != "") {
-				url = url + "FLD03 eq 'X'";
+        url = url + "FLD03 eq 'X'";
+        
+        for (var i = 0; lines.length > i; i++) {
+					if (lines[i].ACTION == "INS") {
+						switch (indexIda) {
+							case 0:
+								if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
+									valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
+									url += " and FLD07 eq '" + lines[i].MEIO_TRANS + "' and FLD08 eq '" + lines[i].LINHA + "' and FLD10 eq '" + valor + "'";
+									indexIda++;
+								}
+								break;
+							case 1:
+								if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
+									valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
+									url += " and FLD13 eq '" + lines[i].MEIO_TRANS + "' and FLD14 eq '" + lines[i].LINHA + "' and FLD16 eq '" + valor + "'";
+									indexIda++;
+								}
+								break;
+
+							case 2:
+								if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
+									valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
+									url += " and FLD19 eq '" + lines[i].MEIO_TRANS + "' and FLD20 eq '" + lines[i].LINHA + "' and FLD22 eq '" + valor + "'";
+									indexIda++;
+								}
+								break;
+
+							case 3:
+								if (lines[i].N_IDA !== "" && lines[i].N_IDA > 0) {
+									valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_IDA);
+									url += " and FLD25 eq '" + lines[i].MEIO_TRANS + "' and FLD26 eq '" + lines[i].LINHA + "' and FLD28 eq '" + valor + "'";
+									indexIda++;
+								}
+								break;
+							default:
+								break;
+						}
+
+						switch (indexVolta) {
+							case 0:
+								if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
+									valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
+									url += " and FLD32 eq '" + lines[i].MEIO_TRANS + "' and FLD33 eq '" + lines[i].LINHA + "' and FLD35 eq '" + valor + "'";
+									indexVolta++;
+								}
+								break;
+							case 1:
+								if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
+									valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
+									url += " and FLD38 eq '" + lines[i].MEIO_TRANS + "' and FLD39 eq '" + lines[i].LINHA + "' and FLD41 eq '" + valor + "'";
+									indexVolta++;
+								}
+								break;
+							case 2:
+								if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
+									valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
+									url += " and FLD44 eq '" + lines[i].MEIO_TRANS + "' and FLD45 eq '" + lines[i].LINHA + "' and FLD47 eq '" + valor + "'";
+									indexVolta++;
+								}
+								break;
+							case 3:
+								if (lines[i].N_VOLTA !== "" && lines[i].N_VOLTA > 0) {
+									valor = parseFloat(lines[i].TARIFA) * parseInt(lines[i].N_VOLTA);
+									url += " and FLD50 eq '" + lines[i].MEIO_TRANS + "' and FLD51 eq '" + lines[i].LINHA + "' and FLD53 eq '" + valor + "'";
+									indexVolta++;
+								}
+								break;
+							default:
+								break;
+						}
+					}
+				}
 			} else if (this.seccond != "") {
 				url = url + "FLD04 eq 'X'";
 			}
