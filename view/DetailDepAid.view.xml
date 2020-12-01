@@ -161,8 +161,11 @@
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Input value="{'ET_BLOCK>/BETRG'}" width="" class="sapUiSmallMarginBottom" id="ipRequestedValue"
-						liveChange="onLiveChange" change="onChange" fieldWidth="30%" required="false">
+					<Input value="{path : 'ET_BLOCK>/BETRG', 
+					               type : 'sap.ui.model.type.Currency', 
+					               formatOptions: {showMeasure: false}}" 
+					       width="" class="sapUiSmallMarginBottom" id="ipRequestedValue"
+						   liveChange="onLiveChange" change="onChange" fieldWidth="30%" required="false">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>
