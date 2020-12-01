@@ -4,9 +4,10 @@ sap.ui.define([
 	"sap/m/MessageBox",
 	"cadastralMaintenance/view/BaseController",
 	"cadastralMaintenance/formatter/Formatter",
+	"cadastralMaintenance/formatter/accounting",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/Dialog"
-], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog) {
+], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog, accounting) {
 	"use strict";
 
 	return BaseController.extend("cadastralMaintenance.view.DetailDepAid", {
@@ -380,7 +381,7 @@ sap.ui.define([
 			}
 			// oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
 			// oCreate.BLOCK.BETRG = oActualModel.BETRG;
-			oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
+			oCreate.BLOCK.BETRG = this.toFloat(oActualModel.BETRG);
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
@@ -605,7 +606,7 @@ sap.ui.define([
 		onChange: function (oEvent) {},
 		onLiveChange: function (oEvent) {
 			var block = this.getView().getModel("ET_BLOCK").getData();
-			block.BETRG = oEvent.getParameter("value");
+			block.BETRG = toFloat(oEvent.getParameter("value"));
 		},
 		getDependents: function (that, pernr) {
 			// var oEntry = [];
@@ -772,7 +773,7 @@ sap.ui.define([
 // var a = {...oEvent};
 // this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004.getUser().getId();
 
-			var IvValAux = parseFloat(block.BETRG.replace(/\./g,'').replace(',', '.'));
+			var IvValAux = toFloat(block.BETRG);
 			var IvNomeDep = block.FCNAM;
 			var IvInstBaba = block.INSTITUICAO;
 			var IvCnpjCpf = block.CNPJ_INST;
@@ -1066,6 +1067,23 @@ sap.ui.define([
 			var mm = lData.getMonth() + 1; // getMonth() is zero-based
 			var dd = lData.getDate();
 			return [lData.getFullYear(), (mm>9 ? '' : '0') + mm, (dd>9 ? '' : '0') + dd].join('');
+		},
+		toFloat: function (source) {
+		    let float = accounting.unformat(source);
+		    let posComma = source.indexOf(',');
+		    if (posComma > -1) {
+		        let posDot = source.indexOf('.');
+		        if (posDot > -1 && posComma > posDot) {
+		            let germanFloat = accounting.unformat(source, ',');
+		            if (Math.abs(germanFloat) > Math.abs(float)) {
+		                float = germanFloat;
+		            }
+		        } else {
+		            // source = source.replace(/,/g, '.');
+		            float = accounting.unformat(source, ',');
+		        }
+		    }
+		    return float;
 		}
 	});
 
