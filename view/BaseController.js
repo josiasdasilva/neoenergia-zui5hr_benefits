@@ -1632,7 +1632,8 @@ sap.ui.define([
 			if (doctype !== undefined && doctype !== null && doctype !== "") {
 				urlParam = this.fFillURLParamFilter("DocType", doctype, urlParam);
 			}
-
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalData.IM_BUKRS, urlParam);
+			
 			function success(oData) {
 				var oAttachments = that.getView().getModel("Attachments");
 				oAttachments.setData(null);
