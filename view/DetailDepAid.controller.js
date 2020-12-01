@@ -2,11 +2,10 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/resource/ResourceModel",
 	"sap/m/MessageBox",
-	"sap/ui/model/json/JSONModel",
-	"sap/m/Dialog",
 	"cadastralMaintenance/view/BaseController",
-	"cadastralMaintenance/formatter/Formatter"
-	// "cadastralMaintenance/formatter/accounting"
+	"cadastralMaintenance/formatter/Formatter",
+	"sap/ui/model/json/JSONModel",
+	"sap/m/Dialog"
 ], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog) {
 	"use strict";
 
