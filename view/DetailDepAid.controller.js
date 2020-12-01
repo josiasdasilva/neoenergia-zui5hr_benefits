@@ -2,11 +2,11 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/resource/ResourceModel",
 	"sap/m/MessageBox",
+	"sap/ui/model/json/JSONModel",
+	"sap/m/Dialog",
 	"cadastralMaintenance/view/BaseController",
 	"cadastralMaintenance/formatter/Formatter",
-	"cadastralMaintenance/formatter/accounting",
-	"sap/ui/model/json/JSONModel",
-	"sap/m/Dialog"
+	"cadastralMaintenance/formatter/accounting"
 ], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog, accounting) {
 	"use strict";
 
@@ -914,7 +914,7 @@ sap.ui.define([
 			    model.FCNAM === "" || model.FCNAM === undefined || 
 			    model.TYPE_SOL === "" || model.TYPE_SOL === undefined ||
 			    model.TIP_AUX === "" || model.TIP_AUX === undefined || 
-			    parseFloat(model.BETRG) <= 0 || model.BETRG === "" || model.BETRG === undefined || 
+			    this.toFloat(model.BETRG) <= 0 || model.BETRG === "" || model.BETRG === undefined || 
 			    model.INSTITUICAO === "" || model.INSTITUICAO === undefined ) {
 				return false;
 			}
