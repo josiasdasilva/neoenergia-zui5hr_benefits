@@ -702,7 +702,7 @@ sap.ui.define([
 		},
 		onChangeSol: function (oEvent) {
 			var key = oEvent.getSource().getSelectedKey();
-			var date = this.getView().byId("dtPeriodTo").getDateValue();
+			var date = this.getView().byId("dtPeriodFrom").getDateValue();
 			this.ajusteDataTo( date, key );
 		},
 		ajusteDataTo: function(oDataFrom, key) {
@@ -718,9 +718,9 @@ sap.ui.define([
 			} else {            // solicitacao semestral
 			var dtTo = new Date();
 			    if (oDataFrom.getMonth() < 8) {
-			    	dtTo = this.dataFormatada(new Date(oDataFrom.getFullYear(), 7, 30));
+			    	dtTo = new Date(oDataFrom.getFullYear(), 5, 30);
 			    } else {
-			    	dtTo = this.dataFormatada(new Date(oDataFrom.getFullYear(), 11, 31));
+			    	dtTo = new Date(oDataFrom.getFullYear(), 11, 31);
 			    }
 				this.getView().byId("lblPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setVisible(true);
