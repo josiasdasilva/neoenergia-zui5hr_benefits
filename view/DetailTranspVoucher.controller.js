@@ -29,6 +29,14 @@ sap.ui.define([
 			this.globalVar();
 			this.segButtonHandle(this.getView().getModel("ET_HEADER").getData().BUKRS);
 		},
+
+		initialize: function() {
+			this.fSetHeader();
+			this.fSetGlobalInformation();
+			this.fGetBlock();
+			this.globalVar();
+		},
+
 		segButtonHandle: function(vEmpresa) {
 			//var vEmpresa = that.getView().getModel("ET_HEADER").oData.BUKRS;
 			if (vEmpresa === "NEO") {
@@ -1257,7 +1265,7 @@ sap.ui.define([
 					initialFocus: sap.m.MessageBox.Action.CANCEL,
 					onClose: function(sButton) {
 						if (sButton === MessageBox.Action.OK) {
-							that.onInit();
+							that.initialize();
 						}
 					}
 				});
