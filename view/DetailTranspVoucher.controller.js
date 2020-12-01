@@ -1374,21 +1374,39 @@ sap.ui.define([
 			}
 
 			const splitLines = (lines) => {
-				const newLines = [];
+        const newLines = [];
+        var usedIdaSlots = 4;
+        var usedVoltaSlots = 4;
 				for (let i = 0; i < lines.length; i++) {
 					const line = lines[i];
 					let countIda = parseInt(line.N_IDA);
 					let countVolta = parseInt(line.N_VOLTA);
-					const max = countIda > countVolta ? countIda : countVolta;
-					for (let i = 0; i < max; i++) {
-						let newLine = Object.assign({}, line);
-						newLine.N_IDA = i >= countIda ? "0" : "1";
-						newLine.N_VOLTA = i >= countVolta ? "0" : "1";
-						newLines.push(newLine);
-					}
+          const max = countIda > countVolta ? countIda : countVolta;
+          if(max === 0){
+            let newLine = Object.assign({}, line);
+            if(usedIdaSlots > 0){
+              usedIdaSlots--;
+              newLine.N_IDA = newLine.TVIAG;
+            }else{
+              if(usedVoltaSlots > 0){
+                usedIdaSlots--;
+                newLine.N_VOLTA = newLine.TVIAG;
+              }
+            }
+            newLines.push(newLine);
+          }else{
+            for (let i = 0; i < max; i++) {
+              let newLine = Object.assign({}, line);
+              newLine.N_IDA = i >= countIda ? "0" : "1";
+              newLine.N_VOLTA = i >= countVolta ? "0" : "1";
+              newLines.push(newLine);
+            }
+          }
+          
 				}
 				return newLines;
-			}
+      }
+      
 			if (this.insert != "") {
 				lines = splitLines(modelTable.getData());
 				url = url + "FLD01 eq 'X'";
