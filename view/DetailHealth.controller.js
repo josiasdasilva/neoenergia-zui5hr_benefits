@@ -571,7 +571,7 @@ sap.ui.define([
 
 			//MAIN READ
 			var urlParamPlans = this.fFillURLParamFilter("IM_PERNR", oData.PERNR);
-			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParam);
+			urlParamPlans = this.fFillURLParamFilter("IM_BUKRS", oGlobalModel.IM_BUKRS, urlParamPlans);
 			urlParamPlans = urlParamPlans + "&$expand=PLANS";
 			oModel.read("ET_SH_PLANS", null, urlParamPlans, false, fSuccessPlans, fError);
 		},
