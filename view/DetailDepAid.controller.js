@@ -765,13 +765,8 @@ sap.ui.define([
 			var block = this.getView().getModel("ET_BLOCK").getData();
 
 			var IvTpAux = this.getView().byId("cbTypeAux").getValue();
-			var IvPeriodo = dataFrom.substring(6, 10) + dataFrom.substring(3, 5);
-			var IvOpPer = this.getView().byId("slSolType").getSelectedKey() === "" ? "M" : "S" ;
-			
-// var a = {...oEvent};
-// this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004.getUser().getId();
-
-			// var IvValAux = toFloat(block.BETRG);
+			var IvPeriodo = dataFrom.substring(0, 6);
+			var IvOpPer = this.getView().byId("slSolType").getSelectedKey();
 			var IvValAux = block.BETRG;
 			var IvNomeDep = block.FCNAM;
 			var IvInstBaba = block.INSTITUICAO;
@@ -797,7 +792,6 @@ sap.ui.define([
 
 			if (IvCnpjCpf === undefined) {
 				IvCnpjCpf = "";
-
 			}
 
 			if (block.TYPE_SOL === "Reembolso") {
