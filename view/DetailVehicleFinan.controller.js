@@ -422,12 +422,12 @@ sap.ui.define([
 			var mes = this.getView().byId("dtDateCred").getValue().substring(3, 5);
 			var ano = this.getView().byId("dtDateCred").getValue().substring(6, 10);
 
-			// Consistir data credito, não pode ser no passado
+			// - Consistir data credito, não pode ser no passado
 			var data = new Date(),
 				diaa = data.getDate().toString(),
-				diaF = (dia.length == 1) ? "0" + diaa : diaa,
+				diaF = (diaa.length == 1) ? "0" + diaa : diaa,
 				mesa = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
-				mesF = (mes.length == 1) ? "0" + mesa : mesa,
+				mesF = (mesa.length == 1) ? "0" + mesa : mesa,
 				anoF = data.getFullYear();
 
 			var begda = ano + mes + dia;
