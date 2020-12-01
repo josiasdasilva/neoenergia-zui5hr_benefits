@@ -1258,58 +1258,53 @@ sap.ui.define([
 			oModel.oData[row] = oModelNew.getData();
 		},
 		onCancelItem: function() {
-			const that = this;
-			MessageBox.confirm(
-				'Suas alterações serão descartadas. Continuar?', {
-					title: "Cancelar alterações",
-					initialFocus: sap.m.MessageBox.Action.CANCEL,
-					onClose: function(sButton) {
-						if (sButton === MessageBox.Action.OK) {
-							that.initialize();
-						}
-					}
-				});
-
-/*
-			//check if there are items already
-			var oModel = this.getView().getModel("ET_TRANSP");
-			var length = oModel.oData.length;
-
-			if (length) {
-				//there are items
-				if (this.getView().getModel("ET_ACTION").getData().ACTION == "I") {
-					this.getView().byId("btnAdd").setEnabled(true);
-				} else if (this.getView().getModel("ET_ACTION").getData().ACTION == "M") {
-					this.getView().byId("btnModify").setEnabled(true);
-					this.getView().byId("btnRemove").setEnabled(true);
-					this.getView().byId("btnSeg").setEnabled(true);
-				} else {
-					this.getView().byId("btnModify").setEnabled(true);
-					this.getView().byId("btnRemove").setEnabled(true);
-					this.getView().byId("btnSeg").setEnabled(true);
-					this.getView().byId("btnAdd").setEnabled(true);
-				}
-			} else {
-				//if there are no items, clear ET_ACTION model and enable buttons
-				var obj = {
+      const oTranspModel = this.getView().getModel("ET_TRANSP");
+      const action = this.getView().getModel("ET_ACTION").getData().ACTION;
+      const changedItems = () => {
+        for (let i = 0; i < oTranspModel.oData.length; i++) {
+          const oTransp = oTranspModel.oData[i];
+          if(oTransp.STATUS !== 'Ativo'){
+            return true;
+          }
+        }
+        return false;
+      };
+		
+			this.getView().byId("formGeneral").setVisible(false);
+			this.getView().byId("btnCancelItem").setVisible(false);
+			this.getView().byId("btnAcceptItem").setVisible(false);
+			this.getView().byId("btnAccept").setVisible(true);
+      this.getView().byId("btnForms").setVisible(true);
+      
+      if(changedItems()){
+        switch (action) {
+          case 'I':
+            this.getView().byId("btnAdd").setEnabled(true);
+            this.getView().byId("btnModify").setEnabled(false);
+            this.getView().byId("btnRemove").setEnabled(false);
+            this.getView().byId("btnSeg").setEnabled(false);
+            break;
+          case 'M':
+            this.getView().byId("btnAdd").setEnabled(false);
+            this.getView().byId("btnModify").setEnabled(true);
+            this.getView().byId("btnRemove").setEnabled(false);
+            this.getView().byId("btnSeg").setEnabled(false);
+          default:
+            break;
+        }
+      }else{
+        this.getView().byId("btnAdd").setEnabled(true);
+        this.getView().byId("btnModify").setEnabled(true);
+        this.getView().byId("btnRemove").setEnabled(true);
+        this.getView().byId("btnSeg").setEnabled(true);
+        
+        var obj = {
 					ACTION: ""
 				};
 				var oModel = new sap.ui.model.json.JSONModel(obj);
 				this.getView().setModel(oModel, "ET_ACTION");
-				//enable addl button
-				this.getView().byId("btnAdd").setEnabled(true);
-				//there is no item, so disable modify, remove and second request buttons
-				this.getView().byId("btnModify").setEnabled(false);
-				this.getView().byId("btnRemove").setEnabled(false);
-				this.getView().byId("btnSeg").setEnabled(false);
-			}
-			this.getView().byId("btnAccept").setVisible(true);
-			this.getView().byId("btnForms").setVisible(true);
-			this.getView().byId("btnCancelItem").setVisible(false);
-			this.getView().byId("btnAcceptItem").setVisible(false);
-			this.getView().byId("formGeneral").setVisible(false);
-			this.fClearModelForm();
-			*/
+      }
+      this.fClearModelForm();			
 		},
 		fClearModelForm: function() {
 			this.getView().setModel(new sap.ui.model.json.JSONModel(), "ET_DATA_FORM");
