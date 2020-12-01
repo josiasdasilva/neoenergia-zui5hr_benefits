@@ -5,7 +5,7 @@
       "path": "/sap/opu/odata",
       "target": {
         "type": "destination",
-        "name": "Neo",
+        "name": "CFD",
         "entryPath": "/sap/opu/odata"
       },
       "description": "Neoenergia CFD"
@@ -32,7 +32,7 @@
       "path": "/sap/bc/ui5_ui5",
       "target": {
         "type": "destination",
-        "name": "Neo",
+        "name": "CFD",
         "entryPath": "/sap/bc/ui5_ui5"
       },
       "description": "Neoenergia CFD"
