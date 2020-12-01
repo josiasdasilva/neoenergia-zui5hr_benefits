@@ -1042,6 +1042,18 @@ sap.ui.define([
 		// onCancel
 		// -------------------------------------------- 		
 		onCancel: function() {
+			MessageBox.confirm(
+				'Suas alterações serão descartadas. Continuar?', {
+					title: "Cancelar alterações",
+					initialFocus: sap.m.MessageBox.Action.CANCEL,
+					onClose: function(sButton) {
+						if (sButton === MessageBox.Action.OK) {
+							this.onInit();
+						}
+					}
+				});
+			
+			/*
 			var oGlobalData = this.getView().getModel("ET_GLOBAL_DATA");
 			var observationSSG = this.getView().byId("taJustSSG").getValue();
 
@@ -1050,6 +1062,7 @@ sap.ui.define([
 			} else {
 				this.fActions(this, "Cancelamento", "C");
 			}
+			*/
 		},
 
 		// --------------------------------------------
