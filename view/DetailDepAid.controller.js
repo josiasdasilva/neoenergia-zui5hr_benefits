@@ -378,8 +378,7 @@ sap.ui.define([
 			} else {
 				oCreate.BLOCK.PERIOD_TO = "";
 			}
-			oCreate.BLOCK.BETRG = parseFloat(oActualModel.BETRG.replace(/\./g,'').replace(',', '.'));
-			// oCreate.BLOCK.BETRG = oActualModel.BETRG;
+			oCreate.BLOCK.BETRG = oActualModel.BETRG;
 			oCreate.BLOCK.INSTITUICAO = oActualModel.INSTITUICAO;
 			oCreate.BLOCK.CNPJ_INST = oActualModel.CNPJ_INST;
 			oCreate.BLOCK.REEMBOLSO = oActualModel.REEMBOLSO;
