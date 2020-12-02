@@ -230,22 +230,42 @@ sap.ui.define([
 			oView.byId("btnCancel").setVisible(false);
 		},
 		fTipoSolicitacao: function () {
-			var oEntry = [];
-			this.TipoSolic = new JSONModel();
-			this.TipoSolic.setData({
-				table: []
-			});
-			oEntry = {
-				key: "M",
-				text: "Mensal"
+
+			var oData = {
+				"SelectedPeriod": "M",
+				"TipoSolic": [
+					{
+						"key": "M",
+						"text": "Mensal"
+					},
+					{
+						"key": "S",
+						"text": "Semestral"
+					}
+				],
+				"Editable": true,
+				"Enabled": true
 			};
-			this.TipoSolic.getData().table.push(oEntry);
-			oEntry = {
-				key: "S",
-				text: "Semestral"
-			};
-			this.TipoSolic.getData().table.push(oEntry);
-			this.getView().setModel(this.TipoSolic, "tiposolic");
+			// set explored app's demo model on this sample
+			var oModel = new JSONModel(oData);
+			this.getView().setModel(oModel);
+
+			// var oEntry = [];
+			// this.TipoSolic = new JSONModel();
+			// this.TipoSolic.setData({
+			// 	table: []
+			// });
+			// oEntry = {
+			// 	key: "M",
+			// 	text: "Mensal"
+			// };
+			// this.TipoSolic.getData().table.push(oEntry);
+			// oEntry = {
+			// 	key: "S",
+			// 	text: "Semestral"
+			// };
+			// this.TipoSolic.getData().table.push(oEntry);
+			// this.getView().setModel(this.TipoSolic, "tiposolic");
 		},
 		//	--------------------------------------------
 		//	fSearchHelps

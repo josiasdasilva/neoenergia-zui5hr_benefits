@@ -115,9 +115,15 @@
 							<l:GridData span="L3 M3 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
 						</layoutData>
 					</Label>
-					<Select width="50%" id="slSolType" selectedKey="{}" change="onChangeSol"
-							items="{path: 'tiposolic>/table', sorter: { path: 'text' }}">
-						<core:Item text="{tiposolic>text}" key="{tiposolic>key}"/>
+					<Select width="50%" 
+					        id="slSolType" 
+					        selectedKey="{/SelectedPeriod}" 
+					        change="onChangeSol"
+							items="{
+							    path: '/TipoSolic', 
+							    sorter: { path: 'text' }
+							 }">
+						<core:Item key="{key}" text="{text}" />
 						<layoutData>
 							<l:GridData span="L4 M4 S8"/>
 						</layoutData>
