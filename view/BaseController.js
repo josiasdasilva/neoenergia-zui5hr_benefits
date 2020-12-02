@@ -5,7 +5,7 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	"sap/ui/model/json/JSONModel",
 	"sap/m/UploadCollectionParameter",
-], function (Controller, History, MessageBox, Filter, JSONModel, UploadCollectionParameter) {
+], function(Controller, History, MessageBox, Filter, JSONModel, UploadCollectionParameter) {
 	"use strict";
 
 	return Controller.extend("cadastralMaintenance.view.BaseController", {
@@ -16,7 +16,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fCheckSaneaBtn
 		//	--------------------------------------------			
-		fCheckSaneaBtn: function (view) {
+		fCheckSaneaBtn: function(view) {
 
 			var aData = sap.ui.getCore().getModel("ET_VALID_BLOCK").getData();
 
@@ -41,7 +41,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fRemoveSpecialChars
 		//	--------------------------------------------			
-		fRemoveSpecialChars: function (fileName) {
+		fRemoveSpecialChars: function(fileName) {
 			var stringToReplace;
 			var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
 			for (var i = 0; i < specialChars.length; i++) {
@@ -53,7 +53,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fFormatDateToUser
 		//	--------------------------------------------		
-		fFormatDateToUser: function (gatewayFormatDate, separator) {
+		fFormatDateToUser: function(gatewayFormatDate, separator) {
 
 			if (gatewayFormatDate !== null) {
 				var day = gatewayFormatDate.substring(8, 10);
@@ -68,7 +68,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fGetTodayDate
 		//	--------------------------------------------		
-		fGetTodayDate: function () {
+		fGetTodayDate: function() {
 			var today = new Date();
 			var day = today.getUTCDate();
 			var month = today.getUTCMonth() + 1; //January is 0
@@ -89,7 +89,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fGetFirstDayOfMonth
 		//	--------------------------------------------		
-		fGetFirstDayOfMonth: function () {
+		fGetFirstDayOfMonth: function() {
 			var today = new Date();
 			var month = today.getUTCMonth() + 1; //January is 0
 			var year = today.getUTCFullYear();
@@ -105,7 +105,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fRemoveSpecialCharsAttach
 		//	--------------------------------------------			
-		fRemoveSpecialCharsAttach: function (fileName) {
+		fRemoveSpecialCharsAttach: function(fileName) {
 			var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,";
 			for (var i = 0; i < specialChars.length; i++) {
 				fileName = fileName.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
@@ -116,7 +116,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fVerifyAllowedUser
 		//	--------------------------------------------			
-		fVerifyAllowedUser: function (message, that) {
+		fVerifyAllowedUser: function(message, that) {
 			//Usuário sem permissão de acesso
 			if (message.substring(0, 1) === "S" && message.substring(5) === "994") {
 				that.fUnableAllButtons();
@@ -127,7 +127,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fControlAttributesFields
 		// -------------------------------------------- 		
-		fControlAttributesFields: function (fieldPlan, fieldOption) {
+		fControlAttributesFields: function(fieldPlan, fieldOption) {
 			var oView = this.getView();
 			var plan = oView.byId(fieldPlan).getValue().trim();
 			var opt = oView.byId(fieldOption).getValue().trim();
@@ -145,7 +145,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fGetDescription
 		//	--------------------------------------------		
-		fGetDescription: function (modelName, textFieldName, value, modelFieldValue, modelFieldDesc, that) {
+		fGetDescription: function(modelName, textFieldName, value, modelFieldValue, modelFieldDesc, that) {
 			var oModel = that.getView().getModel(modelName);
 			var description = "";
 
@@ -168,30 +168,30 @@ sap.ui.define([
 		// --------------------------------------------
 		// fActions
 		// -------------------------------------------- 		
-		fActions: function (that, actionText, action) {
+		fActions: function(that, actionText, action) {
 			var question;
 
 			switch (action) {
-			case "A": //Approve
-				question = "Confirmar aprovação?";
-				break;
+				case "A": //Approve
+					question = "Confirmar aprovação?";
+					break;
 
-			case "D": //Decline
-				question = "Confirmar reprovação?";
-				break;
+				case "D": //Decline
+					question = "Confirmar reprovação?";
+					break;
 
-			case "C": //Cancel
-				question = "Confirmar cancelamento?";
-				break;
+				case "C": //Cancel
+					question = "Confirmar cancelamento?";
+					break;
 
-			default:
-				question = "Confirmar " + actionText + "?";
+				default:
+					question = "Confirmar " + actionText + "?";
 			}
 
 			MessageBox.confirm(question, {
 				title: actionText,
 				initialFocus: sap.m.MessageBox.Action.OK,
-				onClose: function (sButton) {
+				onClose: function(sButton) {
 					if (sButton === MessageBox.Action.OK) {
 						that.fCreateRequisition(that, action);
 						return true;
@@ -203,7 +203,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fSucessMessageFromSendAction
 		//	--------------------------------------------
-		fSucessMessageFromSendAction: function (oEvent, educForm) {
+		fSucessMessageFromSendAction: function(oEvent, educForm) {
 			var oGlobalInformation = this.getView().getModel("ET_GLOBAL_DATA");
 			var message;
 
@@ -234,7 +234,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fConvertToUppercase
 		//	--------------------------------------------		
-		fConvertToUppercase: function (fieldName) {
+		fConvertToUppercase: function(fieldName) {
 			var fieldValue = this.getView().byId(fieldName).getValue();
 
 			var field = this.getView().byId(fieldName);
@@ -256,7 +256,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fVerifyCharacter
 		//	--------------------------------------------
-		fVerifyCharacter: function (input) {
+		fVerifyCharacter: function(input) {
 			var letters = /^[0-9a-zA-Z\s]+$/;
 			if (letters.test(input)) {
 				return true;
@@ -268,7 +268,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fSSGJust
 		//	--------------------------------------------
-		fSSGJust: function () {
+		fSSGJust: function() {
 			this.getView().byId("formJustificationSSG").setVisible(true);
 			this.getView().byId("taJustSSG").setEditable(true);
 		},
@@ -276,7 +276,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fVerifyAction
 		//	--------------------------------------------			
-		fVerifyAction: function (getOnlyAction, userAction) {
+		fVerifyAction: function(getOnlyAction, userAction) {
 			var closedReq = {};
 			var oGlobalInformation = this.getView().getModel("ET_GLOBAL_DATA");
 			var oHeader = this.getView().getModel("ET_HEADER");
@@ -419,29 +419,29 @@ sap.ui.define([
 					oView.byId("lblStatus").setVisible(true);
 
 					switch (oGlobalInformation.MSG) {
-					case "988":
-						oView.byId("lblStatus").setText("Status: Requisição Cancelada");
-						break;
+						case "988":
+							oView.byId("lblStatus").setText("Status: Requisição Cancelada");
+							break;
 
-					case "989":
-						oView.byId("lblStatus").setText("Status: Requisição Finalizada");
-						break;
+						case "989":
+							oView.byId("lblStatus").setText("Status: Requisição Finalizada");
+							break;
 
-					case "990":
-						oView.byId("lblStatus").setText("Status: Requisição Saneada");
-						break;
+						case "990":
+							oView.byId("lblStatus").setText("Status: Requisição Saneada");
+							break;
 
-					case "997":
-						oView.byId("lblStatus").setText("Status: Requisição Salva");
-						break;
+						case "997":
+							oView.byId("lblStatus").setText("Status: Requisição Salva");
+							break;
 
-					case "998":
-						if (oGlobalInformation.NO_WORKFLOW === "") {
-							oView.byId("lblStatus").setText("Status: Para Aprovação");
-						} else {
-							oView.byId("lblStatus").setText("Status: Finalizado");
-						}
-						break;
+						case "998":
+							if (oGlobalInformation.NO_WORKFLOW === "") {
+								oView.byId("lblStatus").setText("Status: Para Aprovação");
+							} else {
+								oView.byId("lblStatus").setText("Status: Finalizado");
+							}
+							break;
 					}
 				}
 
@@ -565,26 +565,26 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fMessageWhenWorkflow
 		//	--------------------------------------------		
-		fMessageWhenWorkflow: function (noWorkflow, userAction) {
+		fMessageWhenWorkflow: function(noWorkflow, userAction) {
 			var oView = this.getView();
 
 			if (noWorkflow === "") {
 				switch (userAction) {
-				case "A":
-					oView.byId("lblStatus").setText("Status: Aprovado");
-					break;
+					case "A":
+						oView.byId("lblStatus").setText("Status: Aprovado");
+						break;
 
-				case "D":
-					oView.byId("lblStatus").setText("Status: Reprovado");
-					break;
+					case "D":
+						oView.byId("lblStatus").setText("Status: Reprovado");
+						break;
 
-				case "C":
-					oView.byId("lblStatus").setText("Status: Cancelado");
-					break;
+					case "C":
+						oView.byId("lblStatus").setText("Status: Cancelado");
+						break;
 
-				default:
-					oView.byId("lblStatus").setText("Status: Para Aprovação");
-					break;
+					default:
+						oView.byId("lblStatus").setText("Status: Para Aprovação");
+						break;
 				}
 			} else {
 				oView.byId("lblStatus").setText("Status: Finalizado");
@@ -594,7 +594,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fSetSearchHelpValue
 		//	--------------------------------------------		
-		fSetSearchHelpValue: function (oModel, modelName, urlParam) {
+		fSetSearchHelpValue: function(oModel, modelName, urlParam) {
 			var that = this;
 
 			function fSuccessExecutar(oEvent) {
@@ -617,7 +617,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onMasterLoaded
 		//	--------------------------------------------
-		onMasterLoaded: function (sChannel, sEvent, oData) {
+		onMasterLoaded: function(sChannel, sEvent, oData) {
 			if (oData.oListItem) {
 				this.bindView(oData.oListItem.getBindingContext().getPath());
 				this.oInitialLoadFinishedDeferred.resolve();
@@ -627,10 +627,10 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onRouteMatched
 		//	--------------------------------------------
-		onRouteMatched: function (oEvent) {
+		onRouteMatched: function(oEvent) {
 			var oParameters = oEvent.getParameters();
 
-			jQuery.when(this.oInitialLoadFinishedDeferred).then(jQuery.proxy(function () {
+			jQuery.when(this.oInitialLoadFinishedDeferred).then(jQuery.proxy(function() {
 
 				// When navigating in the Detail page, update the binding context 
 				if (oParameters.name === "detail") {
@@ -645,7 +645,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fValidAttachment
 		//	--------------------------------------------		
-		fValidAttachment: function () {
+		fValidAttachment: function() {
 
 			var count = this.getView().byId("upldAttachments").aItems.length;
 
@@ -659,7 +659,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onDateChange
 		//	--------------------------------------------
-		onDateChange: function (oEvent) {
+		onDateChange: function(oEvent) {
 			var fieldname = oEvent.getParameter("id").substring(12);
 
 			if (oEvent.getParameter("valid") === true) {
@@ -675,7 +675,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fFillURLFilterParam
 		//	--------------------------------------------		
-		fFillURLFilterParam: function (param, value, url) {
+		fFillURLFilterParam: function(param, value, url) {
 
 			if (url === "" || typeof url === "undefined") {
 				url = "$filter=";
@@ -701,7 +701,7 @@ sap.ui.define([
 		//      989 - Requisição Finalizada
 		//      988 - Requisição Cancelada
 		//	--------------------------------------------
-		fSetGlobalInformation: function (oEvent, that, requisitionId, ifIsTableType) {
+		fSetGlobalInformation: function(oEvent, that, requisitionId, ifIsTableType) {
 			var globalData = {};
 			var oStartupParameters = jQuery.sap.getUriParameters().mParams;
 
@@ -720,7 +720,7 @@ sap.ui.define([
 			if (oStartupParameters.IM_PERNR) {
 				globalData.IM_PERNR = oStartupParameters.IM_PERNR[0];
 			}
-			
+
 			if (oStartupParameters.IM_BUKRS) {
 				globalData.IM_BUKRS = oStartupParameters.IM_BUKRS[0];
 			}
@@ -749,25 +749,25 @@ sap.ui.define([
 			if (oStartupParameters.IM_PROFILE) {
 
 				switch (oStartupParameters.IM_PROFILE[0]) {
-				case "EM":
-					globalData.IM_LOGGED_IN = 0;
-					break;
-				case "RH": //time de pessoas BR
-					globalData.IM_LOGGED_IN = 2;
-					break;
-				case "SSG":
-					globalData.IM_LOGGED_IN = 5;
-					this.fSSGJust();
-					break;
-				case "RHR": //RH Responde Digital
-					globalData.IM_LOGGED_IN = 6;
-					break;
-				case "SSMA":
-					globalData.IM_LOGGED_IN = 7;
-					break;
-				case "ADM":
-					globalData.IM_LOGGED_IN = 8;
-					break;
+					case "EM":
+						globalData.IM_LOGGED_IN = 0;
+						break;
+					case "RH": //time de pessoas BR
+						globalData.IM_LOGGED_IN = 2;
+						break;
+					case "SSG":
+						globalData.IM_LOGGED_IN = 5;
+						this.fSSGJust();
+						break;
+					case "RHR": //RH Responde Digital
+						globalData.IM_LOGGED_IN = 6;
+						break;
+					case "SSMA":
+						globalData.IM_LOGGED_IN = 7;
+						break;
+					case "ADM":
+						globalData.IM_LOGGED_IN = 8;
+						break;
 				}
 			}
 			this.getView().setModel(globalData, "ET_GLOBAL_DATA");
@@ -776,7 +776,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fGetUrl
 		//	--------------------------------------------		
-		fGetUrl: function (imPernr, imRequisitionId, imLoggedIn) {
+		fGetUrl: function(imPernr, imRequisitionId, imLoggedIn) {
 			var urlParam;
 
 			urlParam = this.fFillURLParam("IM_PERNR", imPernr);
@@ -786,7 +786,7 @@ sap.ui.define([
 			return urlParam;
 		},
 
-		fGetUrlBukrs: function (imPernr, imRequisitionId, imLoggedIn, imBukrs) {
+		fGetUrlBukrs: function(imPernr, imRequisitionId, imLoggedIn, imBukrs) {
 			var urlParam;
 
 			urlParam = this.fFillURLParam("IM_PERNR", imPernr);
@@ -799,7 +799,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fFillURLParam
 		//	--------------------------------------------
-		fFillURLParam: function (p_atrib, p_valor, p_param, p_final) {
+		fFillURLParam: function(p_atrib, p_valor, p_param, p_final) {
 			//monta URL de parametros para o Gateway (filter)
 			if (p_param === "" || typeof p_param === "undefined") {
 				p_param = "(";
@@ -823,7 +823,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fFillURLParamFilter
 		//	--------------------------------------------		
-		fFillURLParamFilter: function (p_atrib, p_valor, p_param) {
+		fFillURLParamFilter: function(p_atrib, p_valor, p_param) {
 			//monta URL de parametros para o Gateway (filter)
 			if (p_param === "" || typeof p_param === "undefined") {
 				p_param = "$filter=";
@@ -839,7 +839,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fGetLog
 		//	--------------------------------------------		
-		fGetLog: function () {
+		fGetLog: function() {
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_RESP_DIGITAL_SRV/");
 			var that = this;
 			var oGlobalInformation = this.getView().getModel("ET_GLOBAL_DATA");
@@ -885,7 +885,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fResetFieldsColor
 		//	--------------------------------------------		
-		fResetFieldsColor: function (that) {
+		fResetFieldsColor: function(that) {
 			var labelsView = document.getElementsByTagName("label");
 
 			for (var i = 0; i < labelsView.length; i++) {
@@ -901,7 +901,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fSetFieldCssStyle
 		//	--------------------------------------------		
-		fSetFieldCssStyle: function (fieldName, classIns) {
+		fSetFieldCssStyle: function(fieldName, classIns) {
 			var oPropText = this.getView().byId(fieldName);
 			var noUpdate = false;
 
@@ -911,12 +911,12 @@ sap.ui.define([
 
 				//If it's inserting highlight, we need to remove "default" property and vice versa
 				switch (classIns) {
-				case "default":
-					classDel = "highlight";
-					break;
-				case "highlight":
-					classDel = "default";
-					break;
+					case "default":
+						classDel = "highlight";
+						break;
+					case "highlight":
+						classDel = "default";
+						break;
 				}
 
 				if (aStyle !== undefined) {
@@ -944,7 +944,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fVerifyObligatoryFieldsChanged
 		//	--------------------------------------------
-		fVerifyObligatoryFieldsChanged: function (field) {
+		fVerifyObligatoryFieldsChanged: function(field) {
 			//If one field obligatory was found, it's not necessary to look the others. Just one l simbolyzes that
 			//attachment is required 
 			if (this.obligatoryChanged === false) {
@@ -959,7 +959,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fVerifyError
 		//	--------------------------------------------		
-		fVerifyError: function (field) {
+		fVerifyError: function(field) {
 			var fieldValue = this.getView().byId(field);
 
 			if (fieldValue.getProperty("valueState") !== "Error") {
@@ -972,7 +972,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fReadModelFillDesc
 		//	--------------------------------------------		
-		fReadModelFillDesc: function (mockSubname, field, fieldTxt, keyColumnKey, keyColumnDesc) {
+		fReadModelFillDesc: function(mockSubname, field, fieldTxt, keyColumnKey, keyColumnDesc) {
 			//Get Model
 			var oModelSH = sap.ui.getCore().getModel("MDL_SH");
 
@@ -1008,7 +1008,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fValidationObligatoryFields
 		//	--------------------------------------------
-		fValidationObligatoryFields: function (field) {
+		fValidationObligatoryFields: function(field) {
 			var fieldValue = this.getView().byId(field).getValue();
 			var fieldState = this.getView().byId(field);
 
@@ -1027,25 +1027,25 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	getEventBus
 		//	--------------------------------------------
-		getEventBus: function () {
+		getEventBus: function() {
 			return sap.ui.getCore().getEventBus();
 		},
 
 		//	--------------------------------------------
 		//	getRouter
 		//	--------------------------------------------
-		getRouter: function () {
+		getRouter: function() {
 			return sap.ui.core.UIComponent.getRouterFor(this);
 		},
 
-		onExit: function () {
+		onExit: function() {
 			// this.getEventBus().unsubscribe("Master2", "LoadFinished", this.onMasterLoaded, this);
 		},
 
 		//	--------------------------------------------
 		//	onDetailSelect
 		//	--------------------------------------------
-		onDetailSelect: function (oEvent) {
+		onDetailSelect: function(oEvent) {
 			sap.ui.core.UIComponent.getRouterFor(this).navTo("detail", {
 				entity: oEvent.getSource().getBindingContext().getPath().slice(1)
 			}, true);
@@ -1053,7 +1053,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fireDetailChanged
 		//	--------------------------------------------
-		fireDetailChanged: function (sEntityPath) {
+		fireDetailChanged: function(sEntityPath) {
 			this.getEventBus().publish("Detail", "Changed", {
 				sEntityPath: sEntityPath
 			});
@@ -1062,14 +1062,14 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fireDetailNotFound
 		//	--------------------------------------------
-		fireDetailNotFound: function () {
+		fireDetailNotFound: function() {
 			this.getEventBus().publish("Detail", "NotFound");
 		},
 
 		//	--------------------------------------------
 		//	bindView
 		//	--------------------------------------------
-		bindView: function (sEntityPath) {
+		bindView: function(sEntityPath) {
 			var oView = this.getView();
 			oView.bindElement(sEntityPath);
 
@@ -1094,7 +1094,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	showEmptyView
 		//	--------------------------------------------
-		showEmptyView: function () {
+		showEmptyView: function() {
 			this.getRouter().myNavToWithoutHash({
 				currentView: this.getView(),
 				targetViewName: "cadastralMaintenance.view.NotFound",
@@ -1105,7 +1105,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fGetRequisitionId
 		// --------------------------------------------
-		fGetRequisitionId: function (oEvent) {
+		fGetRequisitionId: function(oEvent) {
 			var detail = $(oEvent.response.body).find("errordetail").first().text();
 
 			if (detail.substring(0, 2) === "99" & detail.substring(3, 6) === "999") {
@@ -1116,7 +1116,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fUnableAllButtons
 		// --------------------------------------------		
-		fUnableAllButtons: function () {
+		fUnableAllButtons: function() {
 			var oView = this.getView();
 
 			// oView.byId("btnSanity").setVisible(false);
@@ -1138,7 +1138,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fUnableApprovalButtons
 		// --------------------------------------------		
-		fUnableApprovalButtons: function () {
+		fUnableApprovalButtons: function() {
 			var oView = this.getView();
 
 			oView.byId("btnApprove").setEnabled(false);
@@ -1149,7 +1149,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fSaveAttachmentView
 		// -------------------------------------------- 		
-		fSaveAttachmentView: function (idReq) {
+		fSaveAttachmentView: function(idReq) {
 			var that = this;
 			var oUploadCollection = that.getView().byId("upldAttachments");
 			var count = oUploadCollection.aItems.length;
@@ -1167,7 +1167,7 @@ sap.ui.define([
 		// --------------------------------------------
 		// fSaveAttachment
 		// -------------------------------------------- 		
-		fSaveAttachment: function (idReq, numFile, sId) {
+		fSaveAttachment: function(idReq, numFile, sId) {
 			console.log("*** SAVE ATTACHMENT  ***");
 
 			var that = this;
@@ -1205,7 +1205,7 @@ sap.ui.define([
 						// sUrl, true);
 						a, true);
 					sap.ui.getCore().setModel(oModel);
-					OData.request(f, function (data, oSuccess) {
+					OData.request(f, function(data, oSuccess) {
 
 						var new_name = file.name;
 
@@ -1263,7 +1263,7 @@ sap.ui.define([
 							processData: false,
 							data: file,
 							async: false,
-							success: function (data) {
+							success: function(data) {
 								console.log("****upload***");
 								console.log(file.name);
 
@@ -1272,7 +1272,7 @@ sap.ui.define([
 
 								oDialog.close();
 							},
-							error: function (data) {
+							error: function(data) {
 								console.log("****ERRO upload***");
 								sap.m.MessageBox.error("Erro no processamento do arquivo " + file.name + ".");
 								oDialog.close();
@@ -1292,11 +1292,11 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fMessageBox
 		//	--------------------------------------------		
-		fMessageBox: function (questionText, title, successText) {
+		fMessageBox: function(questionText, title, successText) {
 			MessageBox.confirm(questionText, {
 				title: title,
 				initialFocus: sap.m.MessageBox.Action.CANCEL,
-				onClose: function (sButton) {
+				onClose: function(sButton) {
 
 					if (sButton === MessageBox.Action.OK) {
 						if (successText) {
@@ -1311,7 +1311,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fMessage
 		//	--------------------------------------------
-		fMessage: function (type, msg, field) {
+		fMessage: function(type, msg, field) {
 			var oBundle;
 
 			//Get message text from i18n
@@ -1329,7 +1329,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fMessageThat
 		//	--------------------------------------------
-		fMessageThat: function (type, msg, field, that) {
+		fMessageThat: function(type, msg, field, that) {
 			var oBundle;
 
 			//Get message text from i18n
@@ -1347,7 +1347,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onNavBack
 		//	--------------------------------------------
-		onNavBack: function () {
+		onNavBack: function() {
 			// This is only relevant when running on phone devices
 			this.getRouter().myNavToWithoutHash({
 				currentView: this.getView(),
@@ -1360,7 +1360,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	fSetHeader
 		//	--------------------------------------------
-		fSetHeader: function () {
+		fSetHeader: function() {
 			var oHeader = sap.ui.getCore().getModel("ET_HEADER");
 			this.getView().setModel(oHeader, "ET_HEADER");
 		},
@@ -1381,14 +1381,14 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	getClonedObject
 		//	--------------------------------------------
-		getClonedObject: function (object) {
+		getClonedObject: function(object) {
 			return JSON.parse(JSON.stringify(object));
 		},
 
 		//	--------------------------------------------
 		//	onTypeMissmatch
 		//	--------------------------------------------
-		onTypeMissmatch: function () {
+		onTypeMissmatch: function() {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var message = oBundle.getText("msg_anexo");
@@ -1405,7 +1405,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onFileSizeExceed
 		//	--------------------------------------------
-		onFileSizeExceed: function () {
+		onFileSizeExceed: function() {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var message = oBundle.getText("msg_anexo_tamanho");
@@ -1421,7 +1421,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onFilenameLengthExceed
 		//	--------------------------------------------
-		onFilenameLengthExceed: function () {
+		onFilenameLengthExceed: function() {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var message = oBundle.getText("msg_anexo_tamanho_nome");
@@ -1438,14 +1438,14 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	onUploadComplete
 		//	--------------------------------------------
-		onUploadComplete: function () {
+		onUploadComplete: function() {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 		},
 
 		//	--------------------------------------------
 		//	addHighlightStyle - FC0D0D - rgb(252, 13, 13)
 		//	--------------------------------------------
-		addHighlightStyle: function () {
+		addHighlightStyle: function() {
 			var oStyle = document.createElement("STYLE");
 			oStyle.innerText =
 				"@keyframes diminished {color:#999 !important; background-color: #FFF; } .highlight { color:#FC0D0D!important; } .default { color:#666B6F!important; }";
@@ -1453,7 +1453,7 @@ sap.ui.define([
 			document.getElementsByTagName("HEAD")[0].appendChild(oStyle);
 		},
 
-		handleErrorMessageAttachment: function (oEvent) {
+		handleErrorMessageAttachment: function(oEvent) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var message = oBundle.getText("erro_anexo_obrigatorio");
 
@@ -1465,13 +1465,13 @@ sap.ui.define([
 			);
 		},
 
-		handleErrorMessageBank: function (oEvent) {
+		handleErrorMessageBank: function(oEvent) {
 			sap.m.MessageBox.error(
 				"É necessário incluir comprovante dos dados bancários, tais como:\n\n Ø  Comprovante de criação de conta, ou\n Ø  Foto da frente do cartão."
 			);
 		},
 
-		handleErrorMessageAttachmentRetirement: function (oEvent) {
+		handleErrorMessageAttachmentRetirement: function(oEvent) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var message = oBundle.getText("erro_anexo_obrigatorio_aposentadoria");
 
@@ -1483,7 +1483,7 @@ sap.ui.define([
 			);
 		},
 
-		handleErrorMessageBoxPress: function (oEvent) {
+		handleErrorMessageBoxPress: function(oEvent) {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var message = oBundle.getText("erro_campo_obrigatorio");
@@ -1496,7 +1496,7 @@ sap.ui.define([
 			);
 		},
 
-		handleErrorMessageBoxDisapprove: function (oEvent) {
+		handleErrorMessageBoxDisapprove: function(oEvent) {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var message = oBundle.getText("erro_just_ssg_obrig");
@@ -1512,7 +1512,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	handleValueHelp 
 		//	--------------------------------------------		
-		handleValueHelp: function (oEvent) {
+		handleValueHelp: function(oEvent) {
 
 			if (oEvent.getSource().data("field") != null) {
 				if (oEvent.getSource().data("field") == "State") {
@@ -1540,7 +1540,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	_handleValueHelpSearch 
 		//	--------------------------------------------
-		_handleValueHelpSearch: function (oEvent) {
+		_handleValueHelpSearch: function(oEvent) {
 			var sValue = oEvent.getParameter("value");
 
 			var oFilter = new Filter(
@@ -1553,7 +1553,7 @@ sap.ui.define([
 		//	--------------------------------------------
 		//	_handleValueHelpClose 
 		//	--------------------------------------------
-		_handleValueHelpClose: function (oEvent) {
+		_handleValueHelpClose: function(oEvent) {
 
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
@@ -1584,7 +1584,7 @@ sap.ui.define([
 		////////////////////////////////////////////////////////////////////////////////////
 		// Attachemnt methods new
 		////////////////////////////////////////////////////////////////////////////////////
-		initAttachment: function () {
+		initAttachment: function() {
 			var oModel = new JSONModel();
 			this.getView().setModel(oModel, "Attachments");
 
@@ -1598,19 +1598,20 @@ sap.ui.define([
 			}), "uploadOptions");
 
 		},
-		saveAttachment: function () {
+		saveAttachment: function() {
 			var oUploadCollection = this.getView().byId("UploadCollection");
 			oUploadCollection.upload();
 		},
-		onFilenameLength: function (oEvent) {
+		onFilenameLength: function(oEvent) {
 			MessageBox.error("Nome do Arquivo muito longo, max. 50 caracteres");
 		},
-		onFileSize: function (oEvent) {
+		onFileSize: function(oEvent) {
 			MessageBox.error("Arquivo excede tamanho máximo de 1MB");
 		},
-		getAttachment: function (requisition, doctype) {
+		getAttachment: function(requisition, doctype) {
 			var that = this;
 			var path = "/sap/opu/odata/sap/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/";
+			var oGlobalData = that.getView().getModel("ET_GLOBAL_DATA");
 			var oModelData = new sap.ui.model.odata.ODataModel(path);
 
 			var oFilters = [];
@@ -1625,13 +1626,14 @@ sap.ui.define([
 			// oFilters.push(new Filter("DocType", sap.ui.model.FilterOperator.EQ, doctype));
 			var urlParam;
 			if (requisition !== undefined && requisition !== null && requisition !== "") {
-				urlParam = this.fFillURLFilterParam("ReqNumber", requisition);
+				urlParam = this.fFillURLFilterParam("ReqNumber", requisition);  
 			}
 
 			if (doctype !== undefined && doctype !== null && doctype !== "") {
 				urlParam = this.fFillURLParamFilter("DocType", doctype, urlParam);
 			}
-
+			urlParam = this.fFillURLParamFilter("IM_BUKRS", oGlobalData.IM_BUKRS, urlParam);
+			
 			function success(oData) {
 				var oAttachments = that.getView().getModel("Attachments");
 				oAttachments.setData(null);
@@ -1656,7 +1658,10 @@ sap.ui.define([
 					oEntry.Fileid = oDataResult.Fileid;
 					oEntry.Response = oDataResult.Response;
 					oEntry.Url = path + "/AnexoSet(Pernr='',Data='" + "20200101" +
-						"',DocumentId='" + oEntry.documentId + "',Version='" + "AA',Fileid='" + oEntry.Fileid + "',DocType='" + doctype + "')/$value";
+						"',DocumentId='" + oEntry.documentId + "',Version='" + "AA',Fileid='" + oEntry.Fileid + "',DocType='" + doctype + "',IM_BUKRS='" +
+						oGlobalData.IM_BUKRS + "')/$value"; 
+					// oEntry.Url = path + "/AnexoSet(Pernr='',Data='" + "20200101" +
+					// 	"',DocumentId='" + oEntry.documentId + "',Version='" + "AA',Fileid='" + oEntry.Fileid + "',DocType='" + doctype + "')/$value";
 					oEntry.TipoAnexo = oDataResult.TipoAnexo;
 					oEntry.Delete = false;
 					// oAttachments.table.push(oEntry);
@@ -1674,7 +1679,7 @@ sap.ui.define([
 			oModelData.read("AnexoSet", null, urlParam, false, success, error);
 
 		},
-		validAttachment: function () {
+		validAttachment: function() {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 
@@ -1686,7 +1691,7 @@ sap.ui.define([
 			}
 		},
 
-		onChangeAttachment: function (oEvent) {
+		onChangeAttachment: function(oEvent) {
 			var csrfToken = this.getView().getModel().getSecurityToken();
 			var oUploadCollection = oEvent.getSource();
 
