@@ -8,7 +8,7 @@ sap.ui.define([
 	"sap/m/Dialog"
 ], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog) {
 	"use strict";
-
+ 
 	return BaseController.extend("cadastralMaintenance.view.DetailDepAid", {
 		formatter: Formatter,
 		onInit: function () {
@@ -70,7 +70,6 @@ sap.ui.define([
 				if (parseFloat(oEvent.BLOCK.VALUE_APPR) <= 0) {
 					oEvent.BLOCK.VALUE_APPR = oEvent.BLOCK.VALUE;
 				}
-				debugger;
 
 				//Isolates the model
 				var oDataOrig = JSON.parse(JSON.stringify(oValue.oData));
@@ -247,8 +246,8 @@ sap.ui.define([
 				"Enabled": true
 			};
 			// set explored app's demo model on this sample
-			var oModel = new JSONModel(oData);
-			this.getView().setModel(oModel);
+			var TipoSolic = new JSONModel(oData);
+			this.getView().setModel(TipoSolic, "TipoSolic");
 
 			// var oEntry = [];
 			// this.TipoSolic = new JSONModel();
@@ -267,24 +266,114 @@ sap.ui.define([
 			// this.TipoSolic.getData().table.push(oEntry);
 			// this.getView().setModel(this.TipoSolic, "tiposolic");
 		},
-		//	--------------------------------------------
-		//	fSearchHelps
-		//	--------------------------------------------		
-		fSearchHelps: function (that, pernr) {
+		fShTipoAuxDep: function () {
+			var that = this;
 			var oEntry = [];
-			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var urlParam = null;
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			this.Benef = new JSONModel();
+			this.Benef.setData({
+				table: []
+			});
+			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
+            if (pernr === "00000000"){
+            	pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
+            }
+			if (pernr !== undefined && pernr !== null && pernr !== "") {
+				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
+			}
+
+			function fSuccess(oEvent) {
+				var results = that.fGetSelectedRowDetail();
+				var idade = {
+						anos: parseInt(results.IDADE),
+						mes: parseInt(results.IDADE_MES),
+						dia: parseInt(results.IDADE_DIA)
+					};
+				for (var i = 0; i < oEvent.results.length; i++) {
+					if (idade !== undefined){
+						switch (oEvent.results[i].BPLAN) {
+							case 'CREC':
+								if (idade.anos === 0 && idade.mes < 7) {
+									oEntry = {
+										key: oEvent.results[i].BPLAN,
+										desc: oEvent.results[i].LTEXT
+									};
+									that.Benef.getData().table.push(oEntry);
+								}
+								break;
+							case 'MGUA':
+								if (idade.anos <= 4) {
+									oEntry = {
+										key: oEvent.results[i].BPLAN,
+										desc: oEvent.results[i].LTEXT
+									};
+									that.Benef.getData().table.push(oEntry);
+								}
+								break;
+							case 'ACRC':
+								if ((idade.anos === 0 && idade.mes >= 7) || (idade.anos > 0)) {
+								    if (idade.anos < 4) {
+										oEntry = {
+											key: oEvent.results[i].BPLAN,
+											desc: oEvent.results[i].LTEXT
+										};
+										that.Benef.getData().table.push(oEntry);
+									}
+								}
+								break;
+							case 'PREE':
+								if (idade.anos >= 2 && idade.anos < 10) {
+									oEntry = {
+										key: oEvent.results[i].BPLAN,
+										desc: oEvent.results[i].LTEXT
+									};
+									that.Benef.getData().table.push(oEntry);
+								}
+								break;
+						}
+					} else {
+						oEntry = {
+							key: oEvent.results[i].BPLAN,
+							desc: oEvent.results[i].LTEXT
+						};
+						that.Benef.getData().table.push(oEntry);
+					}
+					oEntry = [];
+				}
+				//Seta Lista no Model da View	
+				that.getView().setModel(that.Benef, "benef");
+			}
+			function fError (oEvent) {
+				var message = $(oEvent.response.body).find('message').first().text();
+
+				if (message.substring(2, 4) === "99") {
+					var detail = ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body));
+					var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
+					var zMessage = formattedDetail.replace("error", "");
+
+					this.fVerifyAllowedUser(message, this);
+					MessageBox.error(zMessage);
+
+				} else {
+					MessageBox.error(message);
+				}
+			}
+			oModel.read("ET_SH_DEPEN_TYPE_PLAN", {
+				urlParameters: urlParam,
+	            success: fSuccess,
+	            error: fError
+			});
+		},
+		fShTipoAuxilio: function (that, pernr) {
+			var oEntry = [];
+			var urlParam = null;
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 
 			that.Benef = new JSONModel();
 			that.Benef.setData({
 				table: []
 			});
-
-			that.BenefEx = new JSONModel();
-			that.BenefEx.setData({
-				table: []
-			});
-
 			if (pernr !== undefined && pernr !== null && pernr !== "") {
 				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
 			}
@@ -302,7 +391,7 @@ sap.ui.define([
 				//Seta Lista no Model da View	
 				that.getView().setModel(that.Benef, "benef");
 			}
-
+		
 			function fError(oEvent) {
 				var message = $(oEvent.response.body).find('message').first().text();
 
@@ -318,6 +407,23 @@ sap.ui.define([
 					MessageBox.error(message);
 				}
 			}
+			oModel.read("ET_SH_DEPEN_TYPE_PLAN", null, urlParam, false, fSuccess, fError);
+		},
+		fShPeriodo: function(that, pernr){
+			var oEntry = [];
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			var urlParam = null;
+
+			that.BenefEx = new JSONModel();
+			that.BenefEx.setData({
+				table: []
+			});
+
+			if (pernr !== undefined && pernr !== null && pernr !== "") {
+				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
+			}
+
+
 			function fSuccessEx(oEvent) {
 				for (var i = 0; i < oEvent.results.length; i++) {
 					oEntry = {
@@ -340,17 +446,23 @@ sap.ui.define([
 					var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
 					var zMessage = formattedDetail.replace("error", "");
 
-					that.fVerifyAllowedUser(message, that);
+					this.fVerifyAllowedUser(message, this);
 					MessageBox.error(zMessage);
 
 				} else {
 					MessageBox.error(message);
 				}
 			}
-
-			oModel.read("ET_SH_DEPEN_TYPE_PLAN", null, urlParam, false, fSuccess, fError);
 			oModel.read("ET_SH_DEPEN_TYPE_PLAN_EXCL", null, urlParam, false, fSuccessEx, fErrorEx);
 		},
+		//	--------------------------------------------
+		//	fSearchHelps
+		//	--------------------------------------------		
+		fSearchHelps: function (that, pernr) {
+			//this.fShTipoAuxilio(that, pernr);
+			this.fShPeriodo(that, pernr);
+		},
+	
 		// --------------------------------------------
 		// fFillCreateDepAidData
 		// -------------------------------------------- 		
@@ -683,7 +795,10 @@ sap.ui.define([
 					this.getView().byId("btnAddSol").setEnabled(results[i].I0377 === "");
 					this.getView().byId("btnReembolso").setEnabled(results[i].I0377 !== "");
 					this.getView().byId("btnExcluir").setEnabled(results[i].I0377 !== "");
-					break;
+
+			        // preenche Benefícios conforme Regras
+			        this.fShTipoAuxDep();
+					// break;
 				}
 			}
 			// model.getData().OBJPS = selectedRow.OBJPS;
