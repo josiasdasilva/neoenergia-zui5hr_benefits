@@ -968,7 +968,7 @@ sap.ui.define([
 				model.getData().PERIOD_FROM = this.dataFormatada(new Date());
 				model.getData().PERIOD_TO = "";
 				model.getData().PERIOD_TYPE = "M";
-				this.getView().byId("dtPeriodFrom").setDateValue(new Date());
+				this.getView().byId("dtPeriodFrom").setDateValue();
 				this.getView().byId("dtPeriodTo").setDateValue();
 				this.fEsconderCamposExcluir(true);
 				this.getView().byId("slSolType").setSelectedKey("M");
@@ -989,7 +989,7 @@ sap.ui.define([
 				model.getData().PERIOD_FROM = this.dataFormatada(new Date());
 				model.getData().PERIOD_TO = "";
 				model.getData().PERIOD_TYPE = "M";
-				this.getView().byId("dtPeriodFrom").setDateValue(new Date());
+				this.getView().byId("dtPeriodFrom").setDateValue();
 				this.getView().byId("dtPeriodTo").setDateValue();
 				this.fEsconderCamposExcluir(true);
 				this.getView().byId("slSolType").setSelectedKey("M");
@@ -1010,7 +1010,7 @@ sap.ui.define([
 				model.getData().PERIOD_FROM = this.dataFormatada(new Date());
 				model.getData().PERIOD_TO = "";
 				model.getData().PERIOD_TYPE = "M";
-				this.getView().byId("dtPeriodFrom").setDateValue(new Date());
+				this.getView().byId("dtPeriodFrom").setDateValue();
 				this.getView().byId("dtPeriodTo").setDateValue();
 				this.fEsconderCamposExcluir(false);
 				break;
