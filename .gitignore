@@ -10,3 +10,8 @@ mock_preview_sapui5.html
 .*/mock_preview_sapui5.html
 APIExternalProducer.js
 .*/APIExternalProducer.js
+UIAdaptation_index.html
+changes_preview.js
+AppVariant_index.html
+AppVariantPreviewPayload.zip
+mergedManifestDescriptor.json
