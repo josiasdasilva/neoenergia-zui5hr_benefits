@@ -182,7 +182,7 @@ sap.ui.define([
 			oView.byId("slMemberType").setEnabled(false);
 			oView.byId("slFullName").setEnabled(false);
 			oView.byId("cbTypeAux").setEnabled(false);
-			oView.byId("slSolType").setEnabled(false);
+			oView.byId("slSolType").setEnabled(true);
 			oView.byId("dtPeriodFrom").setEnabled(false);
 			oView.byId("dtPeriodTo").setEnabled(false);
 			oView.byId("ipRequestedValue").setEnabled(false);
@@ -284,12 +284,30 @@ sap.ui.define([
 			}
 
 			function fSuccess(oEvent) {
+				var model = this.getView().getModel("ET_BLOCK");
+				var encontrou = false;
 				var results = that.fGetSelectedRowDetail();
 				var idade = {
 						anos: parseInt(results.IDADE),
 						mes: parseInt(results.IDADE_MES),
 						dia: parseInt(results.IDADE_DIA)
 					};
+
+				// for (var i = 0; results.length > i; i++) {
+				// 	if (model.getData().FCNAM === results[i].FCNAM) {
+				// 		model.getData().TYPE_DEPEN = results[i].TYPE_DEPEN;
+				// 		model.getData().IDADE = results[i].IDADE;
+				// 		model.getData().IDADE_MES = results[i].IDADE_MES;
+				// 		model.getData().IDADE_DIA = results[i].IDADE_DIA;
+				// 		model.getData().MGUA_ERROR = results[i].MGUA_ERROR;
+				// 		model.getData().I0377 = results[i].I0377;
+				// 		model.getData().I9377 = results[i].I9377;
+				// 		this.getView().setModel(model, "ET_BLOCK");
+				// 		encontrou = true;
+				// 		break;
+				// 	}
+				// }
+
 				for (var i = 0; i < oEvent.results.length; i++) {
 					if (idade !== undefined){
 						switch (oEvent.results[i].BPLAN) {
@@ -791,10 +809,13 @@ sap.ui.define([
 			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
 			for (var i = 0; i < results.length; i++) {
 				if (results[i].OBJPS === selectedRow.OBJPS) {
+					let i0377 = results[i].i0377.split(";").filter(r => r !== "");
+					let i9377 = results[i].i9377.split(";").filter(r => r !== "");
+					let permitidos = results[i].permitidos.split(";");
 					// var str = results[i].TIP_AUX_ATUAL;
-					this.getView().byId("btnAddSol").setEnabled(results[i].I0377 === "");
-					this.getView().byId("btnReembolso").setEnabled(results[i].I0377 !== "");
-					this.getView().byId("btnExcluir").setEnabled(results[i].I0377 !== "");
+					this.getView().byId("btnAddSol").setEnabled(i0377.length < permitidos.length);
+					this.getView().byId("btnReembolso").setEnabled(i9377.length > 0);
+					this.getView().byId("btnExcluir").setEnabled(i0377.lenght > 0);
 
 			        // preenche Benefícios conforme Regras
 			        this.fShTipoAuxDep();
@@ -834,9 +855,9 @@ sap.ui.define([
 			this.ajusteDataTo( date, key );
 		},
 		onChangeSol: function (oEvent) {
-			var key = oEvent.getSource().getSelectedKey();
-			var date = this.getView().byId("dtPeriodFrom").getDateValue();
-			this.ajusteDataTo( date, key );
+			// var key = oEvent.getSource().getSelectedKey();
+			// var date = this.getView().byId("dtPeriodFrom").getDateValue();
+			// this.ajusteDataTo( date, key );
 		},
 		ajusteDataTo: function(oDataFrom, key) {
 			var block = this.getView().getModel("ET_BLOCK").getData();
@@ -972,7 +993,7 @@ sap.ui.define([
 				this.getView().byId("dtPeriodTo").setDateValue();
 				this.fEsconderCamposExcluir(true);
 				this.getView().byId("slSolType").setSelectedKey("M");
-				this.getView().byId("slSolType").setEnabled(false);
+				this.getView().byId("slSolType").setEnabled(true);
 				this.exclude = false;
 				model.getData().EXCLUDE = false;
 				break;
