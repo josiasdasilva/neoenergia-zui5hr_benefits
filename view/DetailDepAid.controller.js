@@ -8,7 +8,11 @@ sap.ui.define([
 	"sap/m/Dialog"
 ], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog) {
 	"use strict";
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 	return BaseController.extend("cadastralMaintenance.view.DetailDepAid", {
 		formatter: Formatter,
 		onInit: function () {
@@ -85,7 +89,11 @@ sap.ui.define([
 				// se tem id verificar os anexos
 				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
 					var dataFrom = oEvent.BLOCK.PERIOD_FROM;
+<<<<<<< HEAD
 					var dtFrom = new Date(dataFrom.substring(0,4), dataFrom.substring(4,6) - 1, dataFrom.substring(6,8));
+=======
+					var dtFrom = new Date(dataFrom.substring(0, 4), dataFrom.substring(4, 6) - 1, dataFrom.substring(6, 8));
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 					that.getView().byId("dtPeriodFrom").setDateValue(dtFrom);
 
 					that.getView().byId("lblDependentFullName").setVisible(false);
@@ -94,6 +102,7 @@ sap.ui.define([
 					that.getView().byId("ipFullName").setVisible(true);
 					that.getView().byId("ipRequestedValue").setValue(oEvent.BLOCK.BETRG);
 
+<<<<<<< HEAD
                     if (oEvent.BLOCK.PERIOD_TO === ""){
                     	that.getView().byId("slSolType").setSelectedKey("M");
                     	that.getView().byId("lblPeriodTo").setVisible(false);
@@ -107,6 +116,21 @@ sap.ui.define([
                     	that.getView().byId("dtPeriodTo").setVisible(true);
                     }
                     
+=======
+					if (oEvent.BLOCK.PERIOD_TO === "") {
+						that.getView().byId("slSolType").setSelectedKey("M");
+						that.getView().byId("lblPeriodTo").setVisible(false);
+						that.getView().byId("dtPeriodTo").setVisible(false);
+					} else {
+						var dataTo = oEvent.BLOCK.PERIOD_TO;
+						var dtTo = new Date(dataTo.substring(0, 4), dataTo.substring(4, 6) - 1, dataTo.substring(6, 8));
+						that.getView().byId("dtPeriodTo").setDateValue(dtTo);
+						that.getView().byId("slSolType").setSelectedKey("S");
+						that.getView().byId("lblPeriodTo").setVisible(true);
+						that.getView().byId("dtPeriodTo").setVisible(true);
+					}
+
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 					if (oEvent.BLOCK.REEMBOLSO === "X") {
 						oEvent.BLOCK.TYPE_SOL = "Reembolso";
 					} else if (oEvent.BLOCK.REEMBOLSO === "" && oEvent.BLOCK.ACTIO === "INS") {
@@ -182,7 +206,11 @@ sap.ui.define([
 			oView.byId("slMemberType").setEnabled(false);
 			oView.byId("slFullName").setEnabled(false);
 			oView.byId("cbTypeAux").setEnabled(false);
+<<<<<<< HEAD
 			oView.byId("slSolType").setEnabled(false);
+=======
+			oView.byId("slSolType").setEnabled(true);
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 			oView.byId("dtPeriodFrom").setEnabled(false);
 			oView.byId("dtPeriodTo").setEnabled(false);
 			oView.byId("ipRequestedValue").setEnabled(false);
@@ -232,6 +260,7 @@ sap.ui.define([
 
 			var oData = {
 				"SelectedPeriod": "M",
+<<<<<<< HEAD
 				"TipoSolic": [
 					{
 						"key": "M",
@@ -242,6 +271,15 @@ sap.ui.define([
 						"text": "Semestral"
 					}
 				],
+=======
+				"TipoSolic": [{
+					"key": "M",
+					"text": "Mensal"
+				}, {
+					"key": "S",
+					"text": "Semestral"
+				}],
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 				"Editable": true,
 				"Enabled": true
 			};
@@ -276,14 +314,21 @@ sap.ui.define([
 				table: []
 			});
 			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
+<<<<<<< HEAD
             if (pernr === "00000000"){
             	pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
             }
+=======
+			if (pernr === "00000000") {
+				pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
+			}
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 			if (pernr !== undefined && pernr !== null && pernr !== "") {
 				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
 			}
 
 			function fSuccess(oEvent) {
+<<<<<<< HEAD
 				var results = that.fGetSelectedRowDetail();
 				var idade = {
 						anos: parseInt(results.IDADE),
@@ -295,12 +340,47 @@ sap.ui.define([
 						switch (oEvent.results[i].BPLAN) {
 							case 'CREC':
 								if (idade.anos === 0 && idade.mes < 7) {
+=======
+				var model = this.getView().getModel("ET_BLOCK");
+				var encontrou = false;
+				var results = that.fGetSelectedRowDetail();
+				var idade = {
+					anos: parseInt(results.IDADE),
+					mes: parseInt(results.IDADE_MES),
+					dia: parseInt(results.IDADE_DIA)
+				};
+				for (var i = 0; i < oEvent.results.length; i++) {
+					if (idade !== undefined) {
+						switch (oEvent.results[i].BPLAN) {
+						case 'CREC':
+							if (idade.anos === 0 && idade.mes < 7) {
+								oEntry = {
+									key: oEvent.results[i].BPLAN,
+									desc: oEvent.results[i].LTEXT
+								};
+								that.Benef.getData().table.push(oEntry);
+							}
+							break;
+						case 'MGUA':
+							if (idade.anos <= 4) {
+								oEntry = {
+									key: oEvent.results[i].BPLAN,
+									desc: oEvent.results[i].LTEXT
+								};
+								that.Benef.getData().table.push(oEntry);
+							}
+							break;
+						case 'ACRC':
+							if ((idade.anos === 0 && idade.mes >= 7) || (idade.anos > 0)) {
+								if (idade.anos < 4) {
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 									oEntry = {
 										key: oEvent.results[i].BPLAN,
 										desc: oEvent.results[i].LTEXT
 									};
 									that.Benef.getData().table.push(oEntry);
 								}
+<<<<<<< HEAD
 								break;
 							case 'MGUA':
 								if (idade.anos <= 4) {
@@ -331,6 +411,19 @@ sap.ui.define([
 									that.Benef.getData().table.push(oEntry);
 								}
 								break;
+=======
+							}
+							break;
+						case 'PREE':
+							if (idade.anos >= 2 && idade.anos < 10) {
+								oEntry = {
+									key: oEvent.results[i].BPLAN,
+									desc: oEvent.results[i].LTEXT
+								};
+								that.Benef.getData().table.push(oEntry);
+							}
+							break;
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 						}
 					} else {
 						oEntry = {
@@ -344,7 +437,12 @@ sap.ui.define([
 				//Seta Lista no Model da View	
 				that.getView().setModel(that.Benef, "benef");
 			}
+<<<<<<< HEAD
 			function fError (oEvent) {
+=======
+
+			function fError(oEvent) {
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 				var message = $(oEvent.response.body).find('message').first().text();
 
 				if (message.substring(2, 4) === "99") {
@@ -361,8 +459,13 @@ sap.ui.define([
 			}
 			oModel.read("ET_SH_DEPEN_TYPE_PLAN", {
 				urlParameters: urlParam,
+<<<<<<< HEAD
 	            success: fSuccess,
 	            error: fError
+=======
+				success: fSuccess,
+				error: fError
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 			});
 		},
 		fShTipoAuxilio: function (that, pernr) {
@@ -391,7 +494,11 @@ sap.ui.define([
 				//Seta Lista no Model da View	
 				that.getView().setModel(that.Benef, "benef");
 			}
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 			function fError(oEvent) {
 				var message = $(oEvent.response.body).find('message').first().text();
 
@@ -409,7 +516,11 @@ sap.ui.define([
 			}
 			oModel.read("ET_SH_DEPEN_TYPE_PLAN", null, urlParam, false, fSuccess, fError);
 		},
+<<<<<<< HEAD
 		fShPeriodo: function(that, pernr){
+=======
+		fShPeriodo: function (that, pernr) {
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 			var oEntry = [];
 			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
 			var urlParam = null;
@@ -423,7 +534,10 @@ sap.ui.define([
 				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
 			}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 			function fSuccessEx(oEvent) {
 				for (var i = 0; i < oEvent.results.length; i++) {
 					oEntry = {
@@ -462,7 +576,11 @@ sap.ui.define([
 			//this.fShTipoAuxilio(that, pernr);
 			this.fShPeriodo(that, pernr);
 		},
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 		// --------------------------------------------
 		// fFillCreateDepAidData
 		// -------------------------------------------- 		
@@ -470,7 +588,11 @@ sap.ui.define([
 			var oActualModel = that.getView().getModel("ET_BLOCK").getData();
 			var dtFrom = this.dataFormatada(that.getView().byId("dtPeriodFrom").getDateValue());
 			var key = that.getView().byId("slSolType").getSelectedKey();
+<<<<<<< HEAD
 			if (key === "S"){
+=======
+			if (key === "S") {
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 				var dtTo = this.dataFormatada(this.getView().byId("dtPeriodTo").getDateValue());
 			}
 			if (oActualModel.EXCLUDE === true || oActualModel.ACTIO === "DEL") {
@@ -735,7 +857,11 @@ sap.ui.define([
 		onChange: function (oEvent) {},
 		onLiveChange: function (oEvent) {
 			var block = this.getView().getModel("ET_BLOCK").getData();
+<<<<<<< HEAD
 			block.BETRG = parseFloat(oEvent.getParameter("value").replace(/\./g,'').replace(',', '.'));
+=======
+			block.BETRG = parseFloat(oEvent.getParameter("value").replace(/\./g, '').replace(',', '.'));
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 		},
 		getDependents: function (that, pernr) {
 			// var oEntry = [];
@@ -787,6 +913,7 @@ sap.ui.define([
 			var selectedRow = this.fGetSelectedRowDetail();
 			this.fFillDependentDetail(selectedRow);
 
+<<<<<<< HEAD
             // habilita botoes conforme disponibilidade
 			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
 			for (var i = 0; i < results.length; i++) {
@@ -798,6 +925,22 @@ sap.ui.define([
 
 			        // preenche Benefícios conforme Regras
 			        this.fShTipoAuxDep();
+=======
+			// habilita botoes conforme disponibilidade
+			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
+			for (var i = 0; i < results.length; i++) {
+				if (results[i].OBJPS === selectedRow.OBJPS) {
+					let i0377 = results[i].I0377.str.split(";").filter(r => r !== "");
+					let i9377 = results[i].I9377.str.split(";").filter(r => r !== "");
+					let permitidos = results[i].PERMITIDOS.str.split(";").filter(r => r !== "");
+					// var str = results[i].TIP_AUX_ATUAL;
+					this.getView().byId("btnAddSol").setEnabled(i0377.length < permitidos.length);
+					this.getView().byId("btnReembolso").setEnabled(i9377.length > 0);
+					this.getView().byId("btnExcluir").setEnabled(i0377.length > 0);
+
+					// preenche Benefícios conforme Regras
+					this.fShTipoAuxDep();
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 					// break;
 				}
 			}
@@ -831,11 +974,16 @@ sap.ui.define([
 		onChangePeriod: function (oEvent) {
 			var key = this.getView().byId("slSolType").getSelectedKey();
 			var date = oEvent.getSource().getDateValue();
+<<<<<<< HEAD
 			this.ajusteDataTo( date, key );
+=======
+			this.ajusteDataTo(date, key);
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 		},
 		onChangeSol: function (oEvent) {
 			var key = oEvent.getSource().getSelectedKey();
 			var date = this.getView().byId("dtPeriodFrom").getDateValue();
+<<<<<<< HEAD
 			this.ajusteDataTo( date, key );
 		},
 		ajusteDataTo: function(oDataFrom, key) {
@@ -843,11 +991,21 @@ sap.ui.define([
 			block.PERIOD_FROM = this.dataFormatada(oDataFrom);
 			block.PERIOD_TYPE = key;
 			if (key === "M") {    // solicitacao mensal
+=======
+			this.ajusteDataTo(date, key);
+		},
+		ajusteDataTo: function (oDataFrom, key) {
+			var block = this.getView().getModel("ET_BLOCK").getData();
+			block.PERIOD_FROM = this.dataFormatada(oDataFrom);
+			block.PERIOD_TYPE = key;
+			if (key === "M") { // solicitacao mensal
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 				this.getView().byId("lblPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setVisible(false);
 				this.getView().byId("dtPeriodTo").setDateValue(oDataFrom);
 				this.getView().byId("dtPeriodTo").setDateValue();
 				block.PERIOD_TO = "";
+<<<<<<< HEAD
 			} else {            // solicitacao semestral
 			var dtTo = new Date();
 			    if (oDataFrom.getMonth() < 8) {
@@ -855,6 +1013,15 @@ sap.ui.define([
 			    } else {
 			    	dtTo = new Date(oDataFrom.getFullYear(), 11, 31);
 			    }
+=======
+			} else { // solicitacao semestral
+				var dtTo = new Date();
+				if (oDataFrom.getMonth() < 8) {
+					dtTo = new Date(oDataFrom.getFullYear(), 5, 30);
+				} else {
+					dtTo = new Date(oDataFrom.getFullYear(), 11, 31);
+				}
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 				this.getView().byId("lblPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setEnabled(false);
@@ -972,7 +1139,11 @@ sap.ui.define([
 				this.getView().byId("dtPeriodTo").setDateValue();
 				this.fEsconderCamposExcluir(true);
 				this.getView().byId("slSolType").setSelectedKey("M");
+<<<<<<< HEAD
 				this.getView().byId("slSolType").setEnabled(false);
+=======
+				this.getView().byId("slSolType").setEnabled(true);
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 				this.exclude = false;
 				model.getData().EXCLUDE = false;
 				break;
@@ -1032,6 +1203,7 @@ sap.ui.define([
 			// 	return false;
 			// }
 
+<<<<<<< HEAD
             if (model.BETRG === undefined) {
             	var reqValue = this.getView().byId("ipRequestedValue").getValue(); 
             	model.BETRG = parseFloat(reqValue.replace(/\./g,'').replace(',', '.'));
@@ -1044,6 +1216,20 @@ sap.ui.define([
 			    model.TIP_AUX === "" || model.TIP_AUX === undefined || 
 			    model.BETRG <= 0 || model.BETRG === "" || model.BETRG === undefined || 
 			    model.INSTITUICAO === "" || model.INSTITUICAO === undefined ) {
+=======
+			if (model.BETRG === undefined) {
+				var reqValue = this.getView().byId("ipRequestedValue").getValue();
+				model.BETRG = parseFloat(reqValue.replace(/\./g, '').replace(',', '.'));
+			}
+			// Verifica se campos obrigatórios foram preenchidos
+			// (rever obrigatoriedade)
+			if (model.TYPE_DEPEN === "" || model.TYPE_DEPEN === undefined ||
+				model.FCNAM === "" || model.FCNAM === undefined ||
+				model.TYPE_SOL === "" || model.TYPE_SOL === undefined ||
+				model.TIP_AUX === "" || model.TIP_AUX === undefined ||
+				model.BETRG <= 0 || model.BETRG === "" || model.BETRG === undefined ||
+				model.INSTITUICAO === "" || model.INSTITUICAO === undefined) {
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 				return false;
 			}
 		},
@@ -1106,6 +1292,7 @@ sap.ui.define([
 			}
 
 			// verifica se pode executar a ação
+<<<<<<< HEAD
             if (block.TYPE_SOL === "Primeira Solicitação"){
             	if (block.I0377.includes(block.TIP_AUX)) {
 					this.getView().byId("cbTypeAux").setSelectedKey();
@@ -1127,6 +1314,29 @@ sap.ui.define([
 					return false;
             	}
             }
+=======
+			if (block.TYPE_SOL === "Primeira Solicitação") {
+				if (block.I0377.includes(block.TIP_AUX)) {
+					this.getView().byId("cbTypeAux").setSelectedKey();
+					MessageBox.error("Benefício já foi solicitado anteriormente.");
+					return false;
+				}
+			}
+			if (block.TYPE_SOL === "Reembolso") {
+				if (!block.I0377.includes(block.TIP_AUX)) {
+					this.getView().byId("cbTypeAux").setSelectedKey();
+					MessageBox.error("Benefício não solicitado. Fazer Primeira solicitação.");
+					return false;
+				}
+			}
+			if (block.TYPE_SOL === "Exclusão") {
+				if (!block.I0377.includes(block.TIP_AUX)) {
+					this.getView().byId("cbTypeAux").setSelectedKey();
+					MessageBox.error("Benefício não solicitado. Não é possível excluir.");
+					return false;
+				}
+			}
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 			// outras validações (idade e elegibilidade)
 			if (block.TIP_AUX === "ACRC") {
 				if ((meses < 7 && (anos < 1)) || (anos > 4)) {
@@ -1191,6 +1401,7 @@ sap.ui.define([
 		onCloseDialogExclude: function () {
 			this._getDialog().close();
 		},
+<<<<<<< HEAD
 		yyyymmdd: function(lData) {
 			var mm = lData.getMonth() + 1; // getMonth() is zero-based
 			var dd = lData.getDate();
@@ -1213,6 +1424,30 @@ sap.ui.define([
 		//     }
 		//     return float;
 		// }
+=======
+		yyyymmdd: function (lData) {
+				var mm = lData.getMonth() + 1; // getMonth() is zero-based
+				var dd = lData.getDate();
+				return [lData.getFullYear(), (mm > 9 ? '' : '0') + mm, (dd > 9 ? '' : '0') + dd].join('');
+			}
+			// toFloat: function (source) {
+			//     let float = accounting.unformat(source);
+			//     let posComma = source.indexOf(',');
+			//     if (posComma > -1) {
+			//         let posDot = source.indexOf('.');
+			//         if (posDot > -1 && posComma > posDot) {
+			//             let germanFloat = accounting.unformat(source, ',');
+			//             if (Math.abs(germanFloat) > Math.abs(float)) {
+			//                 float = germanFloat;
+			//             }
+			//         } else {
+			//             // source = source.replace(/,/g, '.');
+			//             float = accounting.unformat(source, ',');
+			//         }
+			//     }
+			//     return float;
+			// }
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 	});
 
 });
