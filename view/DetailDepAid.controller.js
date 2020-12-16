@@ -285,33 +285,10 @@ sap.ui.define([
 				var encontrou = false;
 				var results = that.fGetSelectedRowDetail();
 				var idade = {
-<<<<<<< HEAD
-						anos: parseInt(results.IDADE),
-						mes: parseInt(results.IDADE_MES),
-						dia: parseInt(results.IDADE_DIA)
-					};
-
-				// for (var i = 0; results.length > i; i++) {
-				// 	if (model.getData().FCNAM === results[i].FCNAM) {
-				// 		model.getData().TYPE_DEPEN = results[i].TYPE_DEPEN;
-				// 		model.getData().IDADE = results[i].IDADE;
-				// 		model.getData().IDADE_MES = results[i].IDADE_MES;
-				// 		model.getData().IDADE_DIA = results[i].IDADE_DIA;
-				// 		model.getData().MGUA_ERROR = results[i].MGUA_ERROR;
-				// 		model.getData().I0377 = results[i].I0377;
-				// 		model.getData().I9377 = results[i].I9377;
-				// 		this.getView().setModel(model, "ET_BLOCK");
-				// 		encontrou = true;
-				// 		break;
-				// 	}
-				// }
-
-=======
 					anos: parseInt(results.IDADE),
 					mes: parseInt(results.IDADE_MES),
 					dia: parseInt(results.IDADE_DIA)
 				};
->>>>>>> branch 'master' of https://github.com/josiasdasilva/neoenergia-zui5hr_benefits.git
 				for (var i = 0; i < oEvent.results.length; i++) {
 					if (idade !== undefined) {
 						switch (oEvent.results[i].BPLAN) {
@@ -813,23 +790,13 @@ sap.ui.define([
 			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
 			for (var i = 0; i < results.length; i++) {
 				if (results[i].OBJPS === selectedRow.OBJPS) {
-<<<<<<< HEAD
-					let i0377 = results[i].i0377.split(";").filter(r => r !== "");
-					let i9377 = results[i].i9377.split(";").filter(r => r !== "");
-					let permitidos = results[i].permitidos.split(";");
-=======
 					let i0377 = results[i].I0377.str.split(";").filter(r => r !== "");
 					let i9377 = results[i].I9377.str.split(";").filter(r => r !== "");
 					let permitidos = results[i].PERMITIDOS.str.split(";").filter(r => r !== "");
->>>>>>> branch 'master' of https://github.com/josiasdasilva/neoenergia-zui5hr_benefits.git
 					// var str = results[i].TIP_AUX_ATUAL;
 					this.getView().byId("btnAddSol").setEnabled(i0377.length < permitidos.length);
 					this.getView().byId("btnReembolso").setEnabled(i9377.length > 0);
-<<<<<<< HEAD
-					this.getView().byId("btnExcluir").setEnabled(i0377.lenght > 0);
-=======
 					this.getView().byId("btnExcluir").setEnabled(i0377.length > 0);
->>>>>>> branch 'master' of https://github.com/josiasdasilva/neoenergia-zui5hr_benefits.git
 
 					// preenche Benefícios conforme Regras
 					this.fShTipoAuxDep();
@@ -869,15 +836,9 @@ sap.ui.define([
 			this.ajusteDataTo(date, key);
 		},
 		onChangeSol: function (oEvent) {
-<<<<<<< HEAD
-			// var key = oEvent.getSource().getSelectedKey();
-			// var date = this.getView().byId("dtPeriodFrom").getDateValue();
-			// this.ajusteDataTo( date, key );
-=======
 			var key = oEvent.getSource().getSelectedKey();
 			var date = this.getView().byId("dtPeriodFrom").getDateValue();
 			this.ajusteDataTo(date, key);
->>>>>>> branch 'master' of https://github.com/josiasdasilva/neoenergia-zui5hr_benefits.git
 		},
 		ajusteDataTo: function (oDataFrom, key) {
 			var block = this.getView().getModel("ET_BLOCK").getData();
