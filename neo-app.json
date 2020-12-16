@@ -8,7 +8,11 @@
         "name": "CFD",
         "entryPath": "/sap/opu/odata"
       },
+<<<<<<< HEAD
+      "description": "Neoenergia-CFD"
+=======
       "description": "Neoenergia CFD"
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
     },
     {
       "path": "/resources",
@@ -35,7 +39,11 @@
         "name": "CFD",
         "entryPath": "/sap/bc/ui5_ui5"
       },
+<<<<<<< HEAD
+      "description": "Neoenergia-CFD"
+=======
       "description": "Neoenergia CFD"
+>>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
     }
   ]
 }
