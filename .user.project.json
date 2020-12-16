@@ -1,0 +1,28 @@
+{
+  "run": [
+    {
+      "filePath": "/index.html",
+      "previewMode": 1,
+      "dataMode": 1,
+      "workspace": "withoutWorkspace",
+      "ui5ActiveVersion": null,
+      "ui5VerSource": null,
+      "isDefaultVersion": 0,
+      "urlParameters": [
+        {
+          "paramName": "IM_PROFILE",
+          "paramValue": "EM"
+        }
+      ],
+      "hashParameter": "",
+      "backendSystem": [],
+      "urlParametersNotNeeded": false,
+      "_metadata": {
+        "id": 6756275,
+        "runnerId": "webapprunner",
+        "displayName": "IM_PROFILE=EM",
+        "lastRunTimeStamp": 1607271998415
+      }
+    }
+  ]
+}

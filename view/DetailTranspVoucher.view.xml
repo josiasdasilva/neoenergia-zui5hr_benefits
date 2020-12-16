@@ -1,0 +1,217 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns="sap.m"
+	xmlns:t="sap.ui.table" controllerName="cadastralMaintenance.view.DetailTranspVoucher"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Page id="detail14Page" showNavButton="{device>/isPhone}" navButtonPress="onNavBack" title="{i18n>vale_transporte}">
+		<content>
+			<ObjectHeader binding="{ET_HEADER/'}" title="{ET_HEADER>/CNAME}" number="{ET_HEADER>/ABKRS}"
+				numberUnit="{ET_HEADER>/NAME1} - {ET_HEADER>/BTEXT}" class="corFundo">
+				<statuses>
+					<ObjectStatus text="Cargo: {ET_HEADER>/STLTX}" class="" id="lblCargo" state="None"/>
+					<ObjectStatus text="Data de admissão: { path: 'ET_HEADER>/HIRE_DATE', formatter:'cadastralMaintenance.formatter.Formatter.dataAdmissao'}"
+						class="" id="lblAdmissao" state="None"/>
+				</statuses>
+				<ObjectAttribute id='Pernr' text="Matrícula: {ET_HEADER>/PERNR}"/>
+				<ObjectAttribute text="" id="lblNumReq"/>
+				<ObjectAttribute text="" class="" id="lblStatus"/>
+			</ObjectHeader>
+			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm id="formTranspVoucher" maxContainerCols="1" editable="false" layout="ResponsiveGridLayout" title="{i18n>vale_transporte}"
+					labelSpanL="1" labelSpanM="1" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2">
+					<f:content>
+						<t:Table id="tTransportation" selectionMode="Single" class="sapUiTableTr" columnHeaderHeight="40" width="auto" visibleRowCount="5"
+							visibleRowCountMode="Interactive" enableCellFilter="{ui>/cellFilterOn}" rows="{ET_TRANSP>/}" editable="false" enableColumnReordering="false"
+							enableSelectAll="false" rowSelectionChange="onTranspRowSelectionChange" selectionBehavior="Row" cellClick="onCellClick">
+							<t:toolbar>
+								<Toolbar>
+									<ToolbarSpacer/>
+									<Button text="{i18n>inclusao}" press="onAddPressed" id="btnAdd"/>
+									<Button text="{i18n>alteracao}" press="onModPressed" id="btnModify"/>
+									<!--<Button text="{i18n>delimitar}" press="onDelPressed" id="btnDelimit" visible="true" enabled="false"/>-->
+									<Button text="{i18n>exclusao}" press="onRemPressed" id="btnRemove"/>
+									<Button text="{i18n>segunda_solicitacao}" press="onSegPressed" id="btnSeg"/>
+									<Button text="{i18n>visualizar}" press="onVisPressed" id="btnVis" visible="true"/>
+								</Toolbar>
+							</t:toolbar>
+							<t:columns>
+								<t:Column sortProperty="tTransportation&gt;TDESC" name="C_TDESC" label="Transporte" filterProperty="TDESC">
+									<Text text="Transporte"/>
+									<t:template>
+										<Input id="ipTransp" type="Text" showSuggestion="true" showValueHelp="true" valueHelpOnly="true" change="onFieldChange"
+											valueHelpRequest="handleValueHelp" suggestionItems="{ET_SH_TRANSP_VOUCHER}" value="{ET_TRANSP>TDESC}"
+											app:fragment="cadastralMaintenance.view.SHTranspVoucher" app:field="" enabled="false">
+											<layoutData>
+												<l:GridData span="L2 M2 S12"/>
+											</layoutData>
+											<suggestionItems>
+												<core:Item text="{TDESC}"/>
+											</suggestionItems>
+										</Input>
+									</t:template>
+								</t:Column>
+								<t:Column width="9rem" sortProperty="tTransportation&gt;TVIAG" name="C_TVIAG" label="{i18n>num_passagens}" filterProperty="TVIAG">
+									<Text text="{i18n>num_passagens}"/>
+									<t:template>
+										<Input value="{ET_TRANSP>TVIAG}" id="ipTVIAG" type="Number" change="onFieldChange" enabled="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column width="12rem" sortProperty="tTransportation&gt;TVIAG" name="C_TVIAG" label="{i18n>num_passagens}" filterProperty="TVIAG"
+									visible="false">
+									<Text text="{i18n>data_inicio}"/>
+									<t:template>
+										<DatePicker id="dpBeginDate" value="{ET_TRANSP>BEGDA}" valueFormat="YYYY-MM-ddT00:00:00" placeholder="ddmmaa(ex.: 010988)"
+											change="onDateChange" enabled="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column width="12rem" sortProperty="tTransportation&gt;TVIAG" name="C_TVIAG" label="{i18n>num_passagens}" filterProperty="TVIAG"
+									visible="false">
+									<Text text="{i18n>data_fim}"/>
+									<t:template>
+										<DatePicker id="dpEndDate" value="{ET_TRANSP>ENDDA}" valueFormat="YYYY-MM-ddT00:00:00" placeholder="ddmmaa(ex.: 010988)"
+											change="onFieldChange" enabled="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column width="7rem" sortProperty="tTransportation&gt;STATUS" name="C_STATUS" label="{i18n>status}" filterProperty="STATUS">
+									<Text text="{i18n>status}" enabled="false"/>
+									<t:template>
+										<Text text="{ET_TRANSP>STATUS}"/>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+					</f:content>
+				</f:SimpleForm>
+				<f:SimpleForm id="formGeneral" layout="ResponsiveGridLayout" title="{i18n>dados}" labelSpanL="1" labelSpanM="1" emptySpanL="0"
+					emptySpanM="0" columnsL="4" columnsM="4" labelMinWidth="100" columnsXL="4" visible="false">
+					<f:toolbar>
+						<Toolbar id="tbFormGeneral">
+							<Title id="titleFormGeneral" text="{i18n>dados}" level="H4" titleStyle="H4"/>
+						</Toolbar>
+					</f:toolbar>
+					<f:content>
+						<Label text="{i18n>linha}" class="sapUiSmallMarginTop" id="lblLinha" required="true">
+							<layoutData>
+								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+							</layoutData>
+						</Label>
+						<Input id="ipLinha" type="Text" showSuggestion="true" showValueHelp="true" valueHelpOnly="true" change="onLinhaChange"
+							valueHelpRequest="handleValueHelp" suggestionItems="{ET_SH_TRANSP_VOUCHER}" value="{ET_DATA_FORM>/LINHA}"
+							app:fragment="cadastralMaintenance.view.SHTranspVoucher" app:field="">
+							<layoutData>
+								<l:GridData span="L4 M4 S12"/>
+							</layoutData>
+							<suggestionItems>
+								<core:Item text="{TDESC}"/>
+							</suggestionItems>
+						</Input>
+						<Label text="{i18n>meio_transporte}" class="sapUiSmallMarginTop" id="lblMeioTrans" required="true">
+							<layoutData>
+								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+							</layoutData>
+						</Label>
+						<Input value="{ET_DATA_FORM>/MEIO_TRANS}" width="" id="ipMeioTrans" change="onChange" fieldWidth="30%" required="true" enabled="false">
+							<layoutData>
+								<l:GridData span="L4 M4 S4"/>
+							</layoutData>
+						</Input>
+						<Label text="{i18n>tarifa}" class="sapUiSmallMarginTop" id="lblTarifa" required="true">
+							<layoutData>
+								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+							</layoutData>
+						</Label>
+						<Input value="{ET_DATA_FORM>/TARIFA}" width="" id="ipTarifa" change="onChange" fieldWidth="30%" required="true" enabled="false">
+							<layoutData>
+								<l:GridData span="L4 M4 S4"/>
+							</layoutData>
+						</Input>
+						<Label text="{i18n>numero_ida}" class="sapUiSmallMarginTop" id="lblNIda" required="true">
+							<layoutData>
+								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+							</layoutData>
+						</Label>
+						<Input value="{ET_DATA_FORM>/N_IDA}" width="" id="ipNIda" change="onChange" fieldWidth="30%" required="true">
+							<layoutData>
+								<l:GridData span="L2 M2 S4"/>
+							</layoutData>
+						</Input>
+						<Label text="{i18n>numero_volta}" class="sapUiSmallMarginTop" id="lblNVolta" required="true">
+							<layoutData>
+								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+							</layoutData>
+						</Label>
+						<Input value="{ET_DATA_FORM>/N_VOLTA}" width="" id="ipNVolta" change="onChange" fieldWidth="30%" required="true">
+							<layoutData>
+								<l:GridData span="L2 M2 S4"/>
+							</layoutData>
+						</Input>
+						<Label text="{i18n>numero_pass_sol}" class="sapUiSmallMarginTop" id="lblPassSol" required="true">
+							<layoutData>
+								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+							</layoutData>
+						</Label>
+						<Input value="{ET_DATA_FORM>/PASS_SOL}" width="" id="ipPassSol" change="onChange" fieldWidth="30%" required="true" visible="false"
+							enabled="false">
+							<layoutData>
+								<l:GridData span="L2 M2 S4"/>
+							</layoutData>
+						</Input>
+						<Label text="{i18n>numero_pass_appr}" class="sapUiSmallMarginTop" id="lblPassAppr" required="true">
+							<layoutData>
+								<l:GridData span="L4 M4 S12" linebreakL="true" linebreakM="true" linebreakS="true"/>
+							</layoutData>
+						</Label>
+						<Input value="{ET_DATA_FORM>/PASS_APPR}" width="" id="ipPassAppr" change="onChange" fieldWidth="30%" required="true" visible="false">
+							<layoutData>
+								<l:GridData span="L2 M2 S4"/>
+							</layoutData>
+						</Input>
+					</f:content>
+				</f:SimpleForm>
+			</VBox>
+		</content>
+		<!--JUSTIFICATION-->
+		<VBox class="sapUiSmallMargin">
+			<f:SimpleForm id="formJustification" editable="false" layout="ResponsiveGridLayout" title="{i18n>just_coment}" labelSpanL="2" labelSpanM="2"
+				adjustLabelSpan="false" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2">
+				<f:content>
+					<TextArea id="taJust" growing="false" change="onJustChange"/>
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<!--JUSTIFICATION SSG-->
+		<VBox class="sapUiSmallMargin">
+			<f:SimpleForm id="formJustificationSSG" editable="false" layout="ResponsiveGridLayout" title="{i18n>just_coment_SSG}" labelSpanL="2"
+				labelSpanM="2" adjustLabelSpan="false" emptySpanL="0" emptySpanM="0" columnsL="2" columnsM="2" visible="false">
+				<f:content>
+					<TextArea id="taJustSSG" growing="false" change="onJustChange" maxLength="255" editable="false"/>
+				</f:content>
+			</f:SimpleForm>
+		</VBox>
+		<!--ATTACHMENT-->
+		<UploadCollection id="UploadCollection" maximumFilenameLength="50" maximumFileSize="1" multiple="false" change="onChangeAttachment"
+			items="{ path: 'Attachments>/table' }" uploadComplete="onUploadAttComplete" beforeUploadStarts="onBeforeUpload"
+			fileType="{uploadOptions>/selected}" instantUpload="false" noDataDescription="Mova o Arquivo ou Insira um clicando no botão &quot;+&quot;"
+			filenameLengthExceed="onFilenameLength" uploadEnabled="{uploadOptions>/uploadEnabled}" fileSizeExceed="onFileSize">
+			<items>
+				<UploadCollectionItem documentId="{Attachments>documentId}" fileName="{Attachments>Filename}" mimeType="{Attachments>Mimetype}"
+					url="{Attachments>Url}" enableEdit="false" enableDelete="{Attachments>Delete}" visibleDelete="{Attachments>Delete}" visibleEdit="false"></UploadCollectionItem>
+			</items>
+		</UploadCollection>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>formulario}" press="onFormulario" icon="sap-icon://form" id="btnForms"/>
+				<Button type="Reject" text="{i18n>cancelar}" press="onCancelItem" icon="sap-icon://cancel" id="btnCancelItem" visible="false"
+					tooltip="{i18n>cancelar_tooltip}"/>
+				<Button type="Accept" text="{i18n>aceitar}" press="onAcceptItem" icon="sap-icon://accept" id="btnAcceptItem" visible="false"/>
+				<Button text="{i18n>salvar}" press="onSave" icon="sap-icon://save" id="btnSave" tooltip="{i18n>salvar_tooltip}" enabled="false"
+					visible="false"/>
+				<Button type="Accept" text="{i18n>enviar}" press="onSend" icon="sap-icon://forward" id="btnAccept" enabled="false"
+					tooltip="{i18n>enviar_tooltip}" visible="false"/>
+				<Button type="Reject" text="{i18n>cancelar}" press="onCancel" icon="sap-icon://cancel" id="btnCancel" visible="false"
+					tooltip="{i18n>cancelar_tooltip}"/>
+				<Button type="Accept" text="{i18n>aprovar}" press="onApprove" icon="sap-icon://accept" id="btnApprove" visible="false"/>
+				<Button type="Reject" text="{i18n>reprovar}" press="onReject" icon="sap-icon://decline" id="btnReject" visible="false"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>
