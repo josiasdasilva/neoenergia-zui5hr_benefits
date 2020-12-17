@@ -8,11 +8,6 @@ sap.ui.define([
 	"sap/m/Dialog"
 ], function (Controller, ResourceModel, MessageBox, BaseController, Formatter, JSONModel, Dialog) {
 	"use strict";
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> d76b07bb2329714b405d1fdf1da514b89eb0fd9a
 	return BaseController.extend("cadastralMaintenance.view.DetailDepAid", {
 		formatter: Formatter,
 		onInit: function () {
@@ -33,7 +28,8 @@ sap.ui.define([
 			this.fSetHeader();
 			this.fSetGlobalInformation();
 
-			this.fTipoSolicitacao();
+      this.fTipoSolicitacao();
+      
 			this.fGetBlock();
 			this.fSearchHelps(this, this.getView().getModel("ET_HEADER").getData().PERNR);
 			this.fDisableAll();
@@ -47,7 +43,131 @@ sap.ui.define([
 			this.getView().byId("btnAddSol").setEnabled(true);
 			this.getView().byId("btnReembolso").setEnabled(true);
 			this.getView().byId("btnExcluir").setEnabled(true);
-		},
+    },
+    fGetUrlWithObjps: function(pernr,requisitionId,loggedIn,objps) {
+      var url = '';
+      url = this.fFillURLParam("IM_PERNR", pernr);
+			url = this.fFillURLParam("IM_REQUISITION_ID", requisitionId, url);
+      //url = this.fFillURLParam("OBJPS", objps, url);
+      url = this.fFillURLParam("IM_LOGGED_IN", loggedIn, url, true);
+      return url;
+    },
+    fGetBlockDependent: function (objps) {
+			var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
+
+			var oGlobalData = this.getView().getModel("ET_GLOBAL_DATA");
+			// this.getDependents();
+
+			var oModelDep = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_SEARCH_HELP_SRV_01/");
+			this.fSetSearchHelpValue(oModelDep, "ET_SH_DEPENDENTS");
+
+      var urlParam = this.fGetUrlWithObjps(oGlobalData.IM_PERNR, oGlobalData.IM_REQ_URL, oGlobalData.IM_LOGGED_IN, objps);
+      
+			const fSuccess = (oEvent) => {
+				var oValue = new sap.ui.model.json.JSONModel(oEvent.BLOCK);
+				if (parseFloat(oEvent.BLOCK.VALUE_APPR) <= 0) {
+					oEvent.BLOCK.VALUE_APPR = oEvent.BLOCK.VALUE;
+				}
+
+				//Isolates the model
+				var oDataOrig = JSON.parse(JSON.stringify(oValue.oData));
+				this.getView().setModel(oDataOrig, "ET_BLOCK_ORIG");
+
+				this.getView().byId("taJust").setValue(oEvent.OBSERVATION);
+
+				if (oEvent.OBSERVATION_SSG !== null && oEvent.OBSERVATION_SSG !== "" && oEvent.OBSERVATION_SSG !== undefined) {
+					this.getView().byId("taJustSSG").setValue(oEvent.OBSERVATION_SSG);
+					this.getView().byId("formJustificationSSG").setVisible(true);
+				}
+
+				// se tem id verificar os anexos
+				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
+					var dataFrom = oEvent.BLOCK.PERIOD_FROM;
+					var dtFrom = new Date(dataFrom.substring(0, 4), dataFrom.substring(4, 6) - 1, dataFrom.substring(6, 8));
+					this.getView().byId("dtPeriodFrom").setDateValue(dtFrom);
+
+					this.getView().byId("lblDependentFullName").setVisible(false);
+					this.getView().byId("slFullName").setVisible(false);
+					this.getView().byId("lblIpDependentFullName").setVisible(true);
+					this.getView().byId("ipFullName").setVisible(true);
+					this.getView().byId("ipRequestedValue").setValue(oEvent.BLOCK.BETRG);
+
+                    if (oEvent.BLOCK.PERIOD_TO === ""){
+                    	this.getView().byId("slSolType").setSelectedKey("M");
+                    	this.getView().byId("lblPeriodTo").setVisible(false);
+                    	this.getView().byId("dtPeriodTo").setVisible(false);
+                    } else {
+						var dataTo = oEvent.BLOCK.PERIOD_TO;
+						var dtTo = new Date(dataTo.substring(0,4), dataTo.substring(4,6) - 1, dataTo.substring(6,8));
+						this.getView().byId("dtPeriodTo").setDateValue(dtTo);
+                    	this.getView().byId("slSolType").setSelectedKey("S");
+                    	this.getView().byId("lblPeriodTo").setVisible(true);
+                    	this.getView().byId("dtPeriodTo").setVisible(true);
+                    }
+                    
+					if (oEvent.BLOCK.REEMBOLSO === "X") {
+						oEvent.BLOCK.TYPE_SOL = "Reembolso";
+					} else if (oEvent.BLOCK.REEMBOLSO === "" && oEvent.BLOCK.ACTIO === "INS") {
+						oEvent.BLOCK.TYPE_SOL = "Primeira Solicitação";
+					} else {
+						oEvent.BLOCK.TYPE_SOL = "Exclusão";
+					}
+
+					// var filters = [];
+
+					// var filters = [new sap.ui.model.Filter("IDREQ", sap.ui.model.FilterOperator.EQ, oEvent.BLOCK.REQUISITION_ID)];
+
+					this.getView().setModel(oModel, "anexo");
+
+					// Update list binding
+					// that.getView().byId("upldAttachments").getBinding("items").filter(filters);
+				}
+
+				this.getView().setModel(oValue, "ET_BLOCK");
+
+				if (oEvent.EX_MESSAGE.TYPE === "W" & oEvent.IM_ACTION !== "A") {
+					if ((oEvent.BLOCK.REQUISITION_ID !== null || oEvent.BLOCK.REQUISITION_ID !== "" || oEvent.BLOCK.REQUISITION_ID !== undefined) &
+						oEvent.BLOCK.REQUISITION_ID !== "00000000") {
+
+						//retornou req do model, mas não tem na url
+						if (oGlobalData.IM_REQ_URL === "") {
+							MessageBox.warning(oEvent.EX_MESSAGE.MESSAGE);
+						}
+					}
+				}
+
+				this.fSetGlobalInformation(oEvent, this);
+				this.fVerifyAction();
+				this.fGetLog();
+				this.fChangeForms(this);
+				if (oEvent.BLOCK.REQUISITION_ID !== "00000000") {
+					this.getAttachment(oEvent.BLOCK.REQUISITION_ID, "BDV");
+					if (oEvent.BLOCK.ACTIO === "DEL") {
+						this.fOcultaCamposDel();
+					}
+				}
+
+			}
+
+			const fError = (oEvent) => {
+				var message = $(oEvent.response.body).find('message').first().text();
+
+				if (message.substring(2, 4) === "99") {
+					var detail = ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body));
+					var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
+					var zMessage = formattedDetail.replace("error", "");
+
+					this.fVerifyAllowedUser(message, this);
+					MessageBox.error(zMessage);
+
+				} else {
+					MessageBox.error(message);
+				}
+			}
+
+			//MAIN READ
+			oModel.read("ET_DEP_AID" + urlParam, null, null, false, fSuccess, fError);
+    },
 		//	--------------------------------------------
 		//	fGetBlock
 		//	--------------------------------------------		
@@ -62,7 +182,8 @@ sap.ui.define([
 			this.fSetSearchHelpValue(oModelDep, "ET_SH_DEPENDENTS");
 
 			if (oGlobalData.IM_LOGGED_IN === 0) {
-				this.getView().setModel(new sap.ui.model.json.JSONModel(), "ET_BLOCK");
+        this.getView().setModel(new sap.ui.model.json.JSONModel(), "ET_BLOCK");
+        
 				this.getDependents(this, this.getView().getModel("ET_HEADER").getData().PERNR);
 				return;
 			}
@@ -246,26 +367,9 @@ sap.ui.define([
 				"Editable": true,
 				"Enabled": true
 			};
-			// set explored app's demo model on this sample
+			
 			var TipoSolic = new JSONModel(oData);
 			this.getView().setModel(TipoSolic, "TipoSolic");
-
-			// var oEntry = [];
-			// this.TipoSolic = new JSONModel();
-			// this.TipoSolic.setData({
-			// 	table: []
-			// });
-			// oEntry = {
-			// 	key: "M",
-			// 	text: "Mensal"
-			// };
-			// this.TipoSolic.getData().table.push(oEntry);
-			// oEntry = {
-			// 	key: "S",
-			// 	text: "Semestral"
-			// };
-			// this.TipoSolic.getData().table.push(oEntry);
-			// this.getView().setModel(this.TipoSolic, "tiposolic");
 		},
 		fShTipoAuxDep: function (oButtonName) {
 			var oEntry = [];
@@ -280,8 +384,101 @@ sap.ui.define([
 				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
 			}
 
+      const fSuccess = (oEvent) => {
+        var model = this.getView().getModel("ET_BLOCK");
+        var encontrou = false;
+        var results = this.fGetSelectedRowDetail();
+        var idade = {
+          anos: parseInt(results.IDADE),
+          mes: parseInt(results.IDADE_MES),
+          dia: parseInt(results.IDADE_DIA)
+        };
+        switch (oButtonName) {
+          case "btnAddSol": {
+            // Somente os beneficios ainda nao adquiridos
+            let i0377 = results.I0377.split(";").filter(r => r !== "");
+            let permitidos = results.PERMITIDOS.split(";").filter(r => r !== "");
+            for (let x = 0; x < permitidos.length; x++) {
+              for (let z = 0; z < i0377.length; z++) {
+                if (permitidos[x] === i0377[z]){
+                  permitidos.splice(x,1);
+                }
+              }
+            }
+            // somente os permitidos para a idade do dependente
+            for (let y = 0; y < permitidos.length; y++) {
+              for (let i = 0; i < oEvent.results.length; i++) {
+                if (oEvent.results[i].BPLAN === permitidos[y] ) {
+                  if (this.fValidaBenIdade(idade, oEvent.results[i].BPLAN)) {
+                    oEntry = {
+                        key: oEvent.results[i].BPLAN,
+                        desc: oEvent.results[i].LTEXT
+                      };
+                    this.Benef.getData().table.push(oEntry);
+                  }
+                }
+              }
+            }
+            break;
+          }
+          case "btnReembolso": { 
+            // todos os cadastrados no 0377
+            // !!! falta validar se ja foi recebido no periodo
+            let i0377 = results.I0377.split(";").filter(r => r !== "");
+            for (let x = 0; x < i0377.length; x++) {
+              for (let i = 0; i < oEvent.results.length; i++) {
+                if (oEvent.results[i].BPLAN === i0377[x] ) {
+                  if (this.fValidaBenIdade(idade, oEvent.results[i].BPLAN)) {
+                    oEntry = {
+                        key: oEvent.results[i].BPLAN,
+                        desc: oEvent.results[i].LTEXT
+                      };
+                    this.Benef.getData().table.push(oEntry);
+                  }
+                }
+              }
+            }
+            break;
+          }
+          case "btnExcluir": {
+            // todos os cadastrados no 0377
+            let i0377 = results.I0377.split(";").filter(r => r !== "");
+            for (let x = 0; x < i0377.length; x++) {
+              for (let i = 0; i < oEvent.results.length; i++) {
+                if (oEvent.results[i].BPLAN === i0377[x] ) {
+                  oEntry = {
+                      key: oEvent.results[i].BPLAN,
+                      desc: oEvent.results[i].LTEXT
+                    };
+                  this.Benef.getData().table.push(oEntry);
+                }
+              }
+            }
+            break;
+          }
+        }
+        //Seta Lista no Model da View	
+        this.getView().setModel(this.Benef, "benef");
+      }
+
+      const fError = (oEvent) => {
+        var message = $(oEvent.response.body).find('message').first().text();
+	
+        if (message.substring(2, 4) === "99") {
+          var detail = ($(":contains(" + "/IWBEP/CX_SD_GEN_DPC_BUSINS" + ")", oEvent.response.body));
+          var formattedDetail = detail[2].outerText.replace("/IWBEP/CX_SD_GEN_DPC_BUSINS", "");
+          var zMessage = formattedDetail.replace("error", "");
+
+          this.fVerifyAllowedUser(message, this);
+          MessageBox.error(zMessage);
+
+        } else {
+          MessageBox.error(message);
+        }
+      }
 			// busca texto e nome dos auxilios dependentes (TODOS)
-			oModel.read("ET_SH_DEPEN_TYPE_PLAN", {
+      oModel.read("ET_SH_DEPEN_TYPE_PLAN", null, urlParam, false, fSuccess, fError);
+			/* oModel.read("ET_SH_DEPEN_TYPE_PLAN", {
 				urlParameters: urlParam,
 				success: (oEvent) => {
 					var model = this.getView().getModel("ET_BLOCK");
@@ -305,10 +502,10 @@ sap.ui.define([
 								}
 							}
 							// somente os permitidos para a idade do dependente
-							for (let y = 0; y < permitidos.length; y+) {
+							for (let y = 0; y < permitidos.length; y++) {
 								for (let i = 0; i < oEvent.results.length; i++) {
 									if (oEvent.results[i].BPLAN === permitidos[y] ) {
-										if this.fValidaBenIdade(idade, oEvent.results[i].BPLAN) {
+										if (this.fValidaBenIdade(idade, oEvent.results[i].BPLAN)) {
 											oEntry = {
 													key: oEvent.results[i].BPLAN,
 													desc: oEvent.results[i].LTEXT
@@ -327,7 +524,7 @@ sap.ui.define([
 							for (let x = 0; x < i0377.length; x++) {
 								for (let i = 0; i < oEvent.results.length; i++) {
 									if (oEvent.results[i].BPLAN === i0377[x] ) {
-										if this.fValidaBenIdade(idade, oEvent.results[i].BPLAN) {
+										if (this.fValidaBenIdade(idade, oEvent.results[i].BPLAN)) {
 											oEntry = {
 													key: oEvent.results[i].BPLAN,
 													desc: oEvent.results[i].LTEXT
@@ -373,11 +570,12 @@ sap.ui.define([
 					} else {
 						MessageBox.error(message);
 					}
-				}
-				//Seta Lista no Model da View	
-				that.getView().setModel(that.Benef, "benef");
-			}
-		},
+        }
+      }); */
+      //Seta Lista no Model da View	
+      this.getView().setModel(this.Benef, "benef");
+    },
+    
 		fValidaBenIdade: function (idade, beneficio){
 			let resultado = false;
 			switch (beneficio) {
@@ -560,6 +758,7 @@ sap.ui.define([
 
 		},
 		dataFormatada: function (oData) {
+      if(!oData) return;
 			var dia = oData.getDate().toString(),
 				diaF = (dia.length === 1) ? "0" + dia : dia,
 				mes = (oData.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
@@ -822,8 +1021,16 @@ sap.ui.define([
 
 		},
 		onDependentRowSelectionChange: function (oEvent) {
-			var selectedRow = this.fGetSelectedRowDetail();
-			this.fFillDependentDetail(selectedRow);
+      var selectedRow = this.fGetSelectedRowDetail();
+      if(!selectedRow){
+        this.getView().byId("btnAddSol").setEnabled(false);
+        this.getView().byId("btnReembolso").setEnabled(false);
+        this.getView().byId("btnExcluir").setEnabled(false);
+        return;
+      } 
+      this.fFillDependentDetail(selectedRow);
+      //this.fGetBlockDependent(selectedRow.OBJPS);
+      
 			// habilita botoes conforme disponibilidade
 			var results = this.getView().getModel("ET_DEPENDENTS").getData().results;
 			for (var i = 0; i < results.length; i++) {
@@ -886,12 +1093,14 @@ sap.ui.define([
 				this.getView().byId("dtPeriodTo").setDateValue();
 				block.PERIOD_TO = "";
 			} else { // solicitacao semestral
-				var dtTo = new Date();
-				if (oDataFrom.getMonth() < 8) {
-					dtTo = new Date(oDataFrom.getFullYear(), 5, 30);
-				} else {
-					dtTo = new Date(oDataFrom.getFullYear(), 11, 31);
-				}
+        var dtTo = new Date();
+        if(oDataFrom){
+          if (oDataFrom.getMonth() < 8) {
+            dtTo = new Date(oDataFrom.getFullYear(), 5, 30);
+          } else {
+            dtTo = new Date(oDataFrom.getFullYear(), 11, 31);
+          }
+        }
 				this.getView().byId("lblPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setVisible(true);
 				this.getView().byId("dtPeriodTo").setEnabled(false);
@@ -982,7 +1191,8 @@ sap.ui.define([
 			var oButtonName = oEvent.getParameter("id").substring(12);
 			// var oView = this.getView();
 			// var buttonAction;
-			// var action = {};
+      // var action = {};
+      
 			var selectedRow = this.fGetSelectedRowDetail();
 
 			if (selectedRow === undefined) {
@@ -1143,27 +1353,27 @@ sap.ui.define([
 				}
 			}
 			// verifica se pode executar a ação
-            if (block.TYPE_SOL === "Primeira Solicitação"){
-            	if (block.I0377.includes(block.TIP_AUX)) {
-					this.getView().byId("cbTypeAux").setSelectedKey();
-					MessageBox.error("Benefício já foi solicitado anteriormente.");
-					return false;
-            	}
-            }
-            if (block. TYPE_SOL === "Reembolso") {
-            	if (!block.I0377.includes(block.TIP_AUX)) {
-					this.getView().byId("cbTypeAux").setSelectedKey();
-					MessageBox.error("Benefício não solicitado. Fazer Primeira solicitação.");
-					return false;
-            	}
-            }
-            if (block. TYPE_SOL === "Exclusão") {
-            	if (!block.I0377.includes(block.TIP_AUX)) {
-					this.getView().byId("cbTypeAux").setSelectedKey();
-					MessageBox.error("Benefício não solicitado. Não é possível excluir.");
-					return false;
-            	}
-            }
+      if (block.TYPE_SOL === "Primeira Solicitação"){
+        if (block.I0377.includes(block.TIP_AUX)) {
+          this.getView().byId("cbTypeAux").setSelectedKey();
+          MessageBox.error("Benefício já foi solicitado anteriormente.");
+          return false;
+        }
+      }
+      if (block. TYPE_SOL === "Reembolso") {
+        if (!block.I0377.includes(block.TIP_AUX)) {
+          this.getView().byId("cbTypeAux").setSelectedKey();
+          MessageBox.error("Benefício não solicitado. Fazer Primeira solicitação.");
+          return false;
+        }
+      }
+      if (block. TYPE_SOL === "Exclusão") {
+        if (!block.I0377.includes(block.TIP_AUX)) {
+          this.getView().byId("cbTypeAux").setSelectedKey();
+          MessageBox.error("Benefício não solicitado. Não é possível excluir.");
+          return false;
+        }
+      }
 			// outras validações (idade e elegibilidade)
 			if (block.TIP_AUX === "ACRC") {
 				if ((meses < 7 && (anos < 1)) || (anos > 4)) {
