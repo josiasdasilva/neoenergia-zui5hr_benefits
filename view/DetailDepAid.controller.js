@@ -184,7 +184,6 @@ sap.ui.define([
 			if (oGlobalData.IM_LOGGED_IN === 0) {
         this.getView().setModel(new sap.ui.model.json.JSONModel(), "ET_BLOCK");
         
-				this.getDependents(this, this.getView().getModel("ET_HEADER").getData().PERNR);
 				return;
 			}
 
@@ -379,7 +378,6 @@ sap.ui.define([
 			this.Benef.setData({
 				table: []
 			});
-			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
 			if (pernr !== undefined && pernr !== null && pernr !== "") {
 				urlParam = this.fFillURLFilterParam("IM_PERNR", pernr);
 			}
@@ -801,7 +799,10 @@ sap.ui.define([
 				case "S":
 					that.fSucessMessageFromSendAction(oEvent);
 					that.fVerifyAction(false, "S");
-					that.saveAttachment();
+          that.saveAttachment();
+          //lê dependentes de novo para excluir da lista de permitidos o tipo de solicitação
+          //que acabou de ser criado
+          that.getDependents(that,this.getView().getModel("ET_HEADER").getData().PERNR);
 					break;
 
 				case "C":
@@ -942,7 +943,6 @@ sap.ui.define([
 
 		onBeforeUpload: function (oEvent) {
 
-			var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
 			var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
 			var filename = oEvent.getParameter("fileName");
 			var caracteristica = "FORMULARIOCOMPRAUXDEP";
