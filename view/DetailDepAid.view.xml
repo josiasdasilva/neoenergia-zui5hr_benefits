@@ -174,7 +174,7 @@
 						</layoutData>
 					</Label>
 					<Input width="" class="sapUiSmallMarginBottom" id="ipRequestedValue"
-						   liveChange="onLiveChange" change="onChange" fieldWidth="30%" required="false">
+						    change="onChangeRequestedValue" fieldWidth="30%" required="false">
 						<layoutData>
 							<l:GridData span="L2 M2 S4"/>
 						</layoutData>

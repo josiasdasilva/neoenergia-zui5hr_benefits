@@ -1496,6 +1496,19 @@ sap.ui.define([
 			);
 		},
 
+		handleErrorNumericField: function(oEvent) {
+
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			var message = oBundle.getText("erro_campo_numerico");
+
+			var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+			MessageBox.error(
+				message, {
+					styleClass: bCompact ? "sapUiSizeCompact" : ""
+				}
+			);
+		},
+
 		handleErrorMessageBoxDisapprove: function(oEvent) {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
