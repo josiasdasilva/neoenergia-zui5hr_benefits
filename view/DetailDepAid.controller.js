@@ -1058,7 +1058,7 @@ sap.ui.define([
             let permitidos = results[i].PERMITIDOS.split(";").filter(r => r !== "");
             // var str = results[i].TIP_AUX_ATUAL;
             this.getView().byId("btnAddSol").setEnabled(i0377.length < permitidos.length);
-            this.getView().byId("btnReembolso").setEnabled(i9377.length > 0);
+            this.getView().byId("btnReembolso").setEnabled(i0377.length > 0);
             this.getView().byId("btnExcluir").setEnabled(i0377.length > 0);
             // break;
           }
