@@ -183,7 +183,7 @@ sap.ui.define([
       
       if (oGlobalData.IM_LOGGED_IN === 0) {
         this.getView().setModel(new sap.ui.model.json.JSONModel(), "ET_BLOCK");
-        this.getDependents(this,this.getView().getModel("ET_HEADER").getData().PERNR);
+        this.getDependents(this);
         return;
       }
       
@@ -803,7 +803,7 @@ sap.ui.define([
           that.saveAttachment();
           //lê dependentes de novo para excluir da lista de permitidos o tipo de solicitação
           //que acabou de ser criado
-          that.getDependents(that,that.getView().getModel("ET_HEADER").getData().PERNR);
+          that.getDependents(that);
 
           that.clearHideFormDepAid();
           break;
@@ -991,8 +991,9 @@ sap.ui.define([
       onLiveChange: function (oEvent) {
         
       },
-      getDependents: function (that, pernr) {
+      getDependents: function (that) {
         // var oEntry = [];
+        var pernr = that.getView().getModel("ET_HEADER").getData().PERNR;
         var oModel = new sap.ui.model.odata.ODataModel("/sap/opu/odata/SAP/ZODHR_SS_MAINTENANCE_CADASTRAL_SRV/");
         var urlParam = null;
         
@@ -1001,8 +1002,10 @@ sap.ui.define([
           table: []
         });
         
+        var oModel_ET_BLOCK = that.getView().getModel("ET_BLOCK").getData();
         if (pernr !== undefined && pernr !== null && pernr !== "") {
           urlParam = this.fFillURLFilterParam("PERNR", pernr);
+          urlParam = this.fFillURLFilterParam("PERIOD_FROM", oModel_ET_BLOCK.PERIOD_FROM, urlParam);
         }
         
         function fSuccess(oEvent) {
@@ -1091,6 +1094,7 @@ sap.ui.define([
         var key = this.getView().byId("slSolType").getSelectedKey();
         var date = oEvent.getSource().getDateValue();
         this.ajusteDataTo(date, key);
+        this.getDependents(this);
       },
       onChangeSol: function (oEvent) {
         var key = oEvent.getSource().getSelectedKey();
