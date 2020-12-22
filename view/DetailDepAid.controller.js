@@ -1013,11 +1013,27 @@ sap.ui.define([
           if (oEvent.results.length <= 0) {
             return;
           }
-          var depen = {
+          const depen = {
             results: oEvent.results
           };
+          const oTable = that.getView().byId("tDependents");
+          const selectedIndex = oTable.getSelectedIndex();
+          const tipo_auxilio = oModel_ET_BLOCK.TIP_AUX;
+          if (selectedIndex && oEvent.results && oEvent.results[selectedIndex]) {
+            const currentDep = oEvent.results[selectedIndex];
+            if(currentDep.MESSAGE.search(tipo_auxilio) !== -1){
+              const msg = 'Já existe reembolso para o período selecionado';
+              that.getView().byId('dtPeriodFrom').setValueState(sap.ui.core.ValueState.Error);
+              that.getView().byId('dtPeriodFrom').setValueStateText(msg);
+              MessageBox.error(msg);
+            }else{
+              that.getView().byId('dtPeriodFrom').setValueState(sap.ui.core.ValueState.None);
+              that.getView().byId('dtPeriodFrom').setValueStateText();
+            }
+          }
           var oValue = new sap.ui.model.json.JSONModel(depen);
           that.getView().setModel(oValue, "ET_DEPENDENTS");
+
           
         }
         
@@ -1060,18 +1076,8 @@ sap.ui.define([
             this.getView().byId("btnAddSol").setEnabled(i0377.length < permitidos.length);
             this.getView().byId("btnReembolso").setEnabled(i0377.length > 0);
             this.getView().byId("btnExcluir").setEnabled(i0377.length > 0);
-            // break;
           }
         }
-        // model.getData().OBJPS = selectedRow.OBJPS;
-        // model.getData().FCNAM = selectedRow.FCNAM;
-        // model.getData().TYPE = ""; 
-        // model.getData().VALUE = "";
-        // model.getData().DATA = "";
-        // this.getView().byId("dtPeriodFrom").setDateValue();
-        // this.getView().setModel(model, "ET_BLOCK");
-        
-        // this.getView().byId("formHealthAidDep").setVisible(true);
       },
       //--------------------------------------------
       //	fGetSelectedRowDetail
