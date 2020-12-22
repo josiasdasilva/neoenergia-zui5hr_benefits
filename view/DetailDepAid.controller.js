@@ -1019,7 +1019,7 @@ sap.ui.define([
           const oTable = that.getView().byId("tDependents");
           const selectedIndex = oTable.getSelectedIndex();
           const tipo_auxilio = oModel_ET_BLOCK.TIP_AUX;
-          if (selectedIndex && oEvent.results && oEvent.results[selectedIndex]) {
+          if (selectedIndex >= 0 && oEvent.results && oEvent.results[selectedIndex]) {
             const currentDep = oEvent.results[selectedIndex];
             if(currentDep.MESSAGE.search(tipo_auxilio) !== -1){
               const msg = 'Já existe reembolso para o período selecionado';
