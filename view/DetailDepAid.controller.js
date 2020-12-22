@@ -1033,7 +1033,7 @@ sap.ui.define([
           }
           var oValue = new sap.ui.model.json.JSONModel(depen);
           that.getView().setModel(oValue, "ET_DEPENDENTS");
-
+          oTable.setSelectedIndex(selectedIndex);
           
         }
         
