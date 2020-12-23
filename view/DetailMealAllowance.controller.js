@@ -471,6 +471,7 @@ sap.ui.define([
 						that.fVerifyAction(false, "S");
 						// *** ANEXO ***
 						that.saveAttachment();
+						that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action,"DOA");
 						break;
 
 					case "C":

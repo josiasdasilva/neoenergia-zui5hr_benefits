@@ -269,6 +269,7 @@ sap.ui.define([
 					that.fSucessMessageFromSendAction(oEvent);
 					that.fVerifyAction(false, "S");
 					that.saveAttachment();
+					that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action,"BDV");
 					break;
 
 				case "C":

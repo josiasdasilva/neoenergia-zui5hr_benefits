@@ -869,6 +869,7 @@ sap.ui.define([
 							that.fHideOption();
 							// *** ANEXO ***
 							that.saveAttachment();
+							that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action,"BPS");
 							break;
 							
 							case "C":

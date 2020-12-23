@@ -842,7 +842,7 @@ sap.ui.define([
           // *** ANEXO ***
           // that.fSaveAttachmentView(oEvent.EX_REQUISITION_ID);
           that.saveAttachment();
-          
+          that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action);
           break;
           
           case "C":

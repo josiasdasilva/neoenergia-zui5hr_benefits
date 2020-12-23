@@ -412,7 +412,8 @@ sap.ui.define([
 					case "S":
 						that.fSucessMessageFromSendAction(oEvent);
 						that.fVerifyAction(false, "S");
-						that.saveAttachment();
+            that.saveAttachment();
+            that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action,'BIE');
 						break;
 
 					case "C":
@@ -562,7 +563,10 @@ sap.ui.define([
 				MessageBox.error("Falha ao Salvar Arquivo ..!!");
 			} else {
 				var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
+				this.
 				this.getAttachment(req, "BIE");
+				this.setDocumentStatus();
+				blablabla
 			}
 		},
 		fFillDependentDetail: function(selectedRow) {
