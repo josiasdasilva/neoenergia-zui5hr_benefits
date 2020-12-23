@@ -1057,7 +1057,17 @@ sap.ui.define([
         
       },
       onDependentRowSelectionChange: function (oEvent) {
-        
+        //retorna a quantidade de elementos de baseArray que
+        //não existem em compArray
+        const countMissing = (baseArray,compArray) => {
+          var counter = 0;
+          for (let i = 0; i < baseArray.length; i++) {
+            const element = baseArray[i];
+            if(!compArray.includes(element)) counter ++;
+          }
+          return counter;
+        }
+
         var selectedRow = this.fGetSelectedRowDetail();
         if(!selectedRow){
           this.clearHideFormDepAid();
@@ -1073,7 +1083,7 @@ sap.ui.define([
             let i9377 = results[i].I9377.split(";").filter(r => r !== "");
             let permitidos = results[i].PERMITIDOS.split(";").filter(r => r !== "");
             // var str = results[i].TIP_AUX_ATUAL;
-            this.getView().byId("btnAddSol").setEnabled(i0377.length < permitidos.length);
+            this.getView().byId("btnAddSol").setEnabled(countMissing(permitidos,i0377) > 0);
             this.getView().byId("btnReembolso").setEnabled(i0377.length > 0);
             this.getView().byId("btnExcluir").setEnabled(i0377.length > 0);
           }
