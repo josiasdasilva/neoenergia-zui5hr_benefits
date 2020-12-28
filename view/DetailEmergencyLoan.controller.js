@@ -10,6 +10,7 @@ sap.ui.define([
 
 	return BaseController.extend("cadastralMaintenance.view.DetailEmergencyLoan", {
 		onInit: function () {
+			this.getView().byId("dtPeriod").setMinDate(new Date());
 			this.oInitialLoadFinishedDeferred = jQuery.Deferred();
 
 			if (sap.ui.Device.system.phone) {
@@ -252,7 +253,6 @@ sap.ui.define([
 					that.fSucessMessageFromSendAction(oEvent);
 					that.fVerifyAction(false, "S");
 					that.saveAttachment();
-					that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action,"BDV");
 					break;
 
 				case "C":
