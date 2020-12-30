@@ -801,7 +801,7 @@ sap.ui.define([
           that.fSucessMessageFromSendAction(oEvent);
           that.fVerifyAction(false, "S");
           that.saveAttachment();
-          //that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action,"BDV");
+          that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action,"BDV");
           //lê dependentes de novo para excluir da lista de permitidos o tipo de solicitação
           //que acabou de ser criado
           that.getDependents(that);
