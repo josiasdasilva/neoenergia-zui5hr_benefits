@@ -10,6 +10,7 @@ sap.ui.define([
   
   return BaseController.extend("cadastralMaintenance.view.DetailEmergencyLoan", {
     onInit: function () {
+      this.getView().byId("dtPeriod").setMinDate(new Date());
       this.oInitialLoadFinishedDeferred = jQuery.Deferred();
       
       if (sap.ui.Device.system.phone) {
