@@ -1314,14 +1314,19 @@ sap.ui.define([
             var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
             var filename = oEvent.getParameter("fileName");
             var caracteristica = "VALETRANSPORTE";
+            const uploadCollection = this.getView().byId("UploadCollection");
+            const conta_anexos =  uploadCollection.getItems().length;
             
             if (req == '00000000') {
               return;
             }
-            
-            // FILENAME; DMS TYPE; REQUISITION; OPERATION TYPE; CHARACTERISTIC, STATUS, PERNR
-            var dados = filename + ";DOA;" + req + ";INSERT;" + caracteristica + ";S" + ";" + pernr;
-            
+            var dados = "";
+            if(this.settingStatus){
+              dados = "BENEFICIOS;DOA;" + req + ";STATUS;" + conta_anexos + ";S;" + pernr;
+            }else{
+              // FILENAME; DMS TYPE; REQUISITION; OPERATION TYPE; CHARACTERISTIC, STATUS, PERNR
+              dados = filename + ";DOA;" + req + ";INSERT;" + caracteristica + ";S" + ";" + pernr;
+            }
             oEvent.getParameters().addHeaderParameter(new sap.m.UploadCollectionParameter({
               name: "slug",
               value: dados

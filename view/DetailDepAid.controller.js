@@ -801,11 +801,10 @@ sap.ui.define([
           that.fSucessMessageFromSendAction(oEvent);
           that.fVerifyAction(false, "S");
           that.saveAttachment();
-          that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action);
+          //that.setDocumentStatus(oGlobalData.IM_REQUISITION_ID,action,"BDV");
           //lê dependentes de novo para excluir da lista de permitidos o tipo de solicitação
           //que acabou de ser criado
           that.getDependents(that);
-
           that.clearHideFormDepAid();
           break;
           
@@ -951,17 +950,24 @@ sap.ui.define([
       },
       
       onBeforeUpload: function (oEvent) {
-        
+        var pernr = this.getView().getModel("ET_HEADER").getData().PERNR;
         var req = this.getView().getModel("ET_GLOBAL_DATA").IM_REQUISITION_ID;
         var filename = oEvent.getParameter("fileName");
         var caracteristica = "FORMULARIOCOMPRAUXDEP";
-        
+        const uploadCollection = this.getView().byId("UploadCollection");
+        const conta_anexos =  uploadCollection.getItems().length;
+
         if (req === '00000000') {
           return;
         }
         
+        var dados = "";
+        if(this.settingStatus){
+          dados = "BENEFICIOS;BDV;" + req + ";STATUS;" + conta_anexos + ";S;" + pernr;
+        }else{
         // FILENAME; DMS TYPE; REQUISITION; OPERATION TYPE; CHARACTERISTIC, STATUS, PERNR
-        var dados = filename + ";BDV;" + req + ";INSERT;" + caracteristica + ";S" + ";" + pernr;
+          dados = filename + ";BDV;" + req + ";INSERT;" + caracteristica + ";S" + ";" + pernr;
+        }
         
         oEvent.getParameters().addHeaderParameter(new sap.m.UploadCollectionParameter({
           name: "slug",
